@@ -12,32 +12,48 @@ struct RecordingView: View {
     
     var body: some View {
         VStack(spacing: 128) {
-            Spacer()
-            
-            VStack {
-                Text(viewModel.word).font(.largeTitle)
-                Text(viewModel.phonemes
-                        .compactMap { $0["respelling"] }
+            if viewModel.isLoading {
+                ProgressView("Loading...")
+            } else if let word = viewModel.word {
+                Spacer()
+                
+                VStack {
+                    Text(word.word).font(.largeTitle)
+                    Text(word.word_phonemes
+                        .compactMap { $0.respelling }
                         .joined(separator: "."))
                     .font(.title)
                     .foregroundColor(Color.gray)
-            }
-                        
-            Button(action: {}) {
-                Image(systemName: "speaker.2")
-            }
-            .buttonStyle(.bordered)
-            .tint(.blue)
-            .buttonBorderShape(.capsule)
-            .controlSize(.extraLarge)
-                        
-            Button(action: {}) {
-                Image(systemName: "mic")
-                    .font(.largeTitle)
+                }
+                
+                Button(action: {}) {
+                    Image(systemName: "speaker.2")
+                }
+                .buttonStyle(.bordered)
+                .tint(.blue)
+                .buttonBorderShape(.capsule)
+                .controlSize(.extraLarge)
+                
+                Button(action: {}) {
+                    Image(systemName: "mic")
+                        .font(.largeTitle)
+                        .padding()
+                }
+                .buttonStyle(.borderedProminent)
+                .buttonBorderShape(.capsule)
+            } else if let errorMessage = viewModel.errorMessage {
+                Text(errorMessage)
+                    .foregroundColor(.red)
+                    .multilineTextAlignment(.center)
                     .padding()
+            } else {
+                Text("No data available.")
             }
-            .buttonStyle(.borderedProminent)
-            .buttonBorderShape(.capsule)
+        }
+        .onAppear {
+            Task {
+                await viewModel.fetchRandomWord()
+            }
         }
     }
 }
