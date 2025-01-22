@@ -2,7 +2,7 @@
 //  AudioRecorder.swift
 //  ParrotIos
 //
-//  Created by Bilal Bakhrom on 2023-11-19.
+//  Created by Kyle Lee (https://www.kiloloco.com/articles/023-aws-amplify-storage-with-audio-files/).
 //
 
 import AVFoundation
