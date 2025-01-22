@@ -6,25 +6,28 @@
 //
 
 import Foundation
-import MapKit
 
 extension RecordingView {
     @Observable
     class ViewModel {
-        private(set) var word: String
-        private(set) var phonemes: [[String: String]]
+        private(set) var word: Word?
+        private(set) var isLoading: Bool = false
+        private(set) var errorMessage: String?
         
-        init() {
-            word = "software"
-            phonemes = [
-                ["respelling": "s"],
-                ["respelling": "aw"],
-                ["respelling": "f"],
-                ["respelling": "t"],
-                ["respelling": "w"],
-                ["respelling": "eh"],
-                ["respelling": "r"],
-            ]
+        private let webService = WebService()
+        
+        func fetchRandomWord() async {
+            isLoading = true
+            errorMessage = nil
+            
+            let urlString = "https://pronunciation-app-backend.doc.ic.ac.uk/api/v1/random_word"
+            if let fetchedWord: Word = await webService.downloadData(fromURL: urlString) {
+                self.word = fetchedWord
+            } else {
+                errorMessage = "Failed to fetch the word."
+            }
+            
+            isLoading = false
         }
     }
 }
