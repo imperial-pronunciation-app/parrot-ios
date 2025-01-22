@@ -2,7 +2,7 @@
 //  RecordingView.swift
 //  ParrotIos
 //
-//  Created by Pedro Sá Fontes on 22/01/2025.
+//  Created by Kyle Lee (https://www.kiloloco.com/articles/023-aws-amplify-storage-with-audio-files/)
 //
 
 import SwiftUI
@@ -31,7 +31,11 @@ struct RecordingView: View {
             .buttonBorderShape(.capsule)
             .controlSize(.extraLarge)
                         
-            Button(action: {}) {
+            Button(action: {
+                viewModel.audioRecorder.isRecording ?
+                    viewModel.audioRecorder.stopRecording() :
+                    viewModel.audioRecorder.startRecording();
+            }) {
                 Image(systemName: "mic")
                     .font(.largeTitle)
                     .padding()

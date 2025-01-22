@@ -7,13 +7,16 @@
 
 import Foundation
 import MapKit
+import SoundControlKit
 
 extension RecordingView {
     @Observable
     class ViewModel {
+        
         private(set) var word: String
         private(set) var phonemes: [[String: String]]
-        
+        let audioRecorder = AudioRecorder()
+                
         init() {
             word = "software"
             phonemes = [
