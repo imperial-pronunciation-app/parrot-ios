@@ -35,10 +35,15 @@ extension RecordingView {
             isLoading = false
         }
         
+        func stopRecording() async {
+            audioRecorder.stopRecording()
+            await uploadRecording(recordingURL: audioRecorder.audioRecorder.url)
+        }
+        
         func uploadRecording(recordingURL: URL) async {
             isLoading = true
             errorMessage = nil
-            
+                        
             do {
                 let word: Word = self.word!
                 let audioData = try Data(contentsOf: recordingURL)

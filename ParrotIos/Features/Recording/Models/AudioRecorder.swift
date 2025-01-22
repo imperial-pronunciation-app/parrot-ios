@@ -28,7 +28,6 @@ class AudioRecorder: NSObject, ObservableObject, AVAudioRecorderDelegate {
                 }
             }
             
-            print(url)
             let settings: [String: Any] = [
                 AVFormatIDKey: Int(kAudioFormatLinearPCM),
                 AVSampleRateKey: 44100,

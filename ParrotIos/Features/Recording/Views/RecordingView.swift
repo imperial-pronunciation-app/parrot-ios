@@ -35,9 +35,14 @@ struct RecordingView: View {
                 .controlSize(.extraLarge)
                 
                 Button(action: {
-                    viewModel.audioRecorder.isRecording ?
-                        viewModel.audioRecorder.stopRecording() :
-                        viewModel.audioRecorder.startRecording();
+                    Task {
+                        await (
+                            viewModel.audioRecorder.isRecording ?
+                               viewModel.stopRecording() :
+                               viewModel.audioRecorder.startRecording()
+                        )
+                    }
+
                 }) {
                     Image(systemName: "mic")
                         .font(.largeTitle)
