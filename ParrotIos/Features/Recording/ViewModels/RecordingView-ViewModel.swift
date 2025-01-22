@@ -42,8 +42,12 @@ extension RecordingView {
             do {
                 let word: Word = self.word!
                 let audioData = try Data(contentsOf: recordingURL)
+                let requestBody: [String: Any] = [
+                    "audio_bytes": audioData.base64EncodedString()
+                ]
+                let jsonData = try JSONSerialization.data(withJSONObject: requestBody, options: [])
                 let url = "https://pronunciation-app-backend.doc.ic.ac.uk/api/v1/\(word.word_id)/recording"
-                let recordingResponse: RecordingResponse = await webService.postData(data: audioData, toURL: url)!
+                let recordingResponse: RecordingResponse = await webService.postData(data: jsonData, toURL: url)!
                 self.score = recordingResponse.score
             } catch {
                 errorMessage = "Error uploading recording."
