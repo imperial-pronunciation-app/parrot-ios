@@ -37,9 +37,9 @@ struct RecordingView: View {
                 Button(action: {
                     Task {
                         await (
-                            viewModel.audioRecorder.isRecording ?
+                            viewModel.isRecording() ?
                                viewModel.stopRecording() :
-                               viewModel.audioRecorder.startRecording()
+                               viewModel.startRecording()
                         )
                     }
 
