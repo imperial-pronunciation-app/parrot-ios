@@ -12,6 +12,7 @@ extension RecordingView {
     class ViewModel {
         private let audioRecorder = AudioRecorder()
         
+        private(set) var isRecording: Bool = false
         private(set) var isLoading: Bool = false
         private(set) var errorMessage: String?
         
@@ -19,6 +20,12 @@ extension RecordingView {
         private(set) var score: Int?
         
         private let parrotApi = ParrotApiService()
+        
+        func fetchNewWord() async {
+            word = nil
+            score = nil
+            await fetchRandomWord()
+        }
         
         func fetchRandomWord() async {
             isLoading = true
@@ -35,15 +42,13 @@ extension RecordingView {
             isLoading = false
         }
         
-        func isRecording() -> Bool {
-            return audioRecorder.isRecording
-        }
-        
         func startRecording() {
+            isRecording = true
             audioRecorder.startRecording()
         }
         
         func stopRecording() async {
+            isRecording = false
             audioRecorder.stopRecording()
             await uploadRecording(recordingURL: audioRecorder.audioRecorder.url)
         }
@@ -63,5 +68,14 @@ extension RecordingView {
             
             isLoading = false
         }
+        
+        func toggleRecording() async {
+            if isRecording {
+                await stopRecording()
+            } else {
+                startRecording()
+            }
+        }
+
     }
 }
