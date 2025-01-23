@@ -6,8 +6,6 @@
 //
 
 import Foundation
-import MapKit
-import SoundControlKit
 
 extension RecordingView {
     @Observable

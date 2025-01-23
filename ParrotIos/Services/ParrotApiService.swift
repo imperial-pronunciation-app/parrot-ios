@@ -26,13 +26,14 @@ class ParrotApiService {
     
     func postRecording(recordingURL: URL, word: Word) async -> Result<RecordingResponse, ParrotApiError> {
         do {
-            let audioData = try Data(contentsOf: recordingURL)
-            let requestBody: [String: Any] = [
-                "audio_bytes": audioData.base64EncodedString()
+            let audioFile = try Data(contentsOf: recordingURL)
+            
+            let formData: [FormDataElement] = [
+                FormDataElement(name: "audio_file", filename: "recording.wav", contentType: "audio/wav", data: audioFile)
             ]
-            let jsonData = try JSONSerialization.data(withJSONObject: requestBody, options: [])
-            let url = baseUrl + "\(word.word_id)/recording"
-            let response: RecordingResponse = try await webService.postData(data: jsonData, toURL: url)
+            
+            let url = baseUrl + "/words/\(word.word_id)/recording"
+            let response: RecordingResponse = try await webService.postFormData(data: formData, toURL: url)
             return .success(response)
         } catch {
             return .failure(.customError("Failed to upload recording."))
