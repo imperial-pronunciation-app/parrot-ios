@@ -73,7 +73,7 @@ struct RecordingView: View {
                                 .font(.largeTitle)
                                 .foregroundColor(.white)
                                 .frame(width: 80, height: 80)
-                                .background(Color.blue)
+                                .background(viewModel.isRecording ? Color.red.opacity(0.8) : Color.blue)
                                 .clipShape(Circle())
                         }
                     }

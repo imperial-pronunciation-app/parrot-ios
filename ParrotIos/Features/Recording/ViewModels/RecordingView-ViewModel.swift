@@ -14,6 +14,7 @@ extension RecordingView {
     class ViewModel {
         private let audioRecorder = AudioRecorder()
         
+        private(set) var isRecording: Bool = false
         private(set) var isLoading: Bool = false
         private(set) var errorMessage: String?
         
@@ -43,11 +44,13 @@ extension RecordingView {
             isLoading = false
         }
         
-        func isRecording() -> Bool {
-            return audioRecorder.isRecording
+        func startRecording() {
+            isRecording = true
+            audioRecorder.startRecording()
         }
         
         func stopRecording() async {
+            isRecording = false
             audioRecorder.stopRecording()
             await uploadRecording(recordingURL: audioRecorder.audioRecorder.url)
         }
@@ -69,10 +72,10 @@ extension RecordingView {
         }
         
         func toggleRecording() async {
-            if isRecording() {
+            if isRecording {
                 await stopRecording()
             } else {
-                audioRecorder.startRecording()
+                startRecording()
             }
         }
 
