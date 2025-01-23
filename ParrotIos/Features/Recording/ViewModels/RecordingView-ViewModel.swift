@@ -22,6 +22,12 @@ extension RecordingView {
         
         private let parrotApi = ParrotApiService()
         
+        func fetchNewWord() async {
+            word = nil
+            score = nil
+            await fetchRandomWord()
+        }
+        
         func fetchRandomWord() async {
             isLoading = true
             errorMessage = nil
@@ -39,10 +45,6 @@ extension RecordingView {
         
         func isRecording() -> Bool {
             return audioRecorder.isRecording
-        }
-        
-        func startRecording() {
-            audioRecorder.startRecording()
         }
         
         func stopRecording() async {
@@ -65,5 +67,14 @@ extension RecordingView {
             
             isLoading = false
         }
+        
+        func toggleRecording() async {
+            if isRecording() {
+                await stopRecording()
+            } else {
+                audioRecorder.startRecording()
+            }
+        }
+
     }
 }
