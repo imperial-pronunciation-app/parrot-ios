@@ -5,12 +5,39 @@
 //  Created by Pedro Sá Fontes on 22/01/2025.
 //
 
+#if DEBUG
+    extension RecordingView.ViewModel {
+        // Getters and setters for testing
+        var testWord: Word? {
+            get { word }
+            set { word = newValue }
+        }
+        var testIsRecording: Bool {
+            get { isRecording }
+            set { isRecording = newValue }
+        }
+        var testIsLoading: Bool {
+            get { isLoading }
+            set { isLoading = newValue }
+        }
+        var testErrorMessage: String? {
+            get { errorMessage }
+            set { errorMessage = newValue }
+        }
+        var testScore: Int? {
+            get { score }
+            set { score = newValue }
+        }
+    }
+#endif
+
 import Foundation
 
 extension RecordingView {
     @Observable
     class ViewModel {
-        private let audioRecorder = AudioRecorder()
+        private let audioRecorder: AudioRecorder
+        private let parrotApi: ParrotApiService
         
         private(set) var isRecording: Bool = false
         private(set) var isLoading: Bool = false
@@ -19,7 +46,10 @@ extension RecordingView {
         private(set) var word: Word?
         private(set) var score: Int?
         
-        private let parrotApi = ParrotApiService()
+        init(audioRecorder: AudioRecorder = AudioRecorder(), parrotApi: ParrotApiService = ParrotApiService()) {
+            self.audioRecorder = audioRecorder
+            self.parrotApi = parrotApi
+        }
         
         func fetchNewWord() async {
             word = nil
@@ -76,6 +106,5 @@ extension RecordingView {
                 startRecording()
             }
         }
-
     }
 }
