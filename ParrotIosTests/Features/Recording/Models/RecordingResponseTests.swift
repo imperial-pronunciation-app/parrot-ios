@@ -1,16 +1,16 @@
 //
-//  ParrotIosTests.swift
+//  RecordingResponseTests.swift
 //  ParrotIosTests
 //
-//  Created by Pedro Sá Fontes on 22/01/2025.
+//  Created by jn1122 on 29/01/2025.
 //
 
 import Testing
 @testable import ParrotIos
 
-struct ParrotIosTests {
+struct RecordingResponseTests {
 
-    @Test func example() async throws {
+    @Test func exampleRecordingResponseTest() async throws {
         // Write your test here and use APIs like `#expect(...)` to check expected conditions.
     }
 
