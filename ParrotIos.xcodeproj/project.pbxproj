@@ -29,20 +29,57 @@
 		276AD2712D4103D400001426 /* ParrotIosUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ParrotIosUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		B05945FD2D4A5C4C000D0280 /* Exceptions for "ParrotIosTests" folder in "ParrotIos" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Features/Recording/Models/AudioRecorderTests.swift,
+				Features/Recording/Models/PhonemeTests.swift,
+				Features/Recording/Models/RecordingView.swift,
+				Features/Recording/Models/WordTests.swift,
+				"Features/Recording/ViewModels/RecordingView-ViewModelTests.swift",
+				Features/Recording/Views/RecordingViewTests.swift,
+				ParrotIosUITests/ParrotIosUITests.swift,
+				ParrotIosUITests/ParrotIosUITestsLaunchTests.swift,
+			);
+			target = 276AD2542D4103D200001426 /* ParrotIos */;
+		};
+		B05945FE2D4A5C4C000D0280 /* Exceptions for "ParrotIosTests" folder in "ParrotIosTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Features/Recording/Models/AudioRecorderTests.swift,
+				Features/Recording/Models/PhonemeTests.swift,
+				Features/Recording/Models/RecordingView.swift,
+				Features/Recording/Models/WordTests.swift,
+				"Features/Recording/ViewModels/RecordingView-ViewModelTests.swift",
+				Features/Recording/Views/RecordingViewTests.swift,
+			);
+			target = 276AD2662D4103D400001426 /* ParrotIosTests */;
+		};
+		B05946042D4A5C59000D0280 /* Exceptions for "ParrotIosTests" folder in "ParrotIosUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				ParrotIosUITests/ParrotIosUITests.swift,
+				ParrotIosUITests/ParrotIosUITestsLaunchTests.swift,
+			);
+			target = 276AD2702D4103D400001426 /* ParrotIosUITests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		276AD2572D4103D200001426 /* ParrotIos */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = ParrotIos;
 			sourceTree = "<group>";
 		};
-		276AD26A2D4103D400001426 /* ParrotIosTests */ = {
+		B05945FC2D4A5C34000D0280 /* ParrotIosTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				B05945FD2D4A5C4C000D0280 /* Exceptions for "ParrotIosTests" folder in "ParrotIos" target */,
+				B05945FE2D4A5C4C000D0280 /* Exceptions for "ParrotIosTests" folder in "ParrotIosTests" target */,
+				B05946042D4A5C59000D0280 /* Exceptions for "ParrotIosTests" folder in "ParrotIosUITests" target */,
+			);
 			path = ParrotIosTests;
-			sourceTree = "<group>";
-		};
-		276AD2742D4103D400001426 /* ParrotIosUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ParrotIosUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -75,9 +112,8 @@
 		276AD24C2D4103D200001426 = {
 			isa = PBXGroup;
 			children = (
+				B05945FC2D4A5C34000D0280 /* ParrotIosTests */,
 				276AD2572D4103D200001426 /* ParrotIos */,
-				276AD26A2D4103D400001426 /* ParrotIosTests */,
-				276AD2742D4103D400001426 /* ParrotIosUITests */,
 				276AD2562D4103D200001426 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -109,6 +145,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				276AD2572D4103D200001426 /* ParrotIos */,
+				B05945FC2D4A5C34000D0280 /* ParrotIosTests */,
 			);
 			name = ParrotIos;
 			packageProductDependencies = (
@@ -130,9 +167,6 @@
 			dependencies = (
 				276AD2692D4103D400001426 /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				276AD26A2D4103D400001426 /* ParrotIosTests */,
-			);
 			name = ParrotIosTests;
 			packageProductDependencies = (
 			);
@@ -152,9 +186,6 @@
 			);
 			dependencies = (
 				276AD2732D4103D400001426 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				276AD2742D4103D400001426 /* ParrotIosUITests */,
 			);
 			name = ParrotIosUITests;
 			packageProductDependencies = (
@@ -323,7 +354,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -380,7 +411,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -457,7 +488,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "imperial-segp.ParrotIosTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -475,7 +506,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "imperial-segp.ParrotIosTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";

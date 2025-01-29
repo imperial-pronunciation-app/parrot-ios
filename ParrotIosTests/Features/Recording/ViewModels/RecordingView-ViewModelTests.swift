@@ -1,3 +1,4 @@
+
 import Testing
 @testable import ParrotIos
 import AVFoundation
@@ -144,6 +145,7 @@ struct RecordingViewModelTests {
         #expect(state.mockAudioRecorder.stopRecordingCalled)
         #expect(state.viewModel.testScore == nil)
         #expect(state.viewModel.testErrorMessage == "The operation couldn’t be completed. (ParrotIos.ParrotApiService.ParrotApiError error 0.)")
+
     }
 
     // Toggle Recording Tests
@@ -242,3 +244,4 @@ extension RecordingViewModelTests {
         }
     }
 }
+
