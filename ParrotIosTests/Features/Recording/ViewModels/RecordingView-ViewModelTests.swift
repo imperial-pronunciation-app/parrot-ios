@@ -5,24 +5,6 @@ import AVFoundation
 
 @Suite("RecordingViewModel Tests")
 struct RecordingViewModelTests {
-
-    
-    class MockAudioRecorder: AudioRecorder {
-        var startRecordingCalled = false
-        var stopRecordingCalled = false
-        
-        override func startRecording() {
-            startRecordingCalled = true
-        }
-        
-        override func stopRecording() {
-            stopRecordingCalled = true
-        }
-        
-        override func getAudioFileURL() -> URL {
-            return URL(string: "file:///path/to/file")!
-        }
-    }
     
     class MockParrotApi: ParrotApiService {
         var shouldSucceed = true

@@ -35,7 +35,7 @@
 			membershipExceptions = (
 				Features/Recording/Models/AudioRecorderTests.swift,
 				Features/Recording/Models/PhonemeTests.swift,
-				Features/Recording/Models/RecordingView.swift,
+				Features/Recording/Models/RecordingResponseTests.swift,
 				Features/Recording/Models/WordTests.swift,
 				"Features/Recording/ViewModels/RecordingView-ViewModelTests.swift",
 				Features/Recording/Views/RecordingViewTests.swift,
@@ -49,7 +49,7 @@
 			membershipExceptions = (
 				Features/Recording/Models/AudioRecorderTests.swift,
 				Features/Recording/Models/PhonemeTests.swift,
-				Features/Recording/Models/RecordingView.swift,
+				Features/Recording/Models/RecordingResponseTests.swift,
 				Features/Recording/Models/WordTests.swift,
 				"Features/Recording/ViewModels/RecordingView-ViewModelTests.swift",
 				Features/Recording/Views/RecordingViewTests.swift,
