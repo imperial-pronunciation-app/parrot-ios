@@ -59,4 +59,8 @@ class AudioRecorder: NSObject, ObservableObject, AVAudioRecorderDelegate {
         let documentsDirectory = paths[0]
         return documentsDirectory
     }
+    
+    func getAudioFileURL() -> URL {
+        return audioRecorder.url
+    }
 }

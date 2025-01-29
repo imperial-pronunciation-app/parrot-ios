@@ -80,7 +80,7 @@ extension RecordingView {
         func stopRecording() async {
             isRecording = false
             audioRecorder.stopRecording()
-            await uploadRecording(recordingURL: audioRecorder.audioRecorder.url)
+            await uploadRecording(recordingURL: audioRecorder.getAudioFileURL())
         }
         
         func uploadRecording(recordingURL: URL) async {
