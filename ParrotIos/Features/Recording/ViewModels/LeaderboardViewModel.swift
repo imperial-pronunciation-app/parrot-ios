@@ -8,16 +8,22 @@
 import Foundation
 import Combine
 
+
 class LeaderboardViewModel: ObservableObject {
     @Published var users: [User] = []
     @Published var daysProgress: (current: Int, total: Int) = (0, 7)
     
-    init() {
-        loadLeaderboard()
-        calculateDaysProgress()
+    private var parrotApi: ParrotApiService
+    
+    init(parrotApi: ParrotApiService = ParrotApiService()) {
+        self.parrotApi = parrotApi
+        Task {
+            await loadLeaderboard()
+            calculateDaysProgress()
+        }
     }
 
-    func loadLeaderboard() {
+    func loadLeaderboard() async {
         let sampleUsers = [
             User(username: "nikolai", xp: 553),
             User(username: "pedro!", xp: 324),
@@ -25,6 +31,9 @@ class LeaderboardViewModel: ObservableObject {
             User(username: "henryu03", xp: 124),
             User(username: "bigDawg", xp: 124)
         ]
+        
+        // TODO: Swap leaderboard for users 
+        var leaderboard = await parrotApi.getLeaderboard()
 
         users = sampleUsers.sorted { $0.xp > $1.xp }
     }

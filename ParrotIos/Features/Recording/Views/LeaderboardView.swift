@@ -8,19 +8,25 @@
 import SwiftUI
 
 struct LeaderboardView: View {
-    @StateObject private var viewModel = LeaderboardViewModel()
+    
+    private let viewModel: LeaderboardViewModel
+    
+    
+    init(viewModel: LeaderboardViewModel) {
+        self.viewModel = viewModel
+    }
     
     private func weekProgress() -> some View {
         VStack {
-            Text("\(viewModel.daysProgress.current)/\(viewModel.daysProgress.total) days")
+            Text("\(self.viewModel.daysProgress.current)/\(self.viewModel.daysProgress.total) days")
                             .font(.subheadline)
                             .foregroundColor(.gray)
 
-            ProgressView(value: Double(viewModel.daysProgress.current), total: Double(viewModel.daysProgress.total))
+            ProgressView(value: Double(self.viewModel.daysProgress.current), total: Double(self.viewModel.daysProgress.total))
                 .progressViewStyle(LinearProgressViewStyle(tint: .green))
                 .padding(.horizontal, 40)
             
-            Text(viewModel.envigoratingMessage())
+            Text(self.viewModel.envigoratingMessage())
                 .font(.caption)
                 .foregroundColor(.gray)
         }
@@ -103,4 +109,8 @@ struct LeaderboardTopUser: View {
         }
         .frame(maxWidth: .infinity)
     }
+}
+
+#Preview {
+    LeaderboardView(viewModel: LeaderboardViewModel(parrotApi: ParrotApiService()))
 }
