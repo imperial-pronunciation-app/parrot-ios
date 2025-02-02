@@ -30,14 +30,14 @@ struct RecordingResponseTests {
         )
     }
     
-    @Test("RecordingResponse when initialized creates a valid response")
+    @Test("Recording Response when initialized creates a valid response")
     func recordingResponseInitialization() async throws {
         #expect(recordingResponse.recording_id == 1)
         #expect(recordingResponse.score == 95)
         #expect(recordingResponse.recording_phonemes == [phoneme1, phoneme2, phoneme3])
     }
     
-    @Test("RecordingResponse when encoded and decoded from JSON matches original data")
+    @Test("Recording Response when encoded and decoded from JSON matches original data")
     func testRecordingResponseEncodingDecoding() async throws {
         let encodedResponse = try JSONEncoder().encode(recordingResponse)
         let decodedResponse = try JSONDecoder().decode(RecordingResponse.self, from: encodedResponse)
@@ -45,7 +45,7 @@ struct RecordingResponseTests {
         #expect(recordingResponse == decodedResponse)
     }
 
-    @Test("Same RecordingResponse when compared are equal")
+    @Test("Same Recording Response when compared are equal")
     func testRecordingResponseEquality() async throws {
         let sameResponse = RecordingResponse(
             recording_id: 1,
@@ -56,7 +56,7 @@ struct RecordingResponseTests {
         #expect(recordingResponse == sameResponse)
     }
     
-    @Test("Different RecordingResponse when compared are not equal")
+    @Test("Different Recording Response when compared are not equal")
     func testRecordingResponseInequality() async throws {
         let differentResponse1 = RecordingResponse(
             recording_id: 2, // Different recording_id

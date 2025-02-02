@@ -8,19 +8,30 @@
 import AVFoundation
 
 class AudioRecorder: NSObject, ObservableObject, AVAudioRecorderDelegate {
-    var osAudioRecorder: AVAudioRecorder
+    var osAudioRecorder: AVAudioRecorder?
     private(set) var isRecording = false
     
-    
+    // TODO: Review this code
     // Custom initializer to inject the AVAudioRecorder dependency
     init(avAudioRecorder: AVAudioRecorder? = nil) {
+        super.init()
         if let recorder = avAudioRecorder {
             self.osAudioRecorder = recorder
         } else {
-            // Fallback: create a default instance if none is passed
-            self.osAudioRecorder = try! AVAudioRecorder(url: URL(fileURLWithPath: ""), settings: [:])
+            let url = getDocumentsDirectory().appendingPathComponent("default.wav")
+            let settings: [String: Any] = [
+                AVFormatIDKey: Int(kAudioFormatLinearPCM),
+                AVSampleRateKey: 44100,
+                AVNumberOfChannelsKey: 2,
+                AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
+            ]
+            
+            do {
+                self.osAudioRecorder = try AVAudioRecorder(url: url, settings: settings)
+            } catch {
+                print("Failed to initialize AVAudioRecorder: \(error.localizedDescription)")
+            }
         }
-        super.init()
     }
     
     func startRecording() {
@@ -39,25 +50,16 @@ class AudioRecorder: NSObject, ObservableObject, AVAudioRecorderDelegate {
                     print("Failed to remove existing file: \(error.localizedDescription)")
                 }
             }
-            
-            let settings: [String: Any] = [
-                AVFormatIDKey: Int(kAudioFormatLinearPCM),
-                AVSampleRateKey: 44100,
-                AVNumberOfChannelsKey: 2,
-                AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
-            ]
-            // TODO: dependency injection here instead of init because we are overriding the previous osAudioRecorder
-            osAudioRecorder = try AVAudioRecorder(url: url, settings: settings)
-            osAudioRecorder.delegate = self
-            osAudioRecorder.record()
+            self.osAudioRecorder!.delegate = self
+            osAudioRecorder!.record()
             isRecording = true
         } catch let error {
             print("Error recording audio: \(error.localizedDescription)")
         }
     }
-
+    
     func stopRecording() {
-        osAudioRecorder.stop()
+        osAudioRecorder!.stop()
         isRecording = false
     }
 
@@ -74,6 +76,6 @@ class AudioRecorder: NSObject, ObservableObject, AVAudioRecorderDelegate {
     }
     
     func getAudioFileURL() -> URL {
-        return osAudioRecorder.url
+        return osAudioRecorder!.url
     }
 }

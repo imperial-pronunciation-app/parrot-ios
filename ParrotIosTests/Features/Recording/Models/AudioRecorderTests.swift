@@ -24,11 +24,12 @@ struct AudioRecorderTests {
         audioRecorder = AudioRecorder(avAudioRecorder: mockAVAudioRecorder)
     }
     
-    @Test("Start recording successfully")
+    @Test("Start recording successfully by correctly calling the avAudioRecorder")
     func startRecording() async throws {
         mockFileManager.mockFileExists = false
         audioRecorder.startRecording()
         
+        //TODO: consider using a mocking library?
         #expect(audioRecorder.isRecording == true)
         #expect(mockAVAudioRecorder.mockIsRecording == true)
     }
