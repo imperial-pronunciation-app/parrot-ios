@@ -48,22 +48,22 @@ struct LeaderboardView: View {
             weekProgress()
                 .padding(.bottom, 30)
 
-            if viewModel.users.count >= 3 {
+            if viewModel.topUsers.count >= 3 {
                 HStack {
-                    LeaderboardTopUser(rank: 2, user: viewModel.users[1], medal: "🥈")
-                    LeaderboardTopUser(rank: 1, user: viewModel.users[0], medal: "🥇")
-                    LeaderboardTopUser(rank: 3, user: viewModel.users[2], medal: "🥉")
+                    LeaderboardTopUser(rank: 2, user: viewModel.topUsers[1], medal: "🥈")
+                    LeaderboardTopUser(rank: 1, user: viewModel.topUsers[0], medal: "🥇")
+                    LeaderboardTopUser(rank: 3, user: viewModel.topUsers[2], medal: "🥉")
                 }
             }
 
-            let remainingUsers = Array(viewModel.users.dropFirst(3))
+            
 
             VStack(spacing: 10) {
-                ForEach(remainingUsers.indices, id: \.self) { index in
-                    let user = remainingUsers[index]
+                ForEach(viewModel.currentUsers.indices, id: \.self) { index in
+                    let user = viewModel.currentUsers[index]
 
                     HStack {
-                        Text("\(index + 4).")
+                        Text("\(user.rank).")
                             .bold()
 
                         Text(user.username)

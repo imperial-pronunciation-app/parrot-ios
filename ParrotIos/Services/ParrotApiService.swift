@@ -15,10 +15,10 @@ class ParrotApiService {
         case customError(String)
     }
     
-    func getLeaderboard() async -> Result<Leaderboard, ParrotApiError> {
+    func getLeaderboard() async -> Result<LeaderboardResponse, ParrotApiError> {
         do {
-            let leaderboard: Leaderboard = try await webService.downloadData(fromURL: baseUrl + "leaderboard/global")
-            return .success(leaderboard)
+            let leaderboardResponse: LeaderboardResponse = try await webService.downloadData(fromURL: baseUrl + "leaderboard/global")
+            return .success(leaderboardResponse)
         } catch {
             return .failure(.customError("Failed to fetch the leaderboard."))
         }
