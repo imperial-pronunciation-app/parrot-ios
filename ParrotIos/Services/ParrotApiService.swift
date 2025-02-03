@@ -8,7 +8,7 @@
 import Foundation
 
 class ParrotApiService {
-    private let baseUrl = "https://pronunciation-app-backend.doc.ic.ac.uk/api/v1/"
+    private let baseURL = "https://pronunciation-app-backend.doc.ic.ac.uk/api/v1/"
     private let webService = WebService()
     
     enum ParrotApiError: Error {
@@ -17,7 +17,7 @@ class ParrotApiService {
     
     func getRandomWord() async -> Result<Word, ParrotApiError> {
         do {
-            let word: Word = try await webService.downloadData(fromURL: baseUrl + "random_word")
+            let word: Word = try await webService.downloadData(fromURL: "\(baseURL)/random_word")
             return .success(word)
         } catch {
             return .failure(.customError("Failed to fetch the word."))
@@ -28,12 +28,12 @@ class ParrotApiService {
         do {
             let audioFile = try Data(contentsOf: recordingURL)
             
-            let formData: [FormDataElement] = [
-                FormDataElement(name: "audio_file", filename: "recording.wav", contentType: "audio/wav", data: audioFile)
+            let formData: [MultiPartFormDataElement] = [
+                MultiPartFormDataElement(name: "audio_file", filename: "recording.wav", contentType: "audio/wav", data: audioFile)
             ]
             
-            let url = baseUrl + "/words/\(word.word_id)/recording"
-            let response: RecordingResponse = try await webService.postFormData(data: formData, toURL: url)
+            let url = "\(baseURL)/words/\(word.word_id)/recording"
+            let response: RecordingResponse = try await webService.postMultiPartFormData(data: formData, toURL: url)
             return .success(response)
         } catch {
             return .failure(.customError("Failed to upload recording."))
