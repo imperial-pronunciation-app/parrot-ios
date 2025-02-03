@@ -32,7 +32,7 @@ class WebService {
         return nil
     }
     
-    func postData<T: Codable>(data: Data, toURL: String) async -> T? {
+    func postData<T: Codable>(data: Data, toURL: String, responseType: T.Type) async -> T? {
         do {
             // Create the request
             guard let url = URL(string: toURL) else { throw NetworkError.badUrl }
@@ -44,7 +44,7 @@ class WebService {
             let(responseData, response) = try await URLSession.shared.data(for: request)
             guard let response = response as? HTTPURLResponse else { throw NetworkError.badResponse }
             guard response.statusCode >= 200 && response.statusCode < 300 else { throw NetworkError.badStatus }
-            guard let decodedResponse = try? JSONDecoder().decode(T.self, from: responseData) else { throw NetworkError.failedToDecodeResponse }
+            guard let decodedResponse = try? JSONDecoder().decode(responseType, from: responseData) else { throw NetworkError.failedToDecodeResponse }
             
             return decodedResponse
         } catch NetworkError.badUrl {
