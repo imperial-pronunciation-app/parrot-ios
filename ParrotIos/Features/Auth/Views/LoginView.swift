@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct LoginView: View {
+
     @State private var viewModel = AuthViewModel()
     @State private var usernameField = ""
     @State private var passwordField = ""
@@ -18,7 +19,6 @@ struct LoginView: View {
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .autocapitalization(.none)
                 .padding(.bottom, 10)
-            
             SecureField("Password", text: $passwordField)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding(.bottom, 20)

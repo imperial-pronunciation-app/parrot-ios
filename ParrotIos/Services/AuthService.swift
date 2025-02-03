@@ -62,16 +62,15 @@ class AuthService {
         }
     }
 
-    //TODO: Modify to use keychain
     func saveTokens(accessToken: String) {
-        UserDefaults.standard.set(accessToken, forKey: "access_token")
+        UserDefaults.standard.set(accessToken, forKey: "accessToken")
     }
     
     func getAccessToken() -> String? {
-        return UserDefaults.standard.string(forKey: "access_token")
+        return UserDefaults.standard.string(forKey: "accessToken")
     }
     
     func clearTokens() {
-        UserDefaults.standard.removeObject(forKey: "access_token")
+        UserDefaults.standard.removeObject(forKey: "accessToken")
     }
 }

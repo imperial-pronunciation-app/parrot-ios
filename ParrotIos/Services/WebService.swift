@@ -101,9 +101,9 @@ class WebService {
         formComponents.queryItems = parameters.map {
             URLQueryItem(name: $0.key, value: $0.value)
         }
-        guard let formComponentsEncoded = formComponents.percentEncodedQuery else {
-            throw NetworkError.failedToEncodeData
-        }
+//        guard let formComponentsEncoded = formComponents.percentEncodedQuery else {
+//            throw NetworkError.failedToEncodeData
+//        }
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
