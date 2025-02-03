@@ -54,11 +54,23 @@ struct RecordingView: View {
                 loadingView
             } else if let word = viewModel.word {
                 Spacer()
-                VStack(spacing: 32) {
+                VStack(spacing: 10) {
                     if let score = viewModel.score {
                         scoreView(score: score)
                     }
                     wordView(word: word)
+                    Button(action: {
+                        Task {
+                            viewModel.playPhoneme()
+                        }
+                    }) {
+                        Image(systemName: "speaker.wave.3")
+                            .font(.footnote)
+                            .foregroundColor(.white)
+                            .frame(width: 30, height: 30)
+                            .background(Color.blue)
+                            .clipShape(Circle())
+                    }
                 }
                 Spacer()
                 
