@@ -8,59 +8,57 @@
 import Foundation
 
 class WebService {
-    func downloadData<T: Codable>(fromURL: String) async -> T? {
-        do {
-            guard let url = URL(string: fromURL) else { throw NetworkError.badUrl }
-            let (data, response) = try await URLSession.shared.data(from: url)
-            guard let response = response as? HTTPURLResponse else { throw NetworkError.badResponse }
-            guard response.statusCode >= 200 && response.statusCode < 300 else { throw NetworkError.badStatus }
-            guard let decodedResponse = try? JSONDecoder().decode(T.self, from: data) else { throw NetworkError.failedToDecodeResponse }
-                    
-            return decodedResponse
-        } catch NetworkError.badUrl {
-            print("Error creating the URL.")
-        } catch NetworkError.badResponse {
-            print("Did not receive a valid response.")
-        } catch NetworkError.badStatus {
-            print("Did not receive a 2xx status from the response.")
-        } catch NetworkError.failedToDecodeResponse {
-            print("Failed to decode response into the given type.")
-        } catch {
-            print("An error occured when downloading the data.")
-        }
-        
-        return nil
+    func downloadData<T: Codable>(fromURL: String) async throws -> T {
+        guard let url = URL(string: fromURL) else { throw NetworkError.badUrl }
+        let (data, response) = try await URLSession.shared.data(from: url)
+        guard let response = response as? HTTPURLResponse else { throw NetworkError.badResponse }
+        guard response.statusCode >= 200 && response.statusCode < 300 else { throw NetworkError.badStatus }
+        guard let decodedResponse = try? JSONDecoder().decode(T.self, from: data) else { throw NetworkError.failedToDecodeResponse }
+                
+        return decodedResponse
     }
     
-    func postData<T: Codable>(data: Data, toURL: String) async -> T? {
-        do {
-            // Create the request
-            guard let url = URL(string: toURL) else { throw NetworkError.badUrl }
-            var request = URLRequest(url: url)
-            request.httpMethod = "POST"
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.httpBody = data
-            
-            let(responseData, response) = try await URLSession.shared.data(for: request)
-            guard let response = response as? HTTPURLResponse else { throw NetworkError.badResponse }
-            guard response.statusCode >= 200 && response.statusCode < 300 else { throw NetworkError.badStatus }
-            guard let decodedResponse = try? JSONDecoder().decode(T.self, from: responseData) else { throw NetworkError.failedToDecodeResponse }
-            
-            return decodedResponse
-        } catch NetworkError.badUrl {
-            print("Error creating the URL.")
-        } catch NetworkError.badResponse {
-            print("Bad response from the endpoint.")
-        } catch NetworkError.badStatus {
-            print("Did not receive a 2xx status from the response.")
-        } catch NetworkError.failedToDecodeResponse {
-            print("Failed to decode response into the given type.")
-        } catch {
-            print("An error occured when downloading the data.")
+    func postFormData<T: Codable>(data: [FormDataElement], toURL: String) async throws -> T {
+        // Create the request
+        guard let url = URL(string: toURL) else { throw NetworkError.badUrl }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        let boundary = UUID().uuidString
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        
+        var body = Data()
+        for element in data {
+            body.append("--\(boundary)\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"\(element.name)\"".data(using: .utf8)!)
+            if let filename = element.filename {
+                body.append("; filename=\"\(filename)\"".data(using: .utf8)!)
+            }
+            body.append("\r\n".data(using: .utf8)!)
+            if let contentType = element.contentType {
+                body.append("Content-Type: \(contentType)\r\n\r\n".data(using: .utf8)!)
+            }
+            body.append(element.data)
+            body.append("\r\n".data(using: .utf8)!)
         }
         
-        return nil
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        
+        request.httpBody = body
+        
+        let(responseData, response) = try await URLSession.shared.data(for: request)
+        guard let response = response as? HTTPURLResponse else { throw NetworkError.badResponse }
+        guard response.statusCode >= 200 && response.statusCode < 300 else { throw NetworkError.badStatus }
+        guard let decodedResponse = try? JSONDecoder().decode(T.self, from: responseData) else { throw NetworkError.failedToDecodeResponse }
+        
+        return decodedResponse
     }
+}
+
+struct FormDataElement {
+    let name: String
+    let filename: String?
+    let contentType: String?
+    let data: Data
 }
 
 enum NetworkError: Error {
