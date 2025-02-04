@@ -54,11 +54,12 @@ struct LeaderboardView: View {
                     LeaderboardTopUser(rank: 1, user: viewModel.topUsers[0], medal: "🥇")
                     LeaderboardTopUser(rank: 3, user: viewModel.topUsers[2], medal: "🥉")
                 }
+                
             }
 
             
 
-            VStack(spacing: 10) {
+            VStack(spacing: 8) {
                 ForEach(viewModel.currentUsers.indices, id: \.self) { index in
                     let user = viewModel.currentUsers[index]
 
@@ -74,12 +75,11 @@ struct LeaderboardView: View {
                         Text("\(user.xp) xp")
                             .foregroundColor(.gray)
                     }
-                    .padding(10)
+                    .padding(20)
                     .frame(maxWidth: .infinity)
                     .background(
                         RoundedRectangle(cornerRadius: 15)
-                            .fill(Color(UIColor.systemGray5))
-                            .shadow(radius: 3)
+                            .fill(Color(UIColor.systemGray6))
                     )
                 }
             }
@@ -95,8 +95,9 @@ struct LeaderboardTopUser: View {
     let rank: Int
     let user: User
     let medal: String
-
+    
     var body: some View {
+        
         VStack {
             Text(medal)
                 .font(.largeTitle)
@@ -107,7 +108,9 @@ struct LeaderboardTopUser: View {
             Text("\(user.xp) xp")
                 .foregroundColor(.gray)
         }
-        .frame(maxWidth: .infinity)
+        .padding(.top, rank != 1 ? 30: 0)
+        .padding(.bottom, rank == 1 ? 50: 10)
+        .padding(.horizontal, 20)
     }
 }
 
