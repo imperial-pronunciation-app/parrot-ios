@@ -24,6 +24,14 @@ class ParrotApiService {
         }
     }
     
+    func getCurriculum() async -> Result<Curriculum, ParrotApiError> {
+        do {
+            let curriculum: Curriculum = try await webService.downloadData(fromURL: baseUrl + "units")
+            return .success(curriculum)
+        } catch {
+            return .failure(.customError("Failed to fetch the curriculum."))
+        }
+    }
     func postRecording(recordingURL: URL, word: Word) async -> Result<RecordingResponse, ParrotApiError> {
         do {
             let audioFile = try Data(contentsOf: recordingURL)
