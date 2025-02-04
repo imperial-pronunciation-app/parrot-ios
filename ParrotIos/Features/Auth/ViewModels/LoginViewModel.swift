@@ -19,14 +19,18 @@ extension LoginView {
         func login(username: String, password: String) async {
             do {
                 try await authService.login(username: username, password: password)
-//                self.errorMessage = "Login successfully"
+                self.errorMessage = "Login successfully"
             } catch LoginError.badCredentials {
                 self.errorMessage = "Incorrect username or password."
             } catch LoginError.userNotVerified {
                 self.errorMessage = "User not verified."
+            } catch LoginError.customError(let error) {
+                self.errorMessage = error
             } catch {
-                self.errorMessage = "Unknown error occurred."
+                self.errorMessage = "Unknown error occurred: \(error.localizedDescription)"
             }
+            
+            print(KeychainManager.instance.getToken(forKey: "access_token"))
         }
         
         func logout() async {

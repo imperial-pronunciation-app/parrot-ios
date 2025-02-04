@@ -19,7 +19,7 @@ class AuthService {
         
         do {
             let response: LoginAPIResponse = try await webService.postURLEncodedFormData(parameters: parameters, toURL: "\(baseURL)/auth/jwt/login")
-            saveTokens(accessToken: response.access_token)
+            try saveTokens(accessToken: response.access_token)
             return
         } catch NetworkError.badStatus(let code, let data) {
             if code != 400 {
@@ -48,7 +48,6 @@ class AuthService {
         
         do {
             try await webService.postNoResponse(toURL: "\(baseURL)/auth/jwt/logout", headers: authHeaders)
-            clearTokens()
         } catch {
             throw LogoutError.customError("Error during logout: \(error.localizedDescription)")
         }
@@ -83,16 +82,13 @@ class AuthService {
         }
     }
 
-    func saveTokens(accessToken: String) {
-        UserDefaults.standard.set(accessToken, forKey: "accessToken")
+    func saveTokens(accessToken: String) throws {
+        print("Saving token")
+        try KeychainManager.instance.saveToken(accessToken, forKey: "access_token")
     }
     
     func getAccessToken() -> String? {
-        return UserDefaults.standard.string(forKey: "accessToken")
-    }
-    
-    func clearTokens() {
-        UserDefaults.standard.removeObject(forKey: "accessToken")
+        return KeychainManager.instance.getToken(forKey: "access_token")
     }
 }
 
