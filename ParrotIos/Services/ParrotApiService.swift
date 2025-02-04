@@ -14,6 +14,15 @@ class ParrotApiService {
     enum ParrotApiError: Error {
         case customError(String)
     }
+
+    func getLeaderboard() async -> Result<LeaderboardResponse, ParrotApiError> {
+        do {
+            let leaderboardResponse: LeaderboardResponse = try await webService.downloadData(fromURL: baseUrl + "leaderboard/global")
+            return .success(leaderboardResponse)
+        } catch {
+            return .failure(.customError("Failed to fetch the leaderboard."))
+        }
+    }
     
     func getRandomWord() async -> Result<Word, ParrotApiError> {
         do {
