@@ -51,6 +51,7 @@ struct LessonDetailView: View {
             .background(lesson.isCompleted ? Color.green.opacity(0.1) : Color.gray.opacity(0.1))
             .cornerRadius(10)
         }
+        .buttonStyle(.plain) 
     }
 }
 

@@ -32,6 +32,16 @@ class ParrotApiService {
             return .failure(.customError("Failed to fetch the curriculum."))
         }
     }
+    
+    func getExercise(excerciseId: Int) async -> Result<Exercise, ParrotApiError> {
+        do {
+            let exercise: Exercise = try await webService.downloadData(fromURL: baseUrl + "exercises/\(excerciseId)")
+            return .success(exercise)
+        } catch {
+            return .failure(.customError("Failed to fetch the exercise."))
+        }
+    }
+    
     func postRecording(recordingURL: URL, word: Word) async -> Result<RecordingResponse, ParrotApiError> {
         do {
             let audioFile = try Data(contentsOf: recordingURL)
