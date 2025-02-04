@@ -12,7 +12,7 @@ import SwiftData
 struct ParrotIosApp: App {
     var body: some Scene {
         WindowGroup {
-            RecordingView()
+            LeaderboardView(viewModel: LeaderboardViewModel())
         }
     }
 }
