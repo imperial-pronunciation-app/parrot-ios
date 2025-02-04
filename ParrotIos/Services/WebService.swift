@@ -12,7 +12,7 @@ class WebService {
         guard let url = URL(string: fromURL) else { throw NetworkError.badUrl }
         let (data, response) = try await URLSession.shared.data(from: url)
         guard let response = response as? HTTPURLResponse else { throw NetworkError.badResponse }
-        guard response.statusCode >= 200 && response.statusCode < 300 else { throw NetworkError.badStatus }
+        guard response.statusCode >= 200 && response.statusCode < 300 else { throw NetworkError.badStatus(code: response.statusCode) }
         guard let decodedResponse = try? JSONDecoder().decode(T.self, from: data) else { throw NetworkError.failedToDecodeResponse }
         return decodedResponse
     }
@@ -30,10 +30,26 @@ class WebService {
         
         let (responseData, response) = try await URLSession.shared.data(for: request)
         guard let response = response as? HTTPURLResponse else { throw NetworkError.badResponse }
-        guard response.statusCode >= 200 && response.statusCode < 300 else { throw NetworkError.badStatus }
+        guard response.statusCode >= 200 && response.statusCode < 300 else { throw NetworkError.badStatus(code: response.statusCode) }
         guard let decodedResponse = try? JSONDecoder().decode(T.self, from: responseData) else { throw NetworkError.failedToDecodeResponse }
 
         return decodedResponse
+    }
+    
+    // MARK: - POST with no data and no response
+    func postNoResponse(toURL: String, headers: [HeaderElement] = []) async throws {
+        guard let url = URL(string: toURL) else { throw NetworkError.badUrl }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+
+        for header in headers {
+            request.setValue(header.value, forHTTPHeaderField: header.key)
+        }
+        
+        let (responseData, response) = try await URLSession.shared.data(for: request)
+        guard let response = response as? HTTPURLResponse else { throw NetworkError.badResponse }
+        guard response.statusCode >= 200 && response.statusCode < 300 else { throw NetworkError.badStatus(code: response.statusCode) }
     }
     
     // MARK: - POST for application/json type
@@ -46,7 +62,8 @@ class WebService {
         
         let(responseData, response) = try await URLSession.shared.data(for: request)
         guard let response = response as? HTTPURLResponse else { throw NetworkError.badResponse }
-        guard response.statusCode >= 200 && response.statusCode < 300 else { throw NetworkError.badStatus }
+        guard response.statusCode >= 200 && response.statusCode < 300 else { throw NetworkError.badStatus(code: response.statusCode, data: responseData) }
+        
         guard let decodedResponse = try? JSONDecoder().decode(T.self, from: responseData) else { throw NetworkError.failedToDecodeResponse }
         
         return decodedResponse
@@ -83,8 +100,7 @@ class WebService {
         let(responseData, response) = try await URLSession.shared.data(for: request)
         guard let response = response as? HTTPURLResponse else { throw NetworkError.badResponse }
         guard response.statusCode >= 200 && response.statusCode < 300 else {
-            print("Bad status code: \(response.statusCode)")
-            throw NetworkError.badStatus
+            throw NetworkError.badStatus(code: response.statusCode)
         }
         guard let decodedResponse = try? JSONDecoder().decode(T.self, from: responseData) else { throw NetworkError.failedToDecodeResponse }
         
@@ -94,34 +110,25 @@ class WebService {
     // MARK: - POST for application/x-www-form-urlencoded
     func postURLEncodedFormData<T: Codable>(parameters: [FormDataURLEncodedElement], toURL: String, headers: [HeaderElement] = []) async throws -> T {
         guard let url = URL(string: toURL) else { throw NetworkError.badUrl }
-        print(url)
-//        let formBody = parameters.map { "\($0.key)=\($0.value)" }.joined(separator: "&")
-//        guard let formData = formBody.data(using: .utf8) else { throw NetworkError.failedToEncodeData }
         var formComponents = URLComponents()
         formComponents.queryItems = parameters.map {
             URLQueryItem(name: $0.key, value: $0.value)
         }
-//        guard let formComponentsEncoded = formComponents.percentEncodedQuery else {
-//            throw NetworkError.failedToEncodeData
-//        }
+        guard let formComponentsEncoded = formComponents.percentEncodedQuery else {
+            throw NetworkError.failedToEncodeData
+        }
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        
-        request.httpBody = formComponents.query?.data(using: .utf8)
+        request.httpBody = formComponentsEncoded.data(using: .utf8)
 
         let (responseData, response) = try await URLSession.shared.data(for: request)
         guard let response = response as? HTTPURLResponse else { throw NetworkError.badResponse }
-        //HERE
 
         guard response.statusCode >= 200 && response.statusCode < 300 else {
-            print(request.httpBody!)
-            print("Bad status code: \(response.statusCode)")
-            print(responseData)
-            throw NetworkError.badStatus
+            throw NetworkError.badStatus(code: response.statusCode, data: responseData)
         }
-        print("Previous recording removed.")
 
         guard let decodedResponse = try? JSONDecoder().decode(T.self, from: responseData) else { throw NetworkError.failedToDecodeResponse }
 
@@ -155,7 +162,26 @@ enum NetworkError: Error {
     case badUrl
     case invalidRequest
     case badResponse
-    case badStatus
+    case badStatus(code: Int, data: Data? = nil)
     case failedToDecodeResponse
     case failedToEncodeData
+}
+
+extension NetworkError: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+        case .badUrl:
+            return NSLocalizedString("The URL provided was invalid.", comment: "Invalid URL")
+        case .invalidRequest:
+            return NSLocalizedString("The request could not be created.", comment: "Invalid Request")
+        case .badResponse:
+            return NSLocalizedString("The server response was invalid.", comment: "Bad Response")
+        case .badStatus(let code, _):
+            return String(format: NSLocalizedString("Received an unexpected HTTP status code: %d.", comment: "Unexpected Status Code"), code)
+        case .failedToDecodeResponse:
+            return NSLocalizedString("Failed to decode the server response.", comment: "Decoding Error")
+        case .failedToEncodeData:
+            return NSLocalizedString("Failed to encode the request data.", comment: "Encoding Error")
+        }
+    }
 }

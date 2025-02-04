@@ -11,54 +11,75 @@ class AuthService {
     private let webService = WebService()
     private let baseURL = "https://pronunciation-app-backend.doc.ic.ac.uk"
     
-    enum AuthServiceError: Error {
-        case customError(String)
-    }
-    
-    func login(username: String, password: String) async -> Result<AuthResponse, AuthServiceError> {
+    func login(username: String, password: String) async throws {
         let parameters = [
-            FormDataURLEncodedElement(key: "grant_type", value: "authorization_code"),
             FormDataURLEncodedElement(key: "username", value: username),
             FormDataURLEncodedElement(key: "password", value: password)
         ]
         
         do {
-            let response: AuthResponse = try await webService.postURLEncodedFormData(parameters: parameters, toURL: "\(baseURL)/auth/jwt/login")
+            let response: LoginAPIResponse = try await webService.postURLEncodedFormData(parameters: parameters, toURL: "\(baseURL)/auth/jwt/login")
             saveTokens(accessToken: response.access_token)
-            return .success(response)
-        } catch NetworkError.badStatus {
-            return .failure(.customError("Error during login: server returned bad status code."))
+            return
+        } catch NetworkError.badStatus(let code, let data) {
+            if code != 400 {
+                throw LoginError.customError("Error during login: bad status.")
+            }
+            
+            if let data = data {
+                guard let decodedResponse = try? JSONDecoder().decode(LoginAPIErrorResponse.self, from: data) else { throw LoginError.customError("Failed to decode error response.") }
+                switch decodedResponse.detail {
+                case LoginAPIErrorResponseDetail.LOGIN_BAD_CREDENTIALS:
+                    throw LoginError.badCredentials
+                case LoginAPIErrorResponseDetail.LOGIN_USER_NOT_VERIFIED:
+                    throw LoginError.userNotVerified
+                }
+            } else {
+                throw LoginError.customError("Error during login: unknown.")
+            }
         } catch {
-            return .failure(.customError("Error during login: \(error.localizedDescription)"))
+            throw LoginError.customError("Error during login: \(error.localizedDescription)")
         }
     }
     
-    func logout() async -> Result<AuthResponse, AuthServiceError> {
-        guard let accessToken = getAccessToken() else { return .failure(.customError("Error during logout: No access token.")) }
+    func logout() async throws {
+        guard let accessToken = getAccessToken() else { throw LogoutError.notLoggedIn }
         let authHeaders = [HeaderElement(key: "Authorization", value: "Bearer " + accessToken)]
         
         do {
-            let response: AuthResponse = try await webService.post(toURL: "\(baseURL)/auth/jwt/logout", headers: authHeaders)
-            return .success(response)
+            try await webService.postNoResponse(toURL: "\(baseURL)/auth/jwt/logout", headers: authHeaders)
+            clearTokens()
         } catch {
-            return .failure(.customError("Error during logout: \(error.localizedDescription)"))
+            throw LogoutError.customError("Error during logout: \(error.localizedDescription)")
         }
     }
 
-    func register(email: String, password: String) async -> Result<AuthResponse, AuthServiceError> {
+    func register(email: String, password: String) async throws {
         let body: [String: Any] = [
             "email": email,
             "password": password,
             // TODO: include the optional fields such as super_user?
         ]
         
-        guard let data = try? JSONSerialization.data(withJSONObject: body) else { return .failure(.customError("Error in JSON serialization")) }
+        guard let data = try? JSONSerialization.data(withJSONObject: body) else { throw RegisterError.customError("Error in JSON serialization") }
         
         do {
-            let response: AuthResponse = try await webService.postData(data: data, toURL: "\(baseURL)/users/register")
-            return .success(response)
-        } catch {
-            return .failure(.customError("Error during register: \(error)"))
+            let _: RegisterAPIResponse = try await webService.postData(data: data, toURL: "\(baseURL)/users/register")
+            return
+        } catch NetworkError.badStatus(let code, let data){
+            if code != 400 {
+                throw RegisterError.customError("Error during login: bad status.")
+            }
+            
+            if let data = data {
+                guard let decodedResponse = try? JSONDecoder().decode(RegisterAPIErrorResponse.self, from: data) else { throw LoginError.customError("Failed to decode error response.") }
+                switch decodedResponse.detail {
+                case RegisterAPIErrorResponseDetail.REGISTER_USER_ALREADY_EXISTS:
+                    throw RegisterError.userAlreadyExists
+                }
+            } else {
+                throw RegisterError.customError("Error during login: unknown.")
+            }
         }
     }
 
@@ -73,4 +94,47 @@ class AuthService {
     func clearTokens() {
         UserDefaults.standard.removeObject(forKey: "accessToken")
     }
+}
+
+struct LoginAPIResponse: Codable {
+    let access_token: String
+    let token_type: String
+}
+
+enum LoginAPIErrorResponseDetail: String, Codable {
+    case LOGIN_BAD_CREDENTIALS = "LOGIN_BAD_CREDENTIALS"
+    case LOGIN_USER_NOT_VERIFIED = "LOGIN_USER_NOT_VERIFIED"
+}
+
+struct LoginAPIErrorResponse: Codable {
+    let detail: LoginAPIErrorResponseDetail
+}
+
+enum LoginError: Error {
+    case badCredentials
+    case userNotVerified
+    case customError(String)
+}
+
+enum LogoutError: Error {
+    case notLoggedIn
+    case customError(String)
+}
+
+struct RegisterAPIResponse: Codable {
+    let id: Int
+    let email: String
+}
+
+enum RegisterAPIErrorResponseDetail: String, Codable {
+    case REGISTER_USER_ALREADY_EXISTS = "REGISTER_USER_ALREADY_EXISTS"
+}
+
+struct RegisterAPIErrorResponse: Codable {
+    let detail: RegisterAPIErrorResponseDetail
+}
+
+enum RegisterError: Error {
+    case userAlreadyExists
+    case customError(String)
 }
