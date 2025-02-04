@@ -32,23 +32,25 @@ struct LessonDetailView: View {
     let lesson: Lesson
 
     var body: some View {
-        HStack {
-            Text(lesson.title)
-                .font(.subheadline)
-                .padding(.bottom, 2)
-            
-            Spacer()
-            Text(lesson.isCompleted ? "Completed" : "In Progress")
-                .foregroundColor(lesson.isCompleted ? .green : .orange)
-            if lesson.isCompleted {
-                Image(systemName: "checkmark.circle.fill")
-                    .foregroundColor(.green)
-                    .font(.title2)
+        NavigationLink(destination: RecordingView()) {
+            HStack {
+                Text(lesson.title)
+                    .font(.subheadline)
+                    .padding(.bottom, 2)
+                
+                Spacer()
+                Text(lesson.isCompleted ? "Completed" : "In Progress")
+                    .foregroundColor(lesson.isCompleted ? .green : .orange)
+                if lesson.isCompleted {
+                    Image(systemName: "checkmark.circle.fill")
+                        .foregroundColor(.green)
+                        .font(.title2)
+                }
             }
+            .padding()
+            .background(lesson.isCompleted ? Color.green.opacity(0.1) : Color.gray.opacity(0.1))
+            .cornerRadius(10)
         }
-        .padding()
-        .background(lesson.isCompleted ? Color.green.opacity(0.1) : Color.gray.opacity(0.1))
-        .cornerRadius(10)
     }
 }
 
@@ -70,5 +72,8 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    // Must wrap in navigation stack for the linking to work
+    NavigationStack {
+        ContentView()
+    }
 }
