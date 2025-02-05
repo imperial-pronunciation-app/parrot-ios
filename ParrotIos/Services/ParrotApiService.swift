@@ -37,7 +37,7 @@ class ParrotApiService {
             return .success(word)
         } catch NetworkError.badStatus(let code, let data) {
             let dataString = String(data: data!, encoding: .utf8) ?? ""
-            return .failure(.customError("API returned bad status: \(dataString)"))
+            return .failure(.customError("API returned bad status \(code): \(dataString)"))
         } catch {
             return .failure(.customError("Failed to fetch the word."))
         }
