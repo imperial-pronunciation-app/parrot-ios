@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct RecordingView: View {
+struct AttemptView: View {
     @State private var viewModel = ViewModel()
     
     private func wordView(word: Word) -> some View {
@@ -108,5 +108,5 @@ struct RecordingView: View {
 }
 
 #Preview {
-    RecordingView()
+    AttemptView()
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension RecordingView {
+extension AttemptView {
     @Observable
     class ViewModel {
         private let audioRecorder = AudioRecorder()
@@ -58,7 +58,7 @@ extension RecordingView {
             errorMessage = nil
             
             let word: Word = self.word!
-            let result = await parrotApi.postRecording(recordingURL: recordingURL, word: word)
+            let result = await parrotApi.postAttempt(recordingURL: recordingURL, word: word)
             switch result {
             case .success(let recordingResponse):
                 self.score = recordingResponse.score
