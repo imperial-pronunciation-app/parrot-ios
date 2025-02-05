@@ -88,7 +88,6 @@ final class AuthService {
 
 
     func saveTokens(accessToken: String) throws {
-        print("Saving token")
         try KeychainManager.instance.saveToken(accessToken, forKey: "access_token")
     }
     
