@@ -9,4 +9,5 @@ struct AttemptResponse: Codable {
     let recording_id: Int
     let score: Int
     let recording_phonemes: [Phoneme]
+    let xp_gain: Int
 }
