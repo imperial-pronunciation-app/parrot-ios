@@ -14,7 +14,7 @@ enum AppScreen: Hashable {
 
 struct LoginView: View {
 
-    @State private var viewModel = LoginViewModel()
+    @State private var viewModel = ViewModel()
     @State private var usernameField = ""
     @State private var passwordField = ""
     @State private var succeed = false
@@ -54,7 +54,7 @@ struct LoginView: View {
             }
             .padding()
             .navigationDestination(isPresented: $succeed) {
-                NavigationView()
+                NavigationView().navigationBarBackButtonHidden(true)
             }
         }
         .navigationBarBackButtonHidden()

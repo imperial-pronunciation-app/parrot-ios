@@ -20,11 +20,7 @@ struct NavigationView: View {
     ])
     var body: some View {
         TabView {
-//            RecordingView()
-//                .tabItem {
-//                    Label("Learn", systemImage: "book")
-//                }
-            LeaderboardView(viewModel: LeaderboardViewModel())
+            LeaderboardView()
                 .tabItem {
                     Label("Leaderboard", systemImage: "medal")
                 }
