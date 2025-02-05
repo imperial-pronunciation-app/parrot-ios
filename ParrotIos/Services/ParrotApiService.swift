@@ -8,7 +8,7 @@
 import Foundation
 
 class ParrotApiService {
-    private let baseURL = "https://pronunciation-app-backend.doc.ic.ac.uk/api/v1/"
+    private let baseURL = "https://" + (Bundle.main.object(forInfoDictionaryKey: "API_BASE_URL") as! String)
     private let webService = WebService()
     
     enum ParrotApiError: Error {

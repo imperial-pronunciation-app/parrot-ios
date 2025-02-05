@@ -10,7 +10,7 @@ import Foundation
 final class AuthService {
     static let instance = AuthService()
     private let webService = WebService()
-    private let baseURL = "https://pronunciation-app-backend.doc.ic.ac.uk"
+    private let baseURL = "https://" + (Bundle.main.object(forInfoDictionaryKey: "API_BASE_URL") as! String)
     private(set) var isAuthenticated = false
     
     func login(username: String, password: String) async throws {

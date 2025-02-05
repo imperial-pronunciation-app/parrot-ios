@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		93362E2F2D53BEED00D62BC2 /* prod.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 93362E2E2D53BEED00D62BC2 /* prod.xcconfig */; };
+		93362E312D53BF7600D62BC2 /* dev.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 93362E302D53BF7600D62BC2 /* dev.xcconfig */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		276AD2682D4103D400001426 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,11 +32,26 @@
 		276AD2552D4103D200001426 /* ParrotIos.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ParrotIos.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		276AD2672D4103D400001426 /* ParrotIosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ParrotIosTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		276AD2712D4103D400001426 /* ParrotIosUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ParrotIosUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		93362E2E2D53BEED00D62BC2 /* prod.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = prod.xcconfig; sourceTree = "<group>"; };
+		93362E302D53BF7600D62BC2 /* dev.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = dev.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		93362E332D53C53A00D62BC2 /* Exceptions for "ParrotIos" folder in "ParrotIos" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 276AD2542D4103D200001426 /* ParrotIos */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		276AD2572D4103D200001426 /* ParrotIos */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				93362E332D53C53A00D62BC2 /* Exceptions for "ParrotIos" folder in "ParrotIos" target */,
+			);
 			path = ParrotIos;
 			sourceTree = "<group>";
 		};
@@ -75,6 +95,8 @@
 		276AD24C2D4103D200001426 = {
 			isa = PBXGroup;
 			children = (
+				93362E2E2D53BEED00D62BC2 /* prod.xcconfig */,
+				93362E302D53BF7600D62BC2 /* dev.xcconfig */,
 				276AD2572D4103D200001426 /* ParrotIos */,
 				276AD26A2D4103D400001426 /* ParrotIosTests */,
 				276AD2742D4103D400001426 /* ParrotIosUITests */,
@@ -214,6 +236,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				93362E2F2D53BEED00D62BC2 /* prod.xcconfig in Resources */,
+				93362E312D53BF7600D62BC2 /* dev.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -273,6 +297,7 @@
 /* Begin XCBuildConfiguration section */
 		276AD2792D4103D400001426 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 93362E302D53BF7600D62BC2 /* dev.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -336,6 +361,7 @@
 		};
 		276AD27A2D4103D400001426 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 93362E2E2D53BEED00D62BC2 /* prod.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -392,6 +418,7 @@
 		};
 		276AD27C2D4103D400001426 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 93362E302D53BF7600D62BC2 /* dev.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -401,6 +428,7 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ParrotIos/Info.plist;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need access to the microphone to record audio for this app.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -423,6 +451,7 @@
 		};
 		276AD27D2D4103D400001426 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 93362E2E2D53BEED00D62BC2 /* prod.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -432,6 +461,7 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ParrotIos/Info.plist;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need access to the microphone to record audio for this app.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
