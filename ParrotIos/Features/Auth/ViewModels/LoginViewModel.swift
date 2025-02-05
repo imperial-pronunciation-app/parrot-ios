@@ -27,8 +27,6 @@ extension LoginView {
             } catch {
                 self.errorMessage = "Unknown error occurred: \(error.localizedDescription)"
             }
-            
-            print(KeychainManager.instance.getToken(forKey: "access_token"))
         }
         
         func logout() async {
