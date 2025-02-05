@@ -43,7 +43,7 @@ struct ContentView: View {
 struct ParrotIosApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            LoginView()
         }
     }
 }
