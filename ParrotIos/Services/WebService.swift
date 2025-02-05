@@ -47,7 +47,7 @@ class WebService {
             request.setValue(header.value, forHTTPHeaderField: header.key)
         }
         
-        let (responseData, response) = try await URLSession.shared.data(for: request)
+        let (_, response) = try await URLSession.shared.data(for: request)
         guard let response = response as? HTTPURLResponse else { throw NetworkError.badResponse }
         guard response.statusCode >= 200 && response.statusCode < 300 else { throw NetworkError.badStatus(code: response.statusCode) }
     }

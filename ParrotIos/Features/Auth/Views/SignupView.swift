@@ -12,6 +12,8 @@ struct SignupView: View {
     @State private var viewModel = SignupViewModel()
     @State private var emailField = ""
     @State private var passwordField = ""
+    @State private var confirmPasswordField = ""
+    @State private var succeed = false
     
     var body: some View {
         NavigationStack {
@@ -23,10 +25,13 @@ struct SignupView: View {
                 SecureField("Password", text: $passwordField)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding(.bottom, 20)
+                SecureField("Confirm Password", text: $confirmPasswordField)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding(.bottom, 20)
                 
                 Button("Register") {
                     Task {
-                        await viewModel.register(email: emailField, password: passwordField)
+                        await viewModel.register(email: emailField, password: passwordField, confirmPassword: confirmPasswordField, succeed: $succeed)
                     }
                 }
                 .buttonStyle(.borderedProminent)
@@ -44,6 +49,9 @@ struct SignupView: View {
                 }
             }
             .padding()
+            .navigationDestination(isPresented: $succeed) {
+                RecordingView()
+            }
         }
         .navigationBarBackButtonHidden()
     }
