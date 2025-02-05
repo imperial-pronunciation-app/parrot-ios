@@ -54,11 +54,13 @@ struct RecordingView: View {
                 loadingView
             } else if let word = viewModel.word {
                 Spacer()
-                VStack(spacing: 10) {
+
+                VStack(spacing: 32) {
                     if let score = viewModel.score {
                         scoreView(score: score)
                     }
                     wordView(word: word)
+
                     Button(action: {
                         Task {
                             viewModel.playPhoneme()

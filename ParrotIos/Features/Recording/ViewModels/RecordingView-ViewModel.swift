@@ -21,9 +21,10 @@ extension RecordingView {
         
         private let parrotApi = ParrotApiService()
         
+
         // Put this in the init when merging
         private let audioPlayer = AudioPlayer()
-        
+
         func fetchNewWord() async {
             word = nil
             score = nil
