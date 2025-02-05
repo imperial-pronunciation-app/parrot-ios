@@ -51,7 +51,7 @@ class ParrotApiService {
         }
     }
     
-    func postRecording(recordingURL: URL, word: Word) async -> Result<RecordingResponse, ParrotApiError> {
+    func postExerciseRecording(recordingURL: URL, exercise: Exercise) async -> Result<RecordingResponse, ParrotApiError> {
         do {
             let audioFile = try Data(contentsOf: recordingURL)
             
@@ -59,7 +59,7 @@ class ParrotApiService {
                 FormDataElement(name: "audio_file", filename: "recording.wav", contentType: "audio/wav", data: audioFile)
             ]
             
-            let url = baseUrl + "/words/\(word.word_id)/recording"
+            let url = baseUrl + "/exercises/\(exercise.id)/attempts"
             let response: RecordingResponse = try await webService.postFormData(data: formData, toURL: url)
             return .success(response)
         } catch {

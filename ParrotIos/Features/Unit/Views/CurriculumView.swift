@@ -38,5 +38,8 @@ struct CurriculumContentView: View {
 
 #Preview {
     // Must wrap in navigation stack for the linking to work
-    CurriculumContentView()
+    NavigationStack {
+        CurriculumContentView()
+    }
+    
 }

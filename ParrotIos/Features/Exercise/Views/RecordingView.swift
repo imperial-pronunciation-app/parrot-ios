@@ -52,13 +52,13 @@ struct RecordingView: View {
         VStack {
             if viewModel.isLoading {
                 loadingView
-            } else if let word = viewModel.word {
+            } else if let exercise = viewModel.exercise {
                 Spacer()
                 VStack(spacing: 32) {
                     if let score = viewModel.score {
                         scoreView(score: score)
                     }
-                    wordView(word: word)
+                    wordView(word: exercise.word)
                 }
                 Spacer()
                 
@@ -83,7 +83,7 @@ struct RecordingView: View {
                         
                         Button(action: {
                             Task {
-                                await viewModel.fetchNewWord()
+                                await viewModel.fetchExercise()
                             }
                         }) {
                             Image(systemName: "arrow.right")
@@ -101,7 +101,7 @@ struct RecordingView: View {
         }
         .onAppear {
             Task {
-                await viewModel.fetchRandomWord()
+                await viewModel.fetchExercise()
             }
         }
     }

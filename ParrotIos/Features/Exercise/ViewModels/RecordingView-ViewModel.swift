@@ -16,25 +16,24 @@ extension RecordingView {
         private(set) var isLoading: Bool = false
         private(set) var errorMessage: String?
         
-        private(set) var word: Word?
+        private(set) var exercise: Exercise?
         private(set) var score: Int?
         
         private let parrotApi = ParrotApiService()
         
-        func fetchNewWord() async {
-            word = nil
+        func fetchExercise() async {
             score = nil
-            await fetchRandomWord()
+            await fetchNextExercise()
         }
         
-        func fetchRandomWord() async {
+        func fetchNextExercise() async {
             isLoading = true
             errorMessage = nil
-            
-            let result = await parrotApi.getRandomWord()
+            // Should never be nil, so should never triger getting the 0 exercise
+            let result = await parrotApi.getExercise(excerciseId: self.exercise?.nextExerciseID ?? 0)
             switch result {
-            case .success(let word):
-                self.word = word
+            case .success(let exercise):
+                self.exercise = exercise
             case .failure(let error):
                 errorMessage = error.localizedDescription
             }
@@ -57,8 +56,8 @@ extension RecordingView {
             isLoading = true
             errorMessage = nil
             
-            let word: Word = self.word!
-            let result = await parrotApi.postRecording(recordingURL: recordingURL, word: word)
+            let exercise: Exercise = self.exercise!
+            let result = await parrotApi.postExerciseRecording(recordingURL: recordingURL, exercise: exercise)
             switch result {
             case .success(let recordingResponse):
                 self.score = recordingResponse.score
