@@ -56,7 +56,7 @@ struct LessonDetailView: View {
 }
 
 // Main Content View
-struct ContentView: View {
+struct CurriculumContentView: View {
     let sampleCurriculum = Curriculum(units: [
         Unit(name: "Unit 1", description: "Introduction", lessons: [
             Lesson(title: "Lesson 1", currentExerciseID: 1, isCompleted: true),
@@ -75,6 +75,6 @@ struct ContentView: View {
 #Preview {
     // Must wrap in navigation stack for the linking to work
     NavigationStack {
-        ContentView()
+        CurriculumContentView()
     }
 }
