@@ -7,9 +7,11 @@
 
 import Foundation
 
-class AuthService {
+final class AuthService {
+    static let instance = AuthService()
     private let webService = WebService()
     private let baseURL = "https://pronunciation-app-backend.doc.ic.ac.uk"
+    private(set) var isAuthenticated = false
     
     func login(username: String, password: String) async throws {
         let parameters = [
@@ -20,6 +22,7 @@ class AuthService {
         do {
             let response: LoginAPIResponse = try await webService.postURLEncodedFormData(parameters: parameters, toURL: "\(baseURL)/auth/jwt/login")
             try saveTokens(accessToken: response.access_token)
+            self.isAuthenticated = true
             return
         } catch NetworkError.badStatus(let code, let data) {
             if code != 400 {
@@ -48,6 +51,7 @@ class AuthService {
         
         do {
             try await webService.postNoResponse(toURL: "\(baseURL)/auth/jwt/logout", headers: authHeaders)
+            self.isAuthenticated = false
         } catch {
             throw LogoutError.customError("Error during logout: \(error.localizedDescription)")
         }
@@ -81,6 +85,7 @@ class AuthService {
             }
         }
     }
+
 
     func saveTokens(accessToken: String) throws {
         print("Saving token")

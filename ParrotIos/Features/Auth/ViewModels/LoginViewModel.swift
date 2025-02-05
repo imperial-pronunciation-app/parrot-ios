@@ -7,19 +7,17 @@
 
 import Foundation
 import Combine
+import SwiftUI
 
 extension LoginView {
     @Observable
     class LoginViewModel {
-        private(set) var isAuthenticated = false
         private(set) var errorMessage: String?
         
-        private let authService = AuthService()
-        
-        func login(username: String, password: String) async {
+        func login(username: String, password: String, succeed: Binding<Bool>) async {
             do {
-                try await authService.login(username: username, password: password)
-                self.errorMessage = "Login successfully"
+                try await AuthService.instance.login(username: username, password: password)
+                succeed.wrappedValue = true
             } catch LoginError.badCredentials {
                 self.errorMessage = "Incorrect username or password."
             } catch LoginError.userNotVerified {
@@ -35,8 +33,7 @@ extension LoginView {
         
         func logout() async {
             do {
-                try await authService.logout()
-//                self.errorMessage = "Logout successfully"
+                try await AuthService.instance.logout()
             } catch LogoutError.notLoggedIn {
                 self.errorMessage = "User not logged in."
             } catch LogoutError.customError(let error) {

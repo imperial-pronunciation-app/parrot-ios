@@ -7,11 +7,18 @@
 
 import SwiftUI
 
+enum AppScreen: Hashable {
+    case login
+    case mainPage
+}
+
 struct LoginView: View {
 
     @State private var viewModel = LoginViewModel()
     @State private var usernameField = ""
     @State private var passwordField = ""
+    @State private var succeed = false
+    
     
     var body: some View {
         NavigationStack {
@@ -26,7 +33,7 @@ struct LoginView: View {
                 
                 Button("Login") {
                     Task {
-                        await viewModel.login(username: usernameField, password: passwordField)
+                        await viewModel.login(username: usernameField, password: passwordField, succeed: $succeed)
                     }
                 }
                 .buttonStyle(.borderedProminent)
@@ -46,6 +53,9 @@ struct LoginView: View {
                 
             }
             .padding()
+            .navigationDestination(isPresented: $succeed) {
+                RecordingView()
+            }
         }
         .navigationBarBackButtonHidden()
     }
