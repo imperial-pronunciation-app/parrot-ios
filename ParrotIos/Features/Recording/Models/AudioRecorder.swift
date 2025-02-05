@@ -22,7 +22,6 @@ class AudioRecorder: NSObject, ObservableObject, AVAudioRecorderDelegate {
             if FileManager.default.fileExists(atPath: url.path) {
                 do {
                     try FileManager.default.removeItem(at: url)
-                    print("Previous recording removed.")
                 } catch {
                     print("Failed to remove existing file: \(error.localizedDescription)")
                 }
