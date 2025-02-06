@@ -50,7 +50,7 @@ struct SignupView: View {
             }
             .padding()
             .navigationDestination(isPresented: $succeed) {
-                RecordingView()
+                NavigationView().navigationBarBackButtonHidden(true)
             }
         }
         .navigationBarBackButtonHidden()

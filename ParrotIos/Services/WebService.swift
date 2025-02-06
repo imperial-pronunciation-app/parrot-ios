@@ -8,9 +8,16 @@
 import Foundation
 
 class WebService {
-    func downloadData<T: Codable>(fromURL: String) async throws -> T {
+    func downloadData<T: Codable>(fromURL: String, headers: [HeaderElement] = []) async throws -> T {
         guard let url = URL(string: fromURL) else { throw NetworkError.badUrl }
-        let (data, response) = try await URLSession.shared.data(from: url)
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        for header in headers {
+            request.setValue(header.value, forHTTPHeaderField: header.key)
+        }
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
         guard let response = response as? HTTPURLResponse else { throw NetworkError.badResponse }
         guard response.statusCode >= 200 && response.statusCode < 300 else { throw NetworkError.badStatus(code: response.statusCode, data: data) }
         guard let decodedResponse = try? JSONDecoder().decode(T.self, from: data) else { throw NetworkError.failedToDecodeResponse }
@@ -53,12 +60,16 @@ class WebService {
     }
     
     // MARK: - POST for application/json type
-    func postData<T: Codable>(data: Data, toURL: String) async throws -> T {
+    func postData<T: Codable>(data: Data, toURL: String, headers: [HeaderElement] = []) async throws -> T {
         guard let url = URL(string: toURL) else { throw NetworkError.badUrl }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = data
+        
+        for header in headers {
+            request.setValue(header.value, forHTTPHeaderField: header.key)
+        }
         
         let(responseData, response) = try await URLSession.shared.data(for: request)
         guard let response = response as? HTTPURLResponse else { throw NetworkError.badResponse }
@@ -70,13 +81,21 @@ class WebService {
     }
     
     // MARK: - POST for multipart/form-data
-    func postMultiPartFormData<T: Codable>(data: [MultiPartFormDataElement], toURL: String) async throws -> T {
+    func postMultiPartFormData<T: Codable>(
+        data: [MultiPartFormDataElement],
+        toURL: String,
+        headers: [HeaderElement] = []
+    ) async throws -> T {
         // Create the request
         guard let url = URL(string: toURL) else { throw NetworkError.badUrl }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         let boundary = UUID().uuidString
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        
+        for header in headers {
+            request.setValue(header.value, forHTTPHeaderField: header.key)
+        }
         
         var body = Data()
         for element in data {
@@ -117,12 +136,16 @@ class WebService {
         guard let formComponentsEncoded = formComponents.percentEncodedQuery else {
             throw NetworkError.failedToEncodeData
         }
-
+        
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         request.httpBody = formComponentsEncoded.data(using: .utf8)
 
+        for header in headers {
+            request.setValue(header.value, forHTTPHeaderField: header.key)
+        }
+        
         let (responseData, response) = try await URLSession.shared.data(for: request)
         guard let response = response as? HTTPURLResponse else { throw NetworkError.badResponse }
 

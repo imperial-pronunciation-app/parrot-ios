@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension RecordingView {
+extension AttemptView {
     @Observable
     class ViewModel {
         private let audioRecorder = AudioRecorder()
@@ -30,7 +30,7 @@ extension RecordingView {
             isLoading = true
             errorMessage = nil
             // Should never be nil, so should never triger getting the 0 exercise
-            let result = await parrotApi.getExercise(excerciseId: self.exercise?.nextExerciseID ?? 0)
+            let result = await parrotApi.getExercise(exerciseId: self.exercise?.nextExerciseID ?? 0)
             switch result {
             case .success(let exercise):
                 self.exercise = exercise
@@ -57,10 +57,10 @@ extension RecordingView {
             errorMessage = nil
             
             let exercise: Exercise = self.exercise!
-            let result = await parrotApi.postExerciseRecording(recordingURL: recordingURL, exercise: exercise)
+            let result = await parrotApi.postExerciseAttempt(recordingURL: recordingURL, exercise: exercise)
             switch result {
-            case .success(let recordingResponse):
-                self.score = recordingResponse.score
+            case .success(let attemptResponse):
+                self.score = attemptResponse.score
             case .failure(let error):
                 errorMessage = error.localizedDescription
             }

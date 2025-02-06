@@ -8,8 +8,6 @@
 import SwiftUI
 import SwiftData
 
-
-
 @main
 struct ParrotIosApp: App {
     var body: some Scene {

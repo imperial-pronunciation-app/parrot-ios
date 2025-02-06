@@ -1,11 +1,11 @@
 //
-//  RecordingResponse.swift
+//  Attempt.swift
 //  ParrotIos
 //
-//  Created by James Watling on 22/01/2025.
+//  Created by Tom Smail on 04/02/2025.
 //
 
-struct RecordingResponse: Codable {
+struct AttemptResponse: Codable {
     let recording_id: Int
     let score: Int
     let recording_phonemes: [Phoneme]

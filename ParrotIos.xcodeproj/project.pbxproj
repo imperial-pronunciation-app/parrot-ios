@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7134134F2D5244F3008A4B80 /* Parrot.appex in Embed ExtensionKit Extensions */ = {isa = PBXBuildFile; fileRef = 713413432D5244F3008A4B80 /* Parrot.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		B0A6E5482D54EF4100DB2DDE /* dev.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = B0A6E5472D54EF4100DB2DDE /* dev.xcconfig */; };
+		B0A6E54A2D54EF4A00DB2DDE /* prod.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = B0A6E5492D54EF4A00DB2DDE /* prod.xcconfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -25,13 +26,6 @@
 			remoteGlobalIDString = 276AD2542D4103D200001426;
 			remoteInfo = ParrotIos;
 		};
-		7134134D2D5244F3008A4B80 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 276AD24D2D4103D200001426 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 713413422D5244F3008A4B80;
-			remoteInfo = Parrot;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -41,7 +35,6 @@
 			dstPath = "$(EXTENSIONS_FOLDER_PATH)";
 			dstSubfolderSpec = 16;
 			files = (
-				7134134F2D5244F3008A4B80 /* Parrot.appex in Embed ExtensionKit Extensions */,
 			);
 			name = "Embed ExtensionKit Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -52,18 +45,27 @@
 		276AD2552D4103D200001426 /* ParrotIos.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ParrotIos.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		276AD2672D4103D400001426 /* ParrotIosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ParrotIosTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		276AD2712D4103D400001426 /* ParrotIosUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ParrotIosUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		713413432D5244F3008A4B80 /* Parrot.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.extensionkit-extension"; includeInIndex = 0; path = Parrot.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		B0A6E5472D54EF4100DB2DDE /* dev.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = dev.xcconfig; sourceTree = "<group>"; };
+		B0A6E5492D54EF4A00DB2DDE /* prod.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = prod.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		B0B5D76D2D54F48700A04FDA /* Exceptions for "ParrotIos" folder in "ParrotIos" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 276AD2542D4103D200001426 /* ParrotIos */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		276AD2572D4103D200001426 /* ParrotIos */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				B0B5D76D2D54F48700A04FDA /* Exceptions for "ParrotIos" folder in "ParrotIos" target */,
+			);
 			path = ParrotIos;
-			sourceTree = "<group>";
-		};
-		713413442D5244F3008A4B80 /* Parrot */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Parrot;
 			sourceTree = "<group>";
 		};
 		B05945FC2D4A5C34000D0280 /* ParrotIosTests */ = {
@@ -95,13 +97,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		713413402D5244F3008A4B80 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -110,8 +105,9 @@
 			children = (
 				B05945FC2D4A5C34000D0280 /* ParrotIosTests */,
 				276AD2572D4103D200001426 /* ParrotIos */,
-				713413442D5244F3008A4B80 /* Parrot */,
 				276AD2562D4103D200001426 /* Products */,
+				B0A6E5472D54EF4100DB2DDE /* dev.xcconfig */,
+				B0A6E5492D54EF4A00DB2DDE /* prod.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -121,7 +117,6 @@
 				276AD2552D4103D200001426 /* ParrotIos.app */,
 				276AD2672D4103D400001426 /* ParrotIosTests.xctest */,
 				276AD2712D4103D400001426 /* ParrotIosUITests.xctest */,
-				713413432D5244F3008A4B80 /* Parrot.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -141,7 +136,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				7134134E2D5244F3008A4B80 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				276AD2572D4103D200001426 /* ParrotIos */,
@@ -194,28 +188,6 @@
 			productReference = 276AD2712D4103D400001426 /* ParrotIosUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
-		713413422D5244F3008A4B80 /* Parrot */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 713413502D5244F3008A4B80 /* Build configuration list for PBXNativeTarget "Parrot" */;
-			buildPhases = (
-				7134133F2D5244F3008A4B80 /* Sources */,
-				713413402D5244F3008A4B80 /* Frameworks */,
-				713413412D5244F3008A4B80 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				713413442D5244F3008A4B80 /* Parrot */,
-			);
-			name = Parrot;
-			packageProductDependencies = (
-			);
-			productName = Parrot;
-			productReference = 713413432D5244F3008A4B80 /* Parrot.appex */;
-			productType = "com.apple.product-type.extensionkit-extension";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -236,9 +208,6 @@
 					276AD2702D4103D400001426 = {
 						CreatedOnToolsVersion = 16.2;
 						TestTargetID = 276AD2542D4103D200001426;
-					};
-					713413422D5244F3008A4B80 = {
-						CreatedOnToolsVersion = 16.2;
 					};
 				};
 			};
@@ -261,7 +230,6 @@
 				276AD2542D4103D200001426 /* ParrotIos */,
 				276AD2662D4103D400001426 /* ParrotIosTests */,
 				276AD2702D4103D400001426 /* ParrotIosUITests */,
-				713413422D5244F3008A4B80 /* Parrot */,
 			);
 		};
 /* End PBXProject section */
@@ -271,6 +239,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B0A6E5482D54EF4100DB2DDE /* dev.xcconfig in Resources */,
+				B0A6E54A2D54EF4A00DB2DDE /* prod.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,13 +252,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		276AD26F2D4103D400001426 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		713413412D5244F3008A4B80 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -319,13 +282,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		7134133F2D5244F3008A4B80 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -339,16 +295,12 @@
 			target = 276AD2542D4103D200001426 /* ParrotIos */;
 			targetProxy = 276AD2722D4103D400001426 /* PBXContainerItemProxy */;
 		};
-		7134134E2D5244F3008A4B80 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 713413422D5244F3008A4B80 /* Parrot */;
-			targetProxy = 7134134D2D5244F3008A4B80 /* PBXContainerItemProxy */;
-		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		276AD2792D4103D400001426 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B0A6E5472D54EF4100DB2DDE /* dev.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -412,6 +364,7 @@
 		};
 		276AD27A2D4103D400001426 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B0A6E5492D54EF4A00DB2DDE /* prod.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -460,6 +413,7 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
@@ -468,6 +422,7 @@
 		};
 		276AD27C2D4103D400001426 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B0A6E5472D54EF4100DB2DDE /* dev.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -477,6 +432,7 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ParrotIos/Info.plist;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need access to the microphone to record audio for this app.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -498,6 +454,7 @@
 		};
 		276AD27D2D4103D400001426 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B0A6E5492D54EF4A00DB2DDE /* prod.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -507,6 +464,7 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ParrotIos/Info.plist;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need access to the microphone to record audio for this app.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -594,60 +552,6 @@
 			};
 			name = Release;
 		};
-		713413512D5244F3008A4B80 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = Parrot/Parrot.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Parrot/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Parrot;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "ic-pronunciation-app.frontend-app.Parrot";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		713413522D5244F3008A4B80 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = Parrot/Parrot.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Parrot/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Parrot;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "ic-pronunciation-app.frontend-app.Parrot";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -683,15 +587,6 @@
 			buildConfigurations = (
 				276AD2822D4103D400001426 /* Debug */,
 				276AD2832D4103D400001426 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		713413502D5244F3008A4B80 /* Build configuration list for PBXNativeTarget "Parrot" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				713413512D5244F3008A4B80 /* Debug */,
-				713413522D5244F3008A4B80 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -1,10 +1,11 @@
 //
-//  Excersise.swift
+//  Exercise.swift
 //  ParrotIos
 //
 //  Created by Tom Smail on 04/02/2025.
 //
 import SwiftUI
+
 
 struct Exercise: Identifiable, Codable {
     let id: Int
@@ -31,3 +32,4 @@ struct Exercise: Identifiable, Codable {
         self.nextExerciseID = nextExerciseID
     }
 }
+
