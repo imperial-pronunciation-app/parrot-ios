@@ -158,13 +158,6 @@ struct HeaderElement {
     let value: String
 }
 
-struct FormDataElement {
-    let name: String
-    let filename: String?
-    let contentType: String?
-    let data: Data
-}
-
 enum NetworkError: Error {
     case badUrl
     case invalidRequest

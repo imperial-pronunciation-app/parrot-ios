@@ -1,5 +1,5 @@
 //
-//  RecordingViewModel.swift
+//  RecordingView-ViewModel.swift
 //  ParrotIos
 //
 //  Created by Pedro Sá Fontes on 22/01/2025.
@@ -81,10 +81,10 @@ extension RecordingView {
             }
         }
         
-        func playPhoneme() {
-            let phoneme: String = self.word?.word ?? ""
+        func playWord() {
+            let word: String = self.word?.word ?? ""
             // Rate currently set so that the automated voice speaks slowly
-            audioPlayer.play(phoneme: phoneme, rate: 0.3)
+            audioPlayer.play(word: word, rate: 0.3)
         }
 
     }

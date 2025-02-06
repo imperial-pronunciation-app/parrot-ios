@@ -63,7 +63,7 @@ struct RecordingView: View {
 
                     Button(action: {
                         Task {
-                            viewModel.playPhoneme()
+                            viewModel.playWord()
                         }
                     }) {
                         Image(systemName: "speaker.wave.3")
