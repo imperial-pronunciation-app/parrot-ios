@@ -21,6 +21,10 @@ extension RecordingView {
         
         private let parrotApi = ParrotApiService()
         
+
+        // Put this in the init when merging
+        private let audioPlayer = AudioPlayer()
+
         func fetchNewWord() async {
             word = nil
             score = nil
@@ -75,6 +79,12 @@ extension RecordingView {
             } else {
                 startRecording()
             }
+        }
+        
+        func playWord() {
+            let word: String = self.word?.word ?? ""
+            // Rate currently set so that the automated voice speaks slowly
+            audioPlayer.play(word: word, rate: 0.3)
         }
 
     }
