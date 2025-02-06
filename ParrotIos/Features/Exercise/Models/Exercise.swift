@@ -19,7 +19,7 @@ struct Exercise: Identifiable, Codable {
     
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.id = try container.decodeIfPresent(Int.self, forKey: .id) ?? Int.random(in: 1...1_000_000)
+        self.id = try container.decode(Int.self, forKey: .id)
         self.word = try container.decode(Word.self, forKey: .word)
         self.previousExerciseID = try container.decodeIfPresent(Int.self, forKey: .previousExerciseID)
         self.nextExerciseID = try container.decodeIfPresent(Int.self, forKey: .nextExerciseID)

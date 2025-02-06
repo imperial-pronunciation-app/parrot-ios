@@ -8,16 +8,23 @@
 import Foundation
 
 class ParrotApiService {
-    private let baseUrl = "https://pronunciation-app-backend.doc.ic.ac.uk/api/v1/"
+    private let baseURL = "https://" + (Bundle.main.object(forInfoDictionaryKey: "API_BASE_URL") as! String) + "/api/v1"
     private let webService = WebService()
     
-    enum ParrotApiError: Error {
+    enum ParrotApiError: Error, LocalizedError {
         case customError(String)
+        
+        var errorDescription: String? {
+            switch self {
+            case .customError(let message):
+                return NSLocalizedString("Parrot API Error: \(message)", comment: message)
+            }
+        }
     }
 
     func getLeaderboard() async -> Result<LeaderboardResponse, ParrotApiError> {
         do {
-            let leaderboardResponse: LeaderboardResponse = try await webService.downloadData(fromURL: baseUrl + "leaderboard/global")
+            let leaderboardResponse: LeaderboardResponse = try await webService.downloadData(fromURL: baseURL + "/leaderboard/global")
             return .success(leaderboardResponse)
         } catch {
             return .failure(.customError("Failed to fetch the leaderboard."))
@@ -26,8 +33,11 @@ class ParrotApiService {
     
     func getRandomWord() async -> Result<Word, ParrotApiError> {
         do {
-            let word: Word = try await webService.downloadData(fromURL: baseUrl + "random_word")
+            let word: Word = try await webService.downloadData(fromURL: "\(baseURL)/random_word")
             return .success(word)
+        } catch NetworkError.badStatus(let code, let data) {
+            let dataString = String(data: data!, encoding: .utf8) ?? ""
+            return .failure(.customError("API returned bad status \(code): \(dataString)"))
         } catch {
             return .failure(.customError("Failed to fetch the word."))
         }
@@ -35,7 +45,7 @@ class ParrotApiService {
     
     func getCurriculum() async -> Result<Curriculum, ParrotApiError> {
         do {
-            let curriculum: Curriculum = try await webService.downloadData(fromURL: baseUrl + "units")
+            let curriculum: Curriculum = try await webService.downloadData(fromURL: baseURL + "/units")
             return .success(curriculum)
         } catch {
             return .failure(.customError("Failed to fetch the curriculum."))
@@ -44,7 +54,7 @@ class ParrotApiService {
     
     func getExercise(excerciseId: Int) async -> Result<Exercise, ParrotApiError> {
         do {
-            let exercise: Exercise = try await webService.downloadData(fromURL: baseUrl + "exercises/\(excerciseId)")
+            let exercise: Exercise = try await webService.downloadData(fromURL: baseURL + "/exercises/\(excerciseId)")
             return .success(exercise)
         } catch {
             return .failure(.customError("Failed to fetch the exercise."))
@@ -55,8 +65,8 @@ class ParrotApiService {
         do {
             let audioFile = try Data(contentsOf: recordingURL)
             
-            let formData: [FormDataElement] = [
-                FormDataElement(name: "audio_file", filename: "recording.wav", contentType: "audio/wav", data: audioFile)
+            let formData: [MultiPartFormDataElement] = [
+                MultiPartFormDataElement(name: "audio_file", filename: "recording.wav", contentType: "audio/wav", data: audioFile)
             ]
             
             let url = baseUrl + "/words/\(word.word_id)/recording"

@@ -18,18 +18,18 @@ struct Lesson: Identifiable, Codable {
     
     // For JSON
     init(from decoder: any Decoder) throws {
-        let container = try decoder.container(keyedBy:  CodingKeys.self)
-        self.id = try container.decodeIfPresent(Int.self, forKey: .id) ?? Int.random(in: 1...1_000_000)
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(Int.self, forKey: .id)
         self.title = try container.decode(String.self, forKey: .title)
-        self.firstExerciseID = try container.decode(Int.self, forKey: .firstExerciseID)
+        self.currentExerciseID = try container.decodeIfPresent(Int.self, forKey: .currentExerciseID)
         self.isCompleted = try container.decode(Bool.self, forKey: .isCompleted)
     }
     
     // Default
-    init(id: Int, title: String, firstExerciseID: Int, isCompleted: Bool) {
+    init(id: Int, title: String, currentExerciseID: Int?, isCompleted: Bool) {
         self.id = id
         self.title = title
-        self.firstExerciseID = firstExerciseID
+        self.currentExerciseID = currentExerciseID
         self.isCompleted = isCompleted
     }
 }
