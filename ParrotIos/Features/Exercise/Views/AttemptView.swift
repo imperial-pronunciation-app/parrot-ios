@@ -57,6 +57,8 @@ struct AttemptView: View {
         VStack {
             if viewModel.isLoading {
                 loadingView
+            } else if let errorMessage = viewModel.errorMessage {
+                errorView(errorMessage: errorMessage)
             } else if let exercise = viewModel.exercise {
                 Spacer()
                 VStack(spacing: 32) {
@@ -100,8 +102,6 @@ struct AttemptView: View {
                         .padding(.trailing, 64)
                     }
                 }
-            } else if let errorMessage = viewModel.errorMessage {
-                errorView(errorMessage: errorMessage)
             }
         }
         .navigationDestination(isPresented: $finish) {
