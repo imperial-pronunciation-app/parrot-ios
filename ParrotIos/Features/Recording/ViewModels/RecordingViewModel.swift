@@ -1,5 +1,5 @@
 //
-//  RecordingView-ViewModel.swift
+//  RecordingViewModel.swift
 //  ParrotIos
 //
 //  Created by Pedro Sá Fontes on 22/01/2025.

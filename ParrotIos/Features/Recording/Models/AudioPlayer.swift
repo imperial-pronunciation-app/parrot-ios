@@ -14,7 +14,7 @@ class AudioPlayer {
         self.synthesizer = AVSpeechSynthesizer()
     }
 
-    func play(phoneme: String, language: String = "en-US", rate: Float = 0.5) {
+    func play(phoneme: String, rate: Float, language: String = "en-US") {
         let utterance = AVSpeechUtterance(string: phoneme)
         utterance.voice = AVSpeechSynthesisVoice(language: language)
         utterance.rate = rate
