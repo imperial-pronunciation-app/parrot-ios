@@ -21,6 +21,37 @@ struct AttemptView: View {
         }
     }
     
+    private func feedbackView(goldPhonemes: [Phoneme], recordingPhonemes: [Phoneme], xp_gain: Int) -> some View {
+        VStack(spacing: 10) {
+            // Display gold phonemes
+            HStack(spacing: 8) {
+                ForEach(goldPhonemes.indices, id: \.self) { index in
+                        Text(goldPhonemes[index].respelling)
+                        .foregroundColor(.green)
+                }
+            }
+            // Display recording phonemes
+            HStack(spacing: 8) {
+                ForEach(recordingPhonemes.indices, id: \.self) { index in
+                    // Bad solution for now, does this match the gold index?
+                    let recordingPhoneme = recordingPhonemes[index]
+                    let goldPhoneme = index < goldPhonemes.count ? goldPhonemes[index] : nil
+                    
+                    Text(recordingPhoneme.respelling)
+                        .foregroundColor(recordingPhoneme == goldPhoneme ? .green : .red)
+                }
+            }
+            
+            HStack(spacing: 4) {
+                Text("\(xp_gain) XP")
+                    .font(.headline)
+                    .foregroundColor(.red)
+                Text("🔥")
+            }
+        }
+        .padding()
+    }
+    
     private func scoreView(score: Int) -> some View {
         VStack {
             Text("\(score)%")

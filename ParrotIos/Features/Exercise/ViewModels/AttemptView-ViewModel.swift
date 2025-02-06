@@ -1,5 +1,5 @@
 //
-//  RecordingView-ViewModel.swift
+//  AttemptView-ViewModel.swift
 //  ParrotIos
 //
 //  Created by Pedro Sá Fontes on 22/01/2025.
@@ -18,6 +18,8 @@ extension AttemptView {
         
         private(set) var exercise: Exercise?
         private(set) var score: Int?
+        private(set) var recording_phonemes: [Phoneme]?
+        private(set) var xp_gain: Int?
         
         private let parrotApi = ParrotApiService()
         
@@ -61,6 +63,8 @@ extension AttemptView {
             switch result {
             case .success(let attemptResponse):
                 self.score = attemptResponse.score
+                self.recording_phonemes = attemptResponse.recording_phonemes
+                self.xp_gain = attemptResponse.xp_gain
             case .failure(let error):
                 errorMessage = error.localizedDescription
             }
