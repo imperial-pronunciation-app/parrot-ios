@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AttemptView: View {
     @State private var viewModel: ViewModel
+    @State private var finish: Bool = false
     
     init(exerciseId: Int) {
         self.viewModel = ViewModel(exerciseId: exerciseId)
@@ -87,7 +88,7 @@ struct AttemptView: View {
                         
                         Button(action: {
                             Task {
-                                await viewModel.fetchNextExercise()
+                                await viewModel.fetchNextExercise(finish: $finish)
                             }
                         }) {
                             Image(systemName: "arrow.right")
@@ -102,6 +103,9 @@ struct AttemptView: View {
             } else if let errorMessage = viewModel.errorMessage {
                 errorView(errorMessage: errorMessage)
             }
+        }
+        .navigationDestination(isPresented: $finish) {
+            NavigationView().navigationBarBackButtonHidden(true)
         }
     }
 }

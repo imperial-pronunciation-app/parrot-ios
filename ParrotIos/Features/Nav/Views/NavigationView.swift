@@ -11,15 +11,16 @@ import SwiftUI
 struct NavigationView: View {
     var body: some View {
         TabView {
-            LeaderboardView()
-                .tabItem {
-                    Label("Leaderboard", systemImage: "medal")
-                }
             NavigationStack {
                 CurriculumView()
             }
                 .tabItem {
-                    Label("Curriculum", systemImage: "book")
+                    Label("Learn", systemImage: "text.book.closed")
+                }
+            
+            LeaderboardView()
+                .tabItem {
+                    Label("Leaderboard", systemImage: "medal")
                 }
         }
     }

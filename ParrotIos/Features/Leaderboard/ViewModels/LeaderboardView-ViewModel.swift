@@ -33,9 +33,9 @@ extension LeaderboardView {
                 print("Error fetching leaderboard: \(error)")
             case .success(let leaderboardResponse):
                 topUsers = leaderboardResponse.leaders
-                currentUsers = leaderboardResponse.current
+                currentUsers = leaderboardResponse.userPosition
                 league = leaderboardResponse.league
-                daysProgress = (7 - leaderboardResponse.days_until_end, 7)
+                daysProgress = (7 - leaderboardResponse.daysUntilEnd, 7)
             }
         }
         

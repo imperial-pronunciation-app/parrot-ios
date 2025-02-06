@@ -5,6 +5,7 @@
 //  Created by Pedro Sá Fontes on 22/01/2025.
 //
 
+import SwiftUI
 import Foundation
 
 extension AttemptView {
@@ -27,8 +28,12 @@ extension AttemptView {
             }
         }
         
-        func fetchNextExercise() async {
-            await fetchExercise(withID: self.exercise!.nextExerciseID!)
+        func fetchNextExercise(finish: Binding<Bool>) async {
+            if let nextExerciseID = self.exercise!.nextExerciseID {
+                await fetchExercise(withID: nextExerciseID)
+            } else {
+                finish.wrappedValue = true
+            }
         }
         
         func fetchExercise(withID id: Int) async {
