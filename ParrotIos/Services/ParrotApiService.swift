@@ -75,7 +75,7 @@ class ParrotApiService {
         }
     }
     
-    func postAttempt(recordingURL: URL, word: Word) async -> Result<AttemptResponse, ParrotApiError> {
+    func postExerciseAttempt(recordingURL: URL, exercise: Exercise) async -> Result<AttemptResponse, ParrotApiError> {
         do {
             guard let accessToken = authService.getAccessToken() else { throw LogoutError.notLoggedIn }
 
@@ -87,8 +87,9 @@ class ParrotApiService {
             
             let response: AttemptResponse = try await webService.postMultiPartFormData(
                 data: formData,
-                toURL: baseURL + "/words/\(word.word_id)/recording",
+                toURL: baseURL + "/exercises/\(exercise.id)/attempts",
                 headers: [generateAuthHeader(accessToken: accessToken)])
+
             return .success(response)
         } catch {
             return .failure(.customError("Failed to upload recording."))
