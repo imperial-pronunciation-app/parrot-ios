@@ -8,12 +8,16 @@
 import SwiftUI
 
 struct AttemptView: View {
-    @State private var viewModel = ViewModel()
+    @State private var viewModel: ViewModel
+    
+    init(exerciseId: Int) {
+        self.viewModel = ViewModel(exerciseId: exerciseId)
+    }
     
     private func wordView(word: Word) -> some View {
         VStack {
-            Text(word.word).font(.largeTitle)
-            Text(word.word_phonemes
+            Text(word.text).font(.largeTitle)
+            Text(word.phonemes
                 .compactMap { $0.respelling }
                 .joined(separator: "."))
             .font(.title)
@@ -83,7 +87,7 @@ struct AttemptView: View {
                         
                         Button(action: {
                             Task {
-                                await viewModel.fetchExercise()
+                                await viewModel.fetchNextExercise()
                             }
                         }) {
                             Image(systemName: "arrow.right")
@@ -99,14 +103,5 @@ struct AttemptView: View {
                 errorView(errorMessage: errorMessage)
             }
         }
-        .onAppear {
-            Task {
-                await viewModel.fetchExercise()
-            }
-        }
     }
-}
-
-#Preview {
-    AttemptView()
 }

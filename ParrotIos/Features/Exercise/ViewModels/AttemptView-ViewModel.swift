@@ -1,5 +1,5 @@
 //
-//  RecordingView-ViewModel.swift
+//  AttemptView-ViewModel.swift
 //  ParrotIos
 //
 //  Created by Pedro Sá Fontes on 22/01/2025.
@@ -21,16 +21,20 @@ extension AttemptView {
         
         private let parrotApi = ParrotApiService()
         
-        func fetchExercise() async {
-            score = nil
-            await fetchNextExercise()
+        init(exerciseId: Int) {
+            Task {
+                await fetchExercise(withID: exerciseId)
+            }
         }
         
         func fetchNextExercise() async {
+            await fetchExercise(withID: self.exercise!.nextExerciseID!)
+        }
+        
+        func fetchExercise(withID id: Int) async {
             isLoading = true
             errorMessage = nil
-            // Should never be nil, so should never triger getting the 0 exercise
-            let result = await parrotApi.getExercise(exerciseId: self.exercise?.nextExerciseID ?? 0)
+            let result = await parrotApi.getExercise(exerciseId: id)
             switch result {
             case .success(let exercise):
                 self.exercise = exercise
