@@ -11,5 +11,5 @@ struct LeaderboardResponse: Codable  {
     let league: String
     let days_until_end: Int
     let leaders: [User]
-    let currentUsers: [User]
+    let current: [User]
 }

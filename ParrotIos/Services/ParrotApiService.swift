@@ -10,6 +10,7 @@ import Foundation
 class ParrotApiService {
     private let baseURL = "https://" + (Bundle.main.object(forInfoDictionaryKey: "API_BASE_URL") as! String) + "/api/v1"
     private let webService = WebService()
+    private let authService = AuthService()
     
     enum ParrotApiError: Error, LocalizedError {
         case customError(String)
@@ -24,16 +25,23 @@ class ParrotApiService {
 
     func getLeaderboard() async -> Result<LeaderboardResponse, ParrotApiError> {
         do {
-            let leaderboardResponse: LeaderboardResponse = try await webService.downloadData(fromURL: baseURL + "/leaderboard/global")
+            guard let accessToken = authService.getAccessToken() else { throw LogoutError.notLoggedIn }
+            let leaderboardResponse: LeaderboardResponse = try await webService.downloadData(
+                fromURL: baseURL + "/leaderboard/global",
+                headers: [generateAuthHeader(accessToken: accessToken)])
             return .success(leaderboardResponse)
         } catch {
+            // TODO: Handle the case when user might not be logged in or missing token in keychain
             return .failure(.customError("Failed to fetch the leaderboard."))
         }
     }
     
     func getRandomWord() async -> Result<Word, ParrotApiError> {
         do {
-            let word: Word = try await webService.downloadData(fromURL: "\(baseURL)/random_word")
+            guard let accessToken = authService.getAccessToken() else { throw LogoutError.notLoggedIn }
+            let word: Word = try await webService.downloadData(
+                fromURL: "\(baseURL)/random_word",
+                headers: [generateAuthHeader(accessToken: accessToken)])
             return .success(word)
         } catch NetworkError.badStatus(let code, let data) {
             let dataString = String(data: data!, encoding: .utf8) ?? ""
@@ -45,16 +53,22 @@ class ParrotApiService {
     
     func getCurriculum() async -> Result<Curriculum, ParrotApiError> {
         do {
-            let curriculum: Curriculum = try await webService.downloadData(fromURL: baseURL + "/units")
+            guard let accessToken = authService.getAccessToken() else { throw LogoutError.notLoggedIn }
+            let curriculum: Curriculum = try await webService.downloadData(
+                fromURL: baseURL + "/units",
+                headers: [generateAuthHeader(accessToken: accessToken)])
             return .success(curriculum)
         } catch {
             return .failure(.customError("Failed to fetch the curriculum."))
         }
     }
     
-    func getExercise(excerciseId: Int) async -> Result<Exercise, ParrotApiError> {
+    func getExercise(exerciseId: Int) async -> Result<Exercise, ParrotApiError> {
         do {
-            let exercise: Exercise = try await webService.downloadData(fromURL: baseURL + "/exercises/\(excerciseId)")
+            guard let accessToken = authService.getAccessToken() else { throw LogoutError.notLoggedIn }
+            let exercise: Exercise = try await webService.downloadData(
+                fromURL: baseURL + "/exercises/\(exerciseId)",
+                headers: [generateAuthHeader(accessToken: accessToken)])
             return .success(exercise)
         } catch {
             return .failure(.customError("Failed to fetch the exercise."))
@@ -63,17 +77,25 @@ class ParrotApiService {
     
     func postAttempt(recordingURL: URL, word: Word) async -> Result<AttemptResponse, ParrotApiError> {
         do {
+            guard let accessToken = authService.getAccessToken() else { throw LogoutError.notLoggedIn }
+
             let audioFile = try Data(contentsOf: recordingURL)
             
             let formData: [MultiPartFormDataElement] = [
                 MultiPartFormDataElement(name: "audio_file", filename: "recording.wav", contentType: "audio/wav", data: audioFile)
             ]
             
-            let url = baseURL + "/words/\(word.word_id)/recording"
-            let response: AttemptResponse = try await webService.postMultiPartFormData(data: formData, toURL: url)
+            let response: AttemptResponse = try await webService.postMultiPartFormData(
+                data: formData,
+                toURL: baseURL + "/words/\(word.word_id)/recording",
+                headers: [generateAuthHeader(accessToken: accessToken)])
             return .success(response)
         } catch {
             return .failure(.customError("Failed to upload recording."))
         }
+    }
+    
+    private func generateAuthHeader(accessToken: String) -> HeaderElement {
+        return HeaderElement(key: "Authorization", value: "Bearer " + accessToken)
     }
 }
