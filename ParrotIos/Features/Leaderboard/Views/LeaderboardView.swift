@@ -9,12 +9,7 @@ import SwiftUI
 
 struct LeaderboardView: View {
     
-    private let viewModel: LeaderboardViewModel
-    
-    
-    init(viewModel: LeaderboardViewModel) {
-        self.viewModel = viewModel
-    }
+    private let viewModel = ViewModel()
     
     private func weekProgress() -> some View {
         VStack {
@@ -115,5 +110,5 @@ struct LeaderboardTopUser: View {
 }
 
 #Preview {
-    LeaderboardView(viewModel: LeaderboardViewModel(parrotApi: ParrotApiService()))
+    LeaderboardView()
 }

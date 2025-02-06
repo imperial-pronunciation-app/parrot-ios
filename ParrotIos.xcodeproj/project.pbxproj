@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		93362E2F2D53BEED00D62BC2 /* prod.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 93362E2E2D53BEED00D62BC2 /* prod.xcconfig */; };
-		93362E312D53BF7600D62BC2 /* dev.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 93362E302D53BF7600D62BC2 /* dev.xcconfig */; };
+		7134134F2D5244F3008A4B80 /* Parrot.appex in Embed ExtensionKit Extensions */ = {isa = PBXBuildFile; fileRef = 713413432D5244F3008A4B80 /* Parrot.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -26,43 +25,50 @@
 			remoteGlobalIDString = 276AD2542D4103D200001426;
 			remoteInfo = ParrotIos;
 		};
+		7134134D2D5244F3008A4B80 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 276AD24D2D4103D200001426 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 713413422D5244F3008A4B80;
+			remoteInfo = Parrot;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		713413542D5244F3008A4B80 /* Embed ExtensionKit Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(EXTENSIONS_FOLDER_PATH)";
+			dstSubfolderSpec = 16;
+			files = (
+				7134134F2D5244F3008A4B80 /* Parrot.appex in Embed ExtensionKit Extensions */,
+			);
+			name = "Embed ExtensionKit Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		276AD2552D4103D200001426 /* ParrotIos.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ParrotIos.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		276AD2672D4103D400001426 /* ParrotIosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ParrotIosTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		276AD2712D4103D400001426 /* ParrotIosUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ParrotIosUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		93362E2E2D53BEED00D62BC2 /* prod.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = prod.xcconfig; sourceTree = "<group>"; };
-		93362E302D53BF7600D62BC2 /* dev.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = dev.xcconfig; sourceTree = "<group>"; };
+		713413432D5244F3008A4B80 /* Parrot.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.extensionkit-extension"; includeInIndex = 0; path = Parrot.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		93362E332D53C53A00D62BC2 /* Exceptions for "ParrotIos" folder in "ParrotIos" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = 276AD2542D4103D200001426 /* ParrotIos */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		276AD2572D4103D200001426 /* ParrotIos */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				93362E332D53C53A00D62BC2 /* Exceptions for "ParrotIos" folder in "ParrotIos" target */,
-			);
 			path = ParrotIos;
 			sourceTree = "<group>";
 		};
-		276AD26A2D4103D400001426 /* ParrotIosTests */ = {
+		713413442D5244F3008A4B80 /* Parrot */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ParrotIosTests;
+			path = Parrot;
 			sourceTree = "<group>";
 		};
-		276AD2742D4103D400001426 /* ParrotIosUITests */ = {
+		B05945FC2D4A5C34000D0280 /* ParrotIosTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ParrotIosUITests;
+			path = ParrotIosTests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -89,17 +95,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		713413402D5244F3008A4B80 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		276AD24C2D4103D200001426 = {
 			isa = PBXGroup;
 			children = (
-				93362E2E2D53BEED00D62BC2 /* prod.xcconfig */,
-				93362E302D53BF7600D62BC2 /* dev.xcconfig */,
+				B05945FC2D4A5C34000D0280 /* ParrotIosTests */,
 				276AD2572D4103D200001426 /* ParrotIos */,
-				276AD26A2D4103D400001426 /* ParrotIosTests */,
-				276AD2742D4103D400001426 /* ParrotIosUITests */,
+				713413442D5244F3008A4B80 /* Parrot */,
 				276AD2562D4103D200001426 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -110,6 +121,7 @@
 				276AD2552D4103D200001426 /* ParrotIos.app */,
 				276AD2672D4103D400001426 /* ParrotIosTests.xctest */,
 				276AD2712D4103D400001426 /* ParrotIosUITests.xctest */,
+				713413432D5244F3008A4B80 /* Parrot.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -124,13 +136,16 @@
 				276AD2512D4103D200001426 /* Sources */,
 				276AD2522D4103D200001426 /* Frameworks */,
 				276AD2532D4103D200001426 /* Resources */,
+				713413542D5244F3008A4B80 /* Embed ExtensionKit Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				7134134E2D5244F3008A4B80 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				276AD2572D4103D200001426 /* ParrotIos */,
+				B05945FC2D4A5C34000D0280 /* ParrotIosTests */,
 			);
 			name = ParrotIos;
 			packageProductDependencies = (
@@ -152,9 +167,6 @@
 			dependencies = (
 				276AD2692D4103D400001426 /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				276AD26A2D4103D400001426 /* ParrotIosTests */,
-			);
 			name = ParrotIosTests;
 			packageProductDependencies = (
 			);
@@ -175,15 +187,34 @@
 			dependencies = (
 				276AD2732D4103D400001426 /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				276AD2742D4103D400001426 /* ParrotIosUITests */,
-			);
 			name = ParrotIosUITests;
 			packageProductDependencies = (
 			);
 			productName = ParrotIosUITests;
 			productReference = 276AD2712D4103D400001426 /* ParrotIosUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		713413422D5244F3008A4B80 /* Parrot */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 713413502D5244F3008A4B80 /* Build configuration list for PBXNativeTarget "Parrot" */;
+			buildPhases = (
+				7134133F2D5244F3008A4B80 /* Sources */,
+				713413402D5244F3008A4B80 /* Frameworks */,
+				713413412D5244F3008A4B80 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				713413442D5244F3008A4B80 /* Parrot */,
+			);
+			name = Parrot;
+			packageProductDependencies = (
+			);
+			productName = Parrot;
+			productReference = 713413432D5244F3008A4B80 /* Parrot.appex */;
+			productType = "com.apple.product-type.extensionkit-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -206,6 +237,9 @@
 						CreatedOnToolsVersion = 16.2;
 						TestTargetID = 276AD2542D4103D200001426;
 					};
+					713413422D5244F3008A4B80 = {
+						CreatedOnToolsVersion = 16.2;
+					};
 				};
 			};
 			buildConfigurationList = 276AD2502D4103D200001426 /* Build configuration list for PBXProject "ParrotIos" */;
@@ -227,6 +261,7 @@
 				276AD2542D4103D200001426 /* ParrotIos */,
 				276AD2662D4103D400001426 /* ParrotIosTests */,
 				276AD2702D4103D400001426 /* ParrotIosUITests */,
+				713413422D5244F3008A4B80 /* Parrot */,
 			);
 		};
 /* End PBXProject section */
@@ -236,8 +271,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				93362E2F2D53BEED00D62BC2 /* prod.xcconfig in Resources */,
-				93362E312D53BF7600D62BC2 /* dev.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -249,6 +282,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		276AD26F2D4103D400001426 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		713413412D5244F3008A4B80 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -279,6 +319,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7134133F2D5244F3008A4B80 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -292,12 +339,16 @@
 			target = 276AD2542D4103D200001426 /* ParrotIos */;
 			targetProxy = 276AD2722D4103D400001426 /* PBXContainerItemProxy */;
 		};
+		7134134E2D5244F3008A4B80 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 713413422D5244F3008A4B80 /* Parrot */;
+			targetProxy = 7134134D2D5244F3008A4B80 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		276AD2792D4103D400001426 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 93362E302D53BF7600D62BC2 /* dev.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -361,7 +412,6 @@
 		};
 		276AD27A2D4103D400001426 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 93362E2E2D53BEED00D62BC2 /* prod.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -418,7 +468,6 @@
 		};
 		276AD27C2D4103D400001426 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 93362E302D53BF7600D62BC2 /* dev.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -428,14 +477,12 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ParrotIos/Info.plist;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need access to the microphone to record audio for this app.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -451,7 +498,6 @@
 		};
 		276AD27D2D4103D400001426 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 93362E2E2D53BEED00D62BC2 /* prod.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -461,14 +507,12 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ParrotIos/Info.plist;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need access to the microphone to record audio for this app.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -489,7 +533,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "imperial-segp.ParrotIosTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -507,7 +551,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "imperial-segp.ParrotIosTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -550,6 +594,60 @@
 			};
 			name = Release;
 		};
+		713413512D5244F3008A4B80 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Parrot/Parrot.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Parrot/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Parrot;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "ic-pronunciation-app.frontend-app.Parrot";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		713413522D5244F3008A4B80 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Parrot/Parrot.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Parrot/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Parrot;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "ic-pronunciation-app.frontend-app.Parrot";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -585,6 +683,15 @@
 			buildConfigurations = (
 				276AD2822D4103D400001426 /* Debug */,
 				276AD2832D4103D400001426 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		713413502D5244F3008A4B80 /* Build configuration list for PBXNativeTarget "Parrot" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				713413512D5244F3008A4B80 /* Debug */,
+				713413522D5244F3008A4B80 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

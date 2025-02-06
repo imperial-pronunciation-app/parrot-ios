@@ -12,7 +12,7 @@ class WebService {
         guard let url = URL(string: fromURL) else { throw NetworkError.badUrl }
         let (data, response) = try await URLSession.shared.data(from: url)
         guard let response = response as? HTTPURLResponse else { throw NetworkError.badResponse }
-        guard response.statusCode >= 200 && response.statusCode < 300 else { throw NetworkError.badStatus(code: response.statusCode) }
+        guard response.statusCode >= 200 && response.statusCode < 300 else { throw NetworkError.badStatus(code: response.statusCode, data: data) }
         guard let decodedResponse = try? JSONDecoder().decode(T.self, from: data) else { throw NetworkError.failedToDecodeResponse }
         return decodedResponse
     }

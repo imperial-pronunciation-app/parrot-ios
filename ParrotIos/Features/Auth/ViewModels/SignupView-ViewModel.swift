@@ -11,7 +11,7 @@ import SwiftUI
 
 extension SignupView {
     @Observable
-    class SignupViewModel {
+    class ViewModel {
         private(set) var isAuthenticated = false
         private(set) var errorMessage: String?
         

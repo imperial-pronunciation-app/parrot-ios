@@ -11,7 +11,7 @@ import SwiftUI
 
 extension LoginView {
     @Observable
-    class LoginViewModel {
+    class ViewModel {
         private(set) var errorMessage: String?
         
         func login(username: String, password: String, succeed: Binding<Bool>) async {
