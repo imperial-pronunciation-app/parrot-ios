@@ -98,7 +98,7 @@ extension AttemptView {
             let word: String = self.exercise?.word.text ?? ""
             isPlaying = true
             // Rate currently set so that the automated voice speaks slowly
-            audioPlayer.play(word: word, rate: 0.3)
+            audioPlayer.play(word: word, rate: 0.5)
             isPlaying = false
         }
     }
