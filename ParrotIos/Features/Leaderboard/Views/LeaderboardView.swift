@@ -20,13 +20,13 @@ struct LeaderboardView: View {
             ProgressView(value: Double(self.viewModel.daysProgress.current), total: Double(self.viewModel.daysProgress.total))
                 .progressViewStyle(LinearProgressViewStyle(tint: .green))
                 .padding(.horizontal, 40)
-            
+
             Text(self.viewModel.envigoratingMessage())
                 .font(.caption)
                 .foregroundColor(.gray)
         }
     }
-    
+
     var body: some View {
         VStack {
             // Leaderboard Header
@@ -34,39 +34,37 @@ struct LeaderboardView: View {
                 .font(.title)
                 .bold()
                 .padding(.top, 20)
-            
-            Text("Gold League")
+
+            Text("\(viewModel.league.capitalized) League")
                 .font(.subheadline)
                 .foregroundColor(.gray)
                 .padding(.bottom, 20)
-            
+
             weekProgress()
                 .padding(.bottom, 30)
-            
+
             if viewModel.topUsers.count >= 3 {
                 HStack {
                     LeaderboardTopUser(rank: 2, user: viewModel.topUsers[1], medal: "🥈")
                     LeaderboardTopUser(rank: 1, user: viewModel.topUsers[0], medal: "🥇")
                     LeaderboardTopUser(rank: 3, user: viewModel.topUsers[2], medal: "🥉")
                 }
-                
+
             }
-            
-            
-            
+
             VStack(spacing: 8) {
                 ForEach(viewModel.currentUsers.indices, id: \.self) { index in
                     let user = viewModel.currentUsers[index]
-                    
+
                     HStack {
                         Text("\(user.rank).")
                             .bold()
-                        
+
                         Text(user.username)
                             .bold()
-                        
+
                         Spacer()
-                        
+
                         Text("\(user.xp) xp")
                             .foregroundColor(.gray)
                     }

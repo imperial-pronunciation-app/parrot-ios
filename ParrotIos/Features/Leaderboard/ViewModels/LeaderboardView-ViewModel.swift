@@ -14,7 +14,7 @@ extension LeaderboardView {
     class ViewModel {
         private(set) var currentUsers: [User] = []
         private(set) var topUsers: [User] = []
-        private(set) var league: String?
+        private(set) var league: String = "Unk"
         private(set) var daysProgress: (current: Int, total: Int) = (0, 7)
         
         private let parrotApi = ParrotApiService()
