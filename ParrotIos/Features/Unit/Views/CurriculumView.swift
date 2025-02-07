@@ -26,18 +26,27 @@ struct CurriculumView: View {
     }
     
     var body: some View {
-        VStack {
-            if viewModel.isLoading {
-                loadingView
-            } else if let error = viewModel.errorMessage {
-                errorView(errorMessage: error)
-            } else {
-                List(viewModel.curriculum!.units) { unit in
-                    Section(header: Text(unit.name).font(.headline)) {
-                        UnitView(unit: unit)
+        ScrollView {
+            VStack {
+                if viewModel.isLoading {
+                    loadingView
+                } else if let error = viewModel.errorMessage {
+                    errorView(errorMessage: error)
+                } else {
+                    ForEach(viewModel.curriculum!.units) { unit in
+                        VStack {
+                            Text(unit.name).font(.headline)
+                            UnitView(unit: unit)
+                        }
+                        .padding(.bottom, 20)
                     }
                 }
             }
+            .padding()
         }
     }
+}
+
+#Preview {
+    CurriculumView()
 }
