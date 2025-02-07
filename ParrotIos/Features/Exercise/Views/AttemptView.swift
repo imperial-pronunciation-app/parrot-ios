@@ -11,6 +11,8 @@ struct AttemptView: View {
     @State private var viewModel: ViewModel
     @State private var finish: Bool = false
     
+    @Environment(\.dismiss) private var dismiss
+    
     init(exerciseId: Int) {
         self.viewModel = ViewModel(exerciseId: exerciseId)
     }
@@ -104,8 +106,10 @@ struct AttemptView: View {
                 }
             }
         }
-        .navigationDestination(isPresented: $finish) {
-            NavigationView().navigationBarBackButtonHidden(true)
+        .onChange(of: finish) { old, new in
+            if new {
+                dismiss()
+            }
         }
     }
 }
