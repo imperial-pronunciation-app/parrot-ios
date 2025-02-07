@@ -26,10 +26,10 @@ struct LoginView: View {
                 TextField("Username", text: $usernameField)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .autocapitalization(.none)
-                    .padding(.bottom, 10)
+                    .padding(.bottom, 8)
                 SecureField("Password", text: $passwordField)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding(.bottom, 20)
+                    .padding(.bottom, 16)
                 
                 Button("Login") {
                     Task {
@@ -49,10 +49,8 @@ struct LoginView: View {
                         .foregroundColor(.red)
                         .padding(.top, 10)
                 }
-                
-                
             }
-            .padding()
+            .padding(.horizontal, 32)
             .navigationDestination(isPresented: $succeed) {
                 NavigationView().navigationBarBackButtonHidden(true)
             }
