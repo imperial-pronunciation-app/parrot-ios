@@ -21,7 +21,7 @@ extension CurriculumView {
             }
         }
         
-        private func loadCurriculum() async {
+        func loadCurriculum() async {
             self.isLoading = true
             let getCurriculumResult = await parrotApi.getCurriculum()
             

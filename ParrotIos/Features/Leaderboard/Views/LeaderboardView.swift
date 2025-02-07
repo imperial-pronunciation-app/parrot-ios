@@ -34,15 +34,15 @@ struct LeaderboardView: View {
                 .font(.title)
                 .bold()
                 .padding(.top, 20)
-
+            
             Text("Gold League")
                 .font(.subheadline)
                 .foregroundColor(.gray)
                 .padding(.bottom, 20)
-
+            
             weekProgress()
                 .padding(.bottom, 30)
-
+            
             if viewModel.topUsers.count >= 3 {
                 HStack {
                     LeaderboardTopUser(rank: 2, user: viewModel.topUsers[1], medal: "🥈")
@@ -51,22 +51,22 @@ struct LeaderboardView: View {
                 }
                 
             }
-
             
-
+            
+            
             VStack(spacing: 8) {
                 ForEach(viewModel.currentUsers.indices, id: \.self) { index in
                     let user = viewModel.currentUsers[index]
-
+                    
                     HStack {
                         Text("\(user.rank).")
                             .bold()
-
+                        
                         Text(user.username)
                             .bold()
-
+                        
                         Spacer()
-
+                        
                         Text("\(user.xp) xp")
                             .foregroundColor(.gray)
                     }
@@ -79,10 +79,11 @@ struct LeaderboardView: View {
                 }
             }
             .padding(.horizontal)
+        }.onAppear{
+            Task{await viewModel.loadLeaderboard()}
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top )
     }
-
 }
 
 // Subview for the Top 3 Users

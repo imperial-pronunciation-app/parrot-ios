@@ -41,6 +41,9 @@ extension AttemptView {
         func fetchExercise(withID id: Int) async {
             isLoading = true
             errorMessage = nil
+            score = nil
+            recording_phonemes = nil
+            xp_gain = nil
             let result = await parrotApi.getExercise(exerciseId: id)
             switch result {
             case .success(let exercise):

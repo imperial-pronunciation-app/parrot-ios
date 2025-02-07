@@ -28,27 +28,19 @@ struct AttemptView: View {
         }
     }
     
-    private func feedbackView(goldPhonemes: [Phoneme], recordingPhonemes: [Phoneme], xp_gain: Int) -> some View {
-        VStack(spacing: 10) {
-            // Display gold phonemes
-            HStack(spacing: 8) {
-                ForEach(goldPhonemes.indices, id: \.self) { index in
-                        Text(goldPhonemes[index].respelling)
-                        .foregroundColor(.green)
-                }
-            }
-            // Display recording phonemes
-            HStack(spacing: 8) {
-                ForEach(recordingPhonemes.indices, id: \.self) { index in
-                    // Bad solution for now, does this match the gold index?
-                    let recordingPhoneme = recordingPhonemes[index]
-                    let goldPhoneme = index < goldPhonemes.count ? goldPhonemes[index] : nil
-                    
-                    Text(recordingPhoneme.respelling)
-                        .foregroundColor(recordingPhoneme == goldPhoneme ? .green : .red)
-                }
-            }
-            
+    private func feedbackView(word: Word, goldPhonemes: [Phoneme], recordingPhonemes: [Phoneme], xp_gain: Int) -> some View {
+        VStack {
+            Text(word.text).font(.largeTitle)
+            Text(goldPhonemes
+                .compactMap { $0.respelling }
+                .joined(separator: "."))
+            .font(.title)
+            .foregroundColor(.green)
+            Text(recordingPhonemes
+                .compactMap { $0.respelling }
+                .joined(separator: "."))
+            .font(.title)
+            .foregroundColor(.red)
             HStack(spacing: 4) {
                 Text("\(xp_gain) XP")
                     .font(.headline)
@@ -56,7 +48,6 @@ struct AttemptView: View {
                 Text("🔥")
             }
         }
-        .padding()
     }
     
     private func scoreView(score: Int) -> some View {
@@ -97,8 +88,14 @@ struct AttemptView: View {
                 VStack(spacing: 32) {
                     if let score = viewModel.score {
                         scoreView(score: score)
+                        feedbackView(
+                            word: exercise.word,
+                            goldPhonemes: exercise.word.phonemes,
+                            recordingPhonemes: viewModel.recording_phonemes!,
+                            xp_gain: viewModel.xp_gain!)
+                    } else {
+                        wordView(word: exercise.word)
                     }
-                    wordView(word: exercise.word)
                 }
                 Spacer()
                 
