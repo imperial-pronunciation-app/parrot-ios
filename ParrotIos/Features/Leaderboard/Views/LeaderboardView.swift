@@ -59,10 +59,13 @@ struct LeaderboardView: View {
             weekProgress()
                 .padding(.bottom, 30)
 
-            HStack {
+            HStack(spacing: 0) {
                 createLeaderboardTopUser(for: 2)
+                    .frame(maxWidth: .infinity)
                 createLeaderboardTopUser(for: 1)
+                    .frame(maxWidth: .infinity)
                 createLeaderboardTopUser(for: 3)
+                    .frame(maxWidth: .infinity)
             }
 
             VStack(spacing: 8) {
