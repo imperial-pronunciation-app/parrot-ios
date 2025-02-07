@@ -12,8 +12,10 @@ extension AttemptView {
     @Observable
     class ViewModel {
         private let audioRecorder = AudioRecorder()
+        private let audioPlayer = AudioPlayer()
         
         private(set) var isRecording: Bool = false
+        private(set) var isPlaying: Bool = false
         private(set) var isLoading: Bool = false
         private(set) var errorMessage: String?
         
@@ -92,5 +94,12 @@ extension AttemptView {
             }
         }
 
+        func playWord() {
+            let word: String = self.exercise?.word.text ?? ""
+            isPlaying = true
+            // Rate currently set so that the automated voice speaks slowly
+            audioPlayer.play(word: word, rate: 0.5)
+            isPlaying = false
+        }
     }
 }

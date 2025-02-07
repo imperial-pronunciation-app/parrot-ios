@@ -99,39 +99,47 @@ struct AttemptView: View {
                 }
                 Spacer()
                 
-                ZStack {
-                    VStack {
-                        Button(action: {
-                            Task {
-                                await viewModel.toggleRecording()
-                            }
-                        }) {
-                            Image(systemName: "mic")
-                                .font(.largeTitle)
-                                .foregroundColor(.white)
-                                .frame(width: 80, height: 80)
-                                .background(viewModel.isRecording ? Color.red.opacity(0.8) : Color.blue)
-                                .clipShape(Circle())
-                        }
+                HStack {
+                    Button(action: { viewModel.playWord() }) {
+                        Image(systemName: "speaker.wave.3")
+                            .font(.title3)
+                            .foregroundColor(.white)
+                            .frame(width: 50, height: 50)
+                            .background(viewModel.isPlaying ? Color.red.opacity(0.8) : Color.blue)
+                            .clipShape(Circle())
+                        
                     }
                     
-                    HStack {
-                        Spacer()
-                        
-                        Button(action: {
-                            Task {
-                                await viewModel.fetchNextExercise(finish: $finish)
-                            }
-                        }) {
-                            Image(systemName: "arrow.right")
-                                .font(.title)
-                                .foregroundStyle(.blue)
+                    Spacer()
+                    
+                    Button(action: {
+                        Task {
+                            await viewModel.toggleRecording()
                         }
-                        .buttonStyle(.bordered)
-                        .buttonBorderShape(.capsule)
-                        .padding(.trailing, 64)
+                    }) {
+                        Image(systemName: "mic")
+                            .font(.largeTitle)
+                            .foregroundColor(.white)
+                            .frame(width: 80, height: 80)
+                            .background(viewModel.isRecording ? Color.red.opacity(0.8) : Color.blue)
+                            .clipShape(Circle())
                     }
+                    
+                    Spacer()
+                    
+                    Button(action: {
+                        Task {
+                            await viewModel.fetchNextExercise(finish: $finish)
+                        }
+                    }) {
+                        Image(systemName: "arrow.right")
+                            .font(.title)
+                            .foregroundStyle(.blue)
+                    }
+                    .buttonStyle(.bordered)
+                    .buttonBorderShape(.capsule)
                 }
+                .padding(.horizontal, 50)
             }
         }
         .onChange(of: finish) { old, new in
