@@ -11,7 +11,7 @@ struct LessonDetailView: View {
     let lesson: Lesson
 
     var body: some View {
-        NavigationLink(destination: AttemptView()) {
+        NavigationLink(destination: AttemptView(exerciseId: lesson.firstExerciseID)) {
             HStack {
                 Text(lesson.title)
                     .font(.subheadline)

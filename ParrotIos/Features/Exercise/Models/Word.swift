@@ -6,7 +6,7 @@
 //
 
 struct Word: Codable {
-    let word_id: Int
-    let word: String
-    let word_phonemes: [Phoneme]
+    let id: Int
+    let text: String
+    let phonemes: [Phoneme]
 }

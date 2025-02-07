@@ -8,12 +8,19 @@
 import SwiftUI
 
 struct AttemptView: View {
-    @State private var viewModel = ViewModel()
+    @State private var viewModel: ViewModel
+    @State private var finish: Bool = false
+    
+    @Environment(\.dismiss) private var dismiss
+    
+    init(exerciseId: Int) {
+        self.viewModel = ViewModel(exerciseId: exerciseId)
+    }
     
     private func wordView(word: Word) -> some View {
         VStack {
-            Text(word.word).font(.largeTitle)
-            Text(word.word_phonemes
+            Text(word.text).font(.largeTitle)
+            Text(word.phonemes
                 .compactMap { $0.respelling }
                 .joined(separator: "."))
             .font(.title)
@@ -83,6 +90,8 @@ struct AttemptView: View {
         VStack {
             if viewModel.isLoading {
                 loadingView
+            } else if let errorMessage = viewModel.errorMessage {
+                errorView(errorMessage: errorMessage)
             } else if let exercise = viewModel.exercise {
                 Spacer()
                 VStack(spacing: 32) {
@@ -114,7 +123,7 @@ struct AttemptView: View {
                         
                         Button(action: {
                             Task {
-                                await viewModel.fetchExercise()
+                                await viewModel.fetchNextExercise(finish: $finish)
                             }
                         }) {
                             Image(systemName: "arrow.right")
@@ -126,18 +135,12 @@ struct AttemptView: View {
                         .padding(.trailing, 64)
                     }
                 }
-            } else if let errorMessage = viewModel.errorMessage {
-                errorView(errorMessage: errorMessage)
             }
         }
-        .onAppear {
-            Task {
-                await viewModel.fetchExercise()
+        .onChange(of: finish) { old, new in
+            if new {
+                dismiss()
             }
         }
     }
-}
-
-#Preview {
-    AttemptView()
 }

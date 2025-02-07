@@ -58,6 +58,8 @@ class ParrotApiService {
                 fromURL: baseURL + "/units",
                 headers: [generateAuthHeader(accessToken: accessToken)])
             return .success(curriculum)
+        } catch NetworkError.badStatus(let code, let data) {
+            return .failure(.customError("Bad status returned by /units."))
         } catch {
             return .failure(.customError("Failed to fetch the curriculum."))
         }
@@ -78,7 +80,7 @@ class ParrotApiService {
     func postExerciseAttempt(recordingURL: URL, exercise: Exercise) async -> Result<AttemptResponse, ParrotApiError> {
         do {
             guard let accessToken = authService.getAccessToken() else { throw LogoutError.notLoggedIn }
-
+            
             let audioFile = try Data(contentsOf: recordingURL)
             
             let formData: [MultiPartFormDataElement] = [
@@ -89,10 +91,12 @@ class ParrotApiService {
                 data: formData,
                 toURL: baseURL + "/exercises/\(exercise.id)/attempts",
                 headers: [generateAuthHeader(accessToken: accessToken)])
-
+            
             return .success(response)
+        } catch NetworkError.badStatus(let code, let data) {
+            return .failure(.customError("Bad status \(code)"))
         } catch {
-            return .failure(.customError("Failed to upload recording."))
+            return .failure(.customError("Failed to get exercise feedback. \(error.localizedDescription)"))
         }
     }
     
