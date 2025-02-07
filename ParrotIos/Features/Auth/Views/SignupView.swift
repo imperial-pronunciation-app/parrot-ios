@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SignupView: View {
 
-    @State private var viewModel = SignupViewModel()
+    @State private var viewModel = ViewModel()
     @State private var emailField = ""
     @State private var passwordField = ""
     @State private var confirmPasswordField = ""
@@ -50,7 +50,7 @@ struct SignupView: View {
             }
             .padding()
             .navigationDestination(isPresented: $succeed) {
-                RecordingView()
+                NavigationView().navigationBarBackButtonHidden(true)
             }
         }
         .navigationBarBackButtonHidden()

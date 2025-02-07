@@ -16,3 +16,7 @@ struct ParrotIosApp: App {
         }
     }
 }
+
+#Preview {
+    NavigationView()
+}

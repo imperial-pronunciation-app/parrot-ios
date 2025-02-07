@@ -7,17 +7,46 @@
 
 import SwiftUI
 
-struct RecordingView: View {
-    @State private var viewModel = ViewModel()
+struct AttemptView: View {
+    @State private var viewModel: ViewModel
+    @State private var finish: Bool = false
+    
+    @Environment(\.dismiss) private var dismiss
+    
+    init(exerciseId: Int) {
+        self.viewModel = ViewModel(exerciseId: exerciseId)
+    }
     
     private func wordView(word: Word) -> some View {
         VStack {
-            Text(word.word).font(.largeTitle)
-            Text(word.word_phonemes
+            Text(word.text).font(.largeTitle)
+            Text(word.phonemes
                 .compactMap { $0.respelling }
                 .joined(separator: "."))
             .font(.title)
             .foregroundColor(Color.gray)
+        }
+    }
+    
+    private func feedbackView(word: Word, goldPhonemes: [Phoneme], recordingPhonemes: [Phoneme], xp_gain: Int) -> some View {
+        VStack {
+            Text(word.text).font(.largeTitle)
+            Text(goldPhonemes
+                .compactMap { $0.respelling }
+                .joined(separator: "."))
+            .font(.title)
+            .foregroundColor(.green)
+            Text(recordingPhonemes
+                .compactMap { $0.respelling }
+                .joined(separator: "."))
+            .font(.title)
+            .foregroundColor(.red)
+            HStack(spacing: 4) {
+                Text("\(xp_gain) XP")
+                    .font(.headline)
+                    .foregroundColor(.red)
+                Text("🔥")
+            }
         }
     }
     
@@ -52,13 +81,21 @@ struct RecordingView: View {
         VStack {
             if viewModel.isLoading {
                 loadingView
-            } else if let word = viewModel.word {
+            } else if let errorMessage = viewModel.errorMessage {
+                errorView(errorMessage: errorMessage)
+            } else if let exercise = viewModel.exercise {
                 Spacer()
                 VStack(spacing: 32) {
                     if let score = viewModel.score {
                         scoreView(score: score)
+                        feedbackView(
+                            word: exercise.word,
+                            goldPhonemes: exercise.word.phonemes,
+                            recordingPhonemes: viewModel.recording_phonemes!,
+                            xp_gain: viewModel.xp_gain!)
+                    } else {
+                        wordView(word: exercise.word)
                     }
-                    wordView(word: word)
                 }
                 Spacer()
                 
@@ -83,7 +120,7 @@ struct RecordingView: View {
                         
                         Button(action: {
                             Task {
-                                await viewModel.fetchNewWord()
+                                await viewModel.fetchNextExercise(finish: $finish)
                             }
                         }) {
                             Image(systemName: "arrow.right")
@@ -95,18 +132,12 @@ struct RecordingView: View {
                         .padding(.trailing, 64)
                     }
                 }
-            } else if let errorMessage = viewModel.errorMessage {
-                errorView(errorMessage: errorMessage)
             }
         }
-        .onAppear {
-            Task {
-                await viewModel.fetchRandomWord()
+        .onChange(of: finish) { old, new in
+            if new {
+                dismiss()
             }
         }
     }
-}
-
-#Preview {
-    RecordingView()
 }
