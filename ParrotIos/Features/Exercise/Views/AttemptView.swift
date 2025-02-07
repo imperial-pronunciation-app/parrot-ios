@@ -28,6 +28,28 @@ struct AttemptView: View {
         }
     }
     
+    private func feedbackView(word: Word, goldPhonemes: [Phoneme], recordingPhonemes: [Phoneme], xp_gain: Int) -> some View {
+        VStack {
+            Text(word.text).font(.largeTitle)
+            Text(goldPhonemes
+                .compactMap { $0.respelling }
+                .joined(separator: "."))
+            .font(.title)
+            .foregroundColor(.green)
+            Text(recordingPhonemes
+                .compactMap { $0.respelling }
+                .joined(separator: "."))
+            .font(.title)
+            .foregroundColor(.red)
+            HStack(spacing: 4) {
+                Text("\(xp_gain) XP")
+                    .font(.headline)
+                    .foregroundColor(.red)
+                Text("🔥")
+            }
+        }
+    }
+    
     private func scoreView(score: Int) -> some View {
         VStack {
             Text("\(score)%")
@@ -66,8 +88,14 @@ struct AttemptView: View {
                 VStack(spacing: 32) {
                     if let score = viewModel.score {
                         scoreView(score: score)
+                        feedbackView(
+                            word: exercise.word,
+                            goldPhonemes: exercise.word.phonemes,
+                            recordingPhonemes: viewModel.recording_phonemes!,
+                            xp_gain: viewModel.xp_gain!)
+                    } else {
+                        wordView(word: exercise.word)
                     }
-                    wordView(word: exercise.word)
                 }
                 Spacer()
                 

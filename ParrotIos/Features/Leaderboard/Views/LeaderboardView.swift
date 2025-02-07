@@ -20,13 +20,13 @@ struct LeaderboardView: View {
             ProgressView(value: Double(self.viewModel.daysProgress.current), total: Double(self.viewModel.daysProgress.total))
                 .progressViewStyle(LinearProgressViewStyle(tint: .green))
                 .padding(.horizontal, 40)
-            
+
             Text(self.viewModel.envigoratingMessage())
                 .font(.caption)
                 .foregroundColor(.gray)
         }
     }
-    
+
     private func createLeaderboardTopUser(for rank: Int) -> LeaderboardTopUser {
         let user = viewModel.topUsers.count >= rank ? viewModel.topUsers[rank-1] : User.placeholder(for: rank)
         var medal: String
@@ -42,7 +42,7 @@ struct LeaderboardView: View {
         }
         return LeaderboardTopUser(user: user, medal: medal)
     }
-    
+
     var body: some View {
         VStack {
             // Leaderboard Header
@@ -51,7 +51,7 @@ struct LeaderboardView: View {
                 .bold()
                 .padding(.top, 20)
 
-            Text("Gold League")
+            Text("\(viewModel.league.capitalized) League")
                 .font(.subheadline)
                 .foregroundColor(.gray)
                 .padding(.bottom, 20)
@@ -64,8 +64,6 @@ struct LeaderboardView: View {
                 createLeaderboardTopUser(for: 1)
                 createLeaderboardTopUser(for: 3)
             }
-
-            
 
             VStack(spacing: 8) {
                 ForEach(viewModel.currentUsers.indices, id: \.self) { index in
@@ -92,10 +90,11 @@ struct LeaderboardView: View {
                 }
             }
             .padding(.horizontal)
+        }.onAppear{
+            Task{await viewModel.loadLeaderboard()}
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top )
     }
-
 }
 
 extension User {

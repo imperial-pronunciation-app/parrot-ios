@@ -43,6 +43,10 @@ struct CurriculumView: View {
                 }
             }
             .padding()
+        }.onAppear{
+            Task {
+                await viewModel.loadCurriculum()
+            }
         }
     }
 }
