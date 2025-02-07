@@ -27,22 +27,6 @@ struct LeaderboardView: View {
         }
     }
     
-    private func createLeaderboardTopUser(for rank: Int) -> LeaderboardTopUser {
-        let user = viewModel.topUsers.count >= rank ? viewModel.topUsers[rank-1] : User.placeholder(for: rank)
-        var medal: String
-        switch rank {
-            case 1:
-                medal = "🥇"
-            case 2:
-                medal = "🥈"
-            case 3:
-                medal = "🥉"
-            default:
-                medal = ""
-        }
-        return LeaderboardTopUser(user: user, medal: medal)
-    }
-    
     var body: some View {
         VStack {
             // Leaderboard Header
@@ -60,9 +44,10 @@ struct LeaderboardView: View {
                 .padding(.bottom, 30)
 
             HStack {
-                createLeaderboardTopUser(for: 2)
-                createLeaderboardTopUser(for: 1)
-                createLeaderboardTopUser(for: 3)
+                let topUsers = viewModel.topUsers
+                LeaderboardTopUser(rank: 2, topUsers: topUsers)
+                LeaderboardTopUser(rank: 1, topUsers: topUsers)
+                LeaderboardTopUser(rank: 3, topUsers: topUsers)
             }
 
             
@@ -108,6 +93,20 @@ extension User {
 struct LeaderboardTopUser: View {
     let user: User
     let medal: String
+    
+    init(rank: Int, topUsers: [User]) {
+        self.user = topUsers.count >= rank ? topUsers[rank-1] : User.placeholder(for: rank)
+        switch rank {
+            case 1:
+                self.medal = "🥇"
+            case 2:
+                self.medal = "🥈"
+            case 3:
+                self.medal = "🥉"
+            default:
+                self.medal = ""
+        }
+    }
     
     var body: some View {
         let rank = user.rank
