@@ -7,7 +7,7 @@
 
 import Foundation
 
-class WebService {
+class WebService: WebServiceProtocol {
     func downloadData<T: Codable>(fromURL: String, headers: [HeaderElement] = []) async throws -> T {
         guard let url = URL(string: fromURL) else { throw NetworkError.badUrl }
         var request = URLRequest(url: url)

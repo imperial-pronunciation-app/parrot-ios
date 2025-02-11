@@ -67,6 +67,7 @@
 				"Features/Exercise/ViewModels/AttemptView-ViewModelTests.swift",
 				"Features/Leaderboard/ViewModels/LeaderboardView-ViewModelTests.swift",
 				"Features/Unit/ViewModels/CurriculumView-ViewModelTests.swift",
+				Mocks/Services/MockWebService.swift,
 				Services/AuthServiceTest.swift,
 				Services/ParrotApiServiceTest.swift,
 				Services/WebServiceTest.swift,

@@ -9,9 +9,13 @@ import Foundation
 
 final class AuthService {
     static let instance = AuthService()
-    private let webService = WebService()
+    private let webService: WebServiceProtocol
     private let baseURL = "https://" + (Bundle.main.object(forInfoDictionaryKey: "API_BASE_URL") as! String)
     private(set) var isAuthenticated = false
+    
+    init(webService: WebServiceProtocol = WebService()) {
+        self.webService = webService
+    }
     
     func login(username: String, password: String) async throws {
         let parameters = [
