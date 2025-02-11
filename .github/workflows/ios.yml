@@ -1,4 +1,4 @@
-name: iOS Build & Test
+name: iOS starter workflow
 
 on:
   push:
@@ -21,49 +21,31 @@ jobs:
 
       - name: Set Default Scheme
         run: |
-          scheme=$(xcodebuild -list -json | jq -r '.project.schemes[0]')
-          echo "SCHEME=$scheme" >> $GITHUB_ENV
-          echo "Using scheme: $scheme"
+          scheme_list=$(xcodebuild -list -json | tr -d "\n")
+          default=$(echo $scheme_list | ruby -e "require 'json'; puts JSON.parse(STDIN.gets)['project']['targets'][0]")
+          echo $default | cat >default
+          echo Using default scheme: $default
 
-      - name: Find Available iPhone Simulator
+      - name: Build
+        env:
+          scheme: ${{ 'default' }}
+          platform: ${{ 'iOS Simulator' }}
         run: |
-          device_info=$(xcrun xctrace list devices 2>&1 | grep -oE 'iPhone.*\(([A-F0-9\-]+)\)')
-          if [ -z "$device_info" ]; then
-            echo "No available iPhone Simulator found!" && exit 1
-          fi
-          device_uuid=$(echo "$device_info" | head -1 | awk -F '[()]' '{print $2}')
-          echo "DEVICE_UUID=$device_uuid" >> $GITHUB_ENV
-          echo "Using simulator: $device_uuid"
+          # xcrun xctrace returns via stderr, not the expected stdout (see https://developer.apple.com/forums/thread/663959)
+          device=`xcrun xctrace list devices 2>&1 | grep -oE 'iPhone.*?[^\(]+' | head -1 | awk '{$1=$1;print}' | sed -e "s/ Simulator$//"`
+          if [ $scheme = default ]; then scheme=$(cat default); fi
+          if [ "`ls -A | grep -i \\.xcworkspace\$`" ]; then filetype_parameter="workspace" && file_to_build="`ls -A | grep -i \\.xcworkspace\$`"; else filetype_parameter="project" && file_to_build="`ls -A | grep -i \\.xcodeproj\$`"; fi
+          file_to_build=`echo $file_to_build | awk '{$1=$1;print}'`
+          xcodebuild build-for-testing -scheme "$scheme" -"$filetype_parameter" "$file_to_build" -destination "platform=$platform,name=$device"
 
-      - name: Reset and Boot Simulator
+      - name: Test
+        env:
+          scheme: ${{ 'default' }}
+          platform: ${{ 'iOS Simulator' }}
         run: |
-          xcrun simctl shutdown all
-          xcrun simctl erase all
-          xcrun simctl boot $DEVICE_UUID
-
-      - name: Clean Derived Data
-        run: rm -rf ~/Library/Developer/Xcode/DerivedData
-
-      - name: Detect Project Type
-        run: |
-          if ls -A | grep -iE '\.xcworkspace$' >/dev/null; then
-            echo "FILETYPE_PARAMETER=workspace" >> $GITHUB_ENV
-            echo "FILE_TO_BUILD=$(ls -A | grep -iE '\.xcworkspace$')" >> $GITHUB_ENV
-          else
-            echo "FILETYPE_PARAMETER=project" >> $GITHUB_ENV
-            echo "FILE_TO_BUILD=$(ls -A | grep -iE '\.xcodeproj$')" >> $GITHUB_ENV
-          fi
-
-      - name: Build for Testing
-        run: |
-          xcodebuild build-for-testing \
-            -scheme "$SCHEME" \
-            -$FILETYPE_PARAMETER "$FILE_TO_BUILD" \
-            -destination "id=$DEVICE_UUID"
-
-      - name: Run Tests
-        run: |
-          xcodebuild test-without-building \
-            -scheme "$SCHEME" \
-            -$FILETYPE_PARAMETER "$FILE_TO_BUILD" \
-            -destination "id=$DEVICE_UUID"
+          # xcrun xctrace returns via stderr, not the expected stdout (see https://developer.apple.com/forums/thread/663959)
+          device=`xcrun xctrace list devices 2>&1 | grep -oE 'iPhone.*?[^\(]+' | head -1 | awk '{$1=$1;print}' | sed -e "s/ Simulator$//"`
+          if [ $scheme = default ]; then scheme=$(cat default); fi
+          if [ "`ls -A | grep -i \\.xcworkspace\$`" ]; then filetype_parameter="workspace" && file_to_build="`ls -A | grep -i \\.xcworkspace\$`"; else filetype_parameter="project" && file_to_build="`ls -A | grep -i \\.xcodeproj\$`"; fi
+          file_to_build=`echo $file_to_build | awk '{$1=$1;print}'`
+          xcodebuild test-without-building -scheme "$scheme" -"$filetype_parameter" "$file_to_build" -destination "platform=$platform,name=$device"
