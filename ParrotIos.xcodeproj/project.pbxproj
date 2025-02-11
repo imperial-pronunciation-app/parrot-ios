@@ -60,6 +60,13 @@
 		D186EA6F2D5B74CB00BF8162 /* Exceptions for "ParrotIosTests" folder in "ParrotIosTests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				"Features/Auth/ViewModels/LoginView-ViewModelTests.swift",
+				"Features/Auth/ViewModels/SignupView-ViewModelTests.swift",
+				Features/Exercise/Models/AudioPlayerTests.swift,
+				Features/Exercise/Models/AudioRecorderTests.swift,
+				"Features/Exercise/ViewModels/AttemptView-ViewModelTests.swift",
+				"Features/Leaderboard/ViewModels/LeaderboardView-ViewModelTests.swift",
+				"Features/Unit/ViewModels/CurriculumView-ViewModelTests.swift",
 				Services/AuthServiceTest.swift,
 				Services/ParrotApiServiceTest.swift,
 				Services/WebServiceTest.swift,
