@@ -57,6 +57,15 @@
 			);
 			target = 276AD2542D4103D200001426 /* ParrotIos */;
 		};
+		D186EA6F2D5B74CB00BF8162 /* Exceptions for "ParrotIosTests" folder in "ParrotIosTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Services/AuthServiceTest.swift,
+				Services/ParrotApiServiceTest.swift,
+				Services/WebServiceTest.swift,
+			);
+			target = 276AD2662D4103D400001426 /* ParrotIosTests */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -75,6 +84,9 @@
 		};
 		B05945FC2D4A5C34000D0280 /* ParrotIosTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				D186EA6F2D5B74CB00BF8162 /* Exceptions for "ParrotIosTests" folder in "ParrotIosTests" target */,
+			);
 			path = ParrotIosTests;
 			sourceTree = "<group>";
 		};
@@ -212,6 +224,7 @@
 					};
 					276AD2662D4103D400001426 = {
 						CreatedOnToolsVersion = 16.2;
+						LastSwiftMigration = 1600;
 						TestTargetID = 276AD2542D4103D200001426;
 					};
 					276AD2702D4103D400001426 = {
@@ -499,6 +512,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -507,6 +521,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "imperial-segp.ParrotIosTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ParrotIos.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ParrotIos";
@@ -517,6 +532,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
