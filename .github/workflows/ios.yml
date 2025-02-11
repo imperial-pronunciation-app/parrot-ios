@@ -16,52 +16,9 @@ jobs:
 
       - name: Setup Xcode
         uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: latest-stable
 
-      - name: Set Default Scheme
+      - name: Run Tests
         run: |
-          scheme_list=$(xcodebuild -list -json | tr -d "\n")
-          default=$(echo $scheme_list | ruby -e "require 'json'; puts JSON.parse(STDIN.gets)['project']['targets'][0]")
-          echo $default | cat >default
-          echo Using default scheme: $default
-
-      - name: Select iOS Simulator (iOS 18.0 or newer)
-        run: |
-          # Fetch available simulators
-          devices_output=$(xcrun xctrace list devices 2>&1)
-          
-          # Extract iPhone simulators running iOS 18.0 or newer
-          selected_device=$(echo "$devices_output" | grep -E 'iPhone .* Simulator \([0-9]+\.[0-9]+\) \([0-9A-F\-]+\)' | \
-            awk -F '[()]' '{if ($2+0 >= 18.0) print $0}' | head -1)
-
-          # Extract device ID and name
-          device_id=$(echo "$selected_device" | awk -F '[()]' '{print $4}')
-          device_name=$(echo "$selected_device" | awk -F ' \\(' '{print $1}')
-
-          if [[ -z "$device_id" ]]; then
-            echo "No suitable iOS 18.0+ simulator found!"
-            exit 1
-          fi
-
-          echo "Using device: $device_name ($device_id)"
-          echo "DEVICE_ID=$device_id" >> $GITHUB_ENV
-      - name: Build
-        env:
-          scheme: ${{ 'default' }}
-          platform: ${{ 'iOS Simulator' }}
-        run: |
-          if [ $scheme = default ]; then scheme=$(cat default); fi
-          if [ "`ls -A | grep -i \\.xcworkspace\$`" ]; then filetype_parameter="workspace" && file_to_build="`ls -A | grep -i \\.xcworkspace\$`"; else filetype_parameter="project" && file_to_build="`ls -A | grep -i \\.xcodeproj\$`"; fi
-          file_to_build=`echo $file_to_build | awk '{$1=$1;print}'`
-          xcodebuild build-for-testing -scheme "$scheme" -"$filetype_parameter" "$file_to_build" -destination "id=${DEVICE_ID}"
-
-      - name: Test
-        env:
-          scheme: ${{ 'default' }}
-          platform: ${{ 'iOS Simulator' }}
-        run: |
-          if [ $scheme = default ]; then scheme=$(cat default); fi
-          if [ "`ls -A | grep -i \\.xcworkspace\$`" ]; then filetype_parameter="workspace" && file_to_build="`ls -A | grep -i \\.xcworkspace\$`"; else filetype_parameter="project" && file_to_build="`ls -A | grep -i \\.xcodeproj\$`"; fi
-          file_to_build=`echo $file_to_build | awk '{$1=$1;print}'`
-          xcodebuild test-without-building -scheme "$scheme" -"$filetype_parameter" "$file_to_build" -destination "id=${DEVICE_ID}"
+          xcodebuild test \
+            -scheme 'ParrotIos' \
+            -destination 'platform=iOS Simulator,name=iPhone 16 Simulator,OS=18.2'
