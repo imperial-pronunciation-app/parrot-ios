@@ -9,8 +9,8 @@ import Foundation
 
 class ParrotApiService {
     private let baseURL = "https://" + (Bundle.main.object(forInfoDictionaryKey: "API_BASE_URL") as! String) + "/api/v1"
-    private let webService = WebService()
-    private let authService = AuthService()
+    private let webService: WebServiceProtocol
+    private let authService: AuthServiceProtocol
     
     enum ParrotApiError: Error, LocalizedError {
         case customError(String)
@@ -21,6 +21,11 @@ class ParrotApiService {
                 return NSLocalizedString("Parrot API Error: \(message)", comment: message)
             }
         }
+    }
+    
+    init(webService: WebServiceProtocol = WebService(), authService: AuthServiceProtocol = AuthService()) {
+        self.webService = webService
+        self.authService = authService
     }
 
     func getLeaderboard() async -> Result<LeaderboardResponse, ParrotApiError> {
