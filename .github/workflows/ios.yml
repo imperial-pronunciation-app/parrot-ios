@@ -32,12 +32,12 @@ jobs:
           devices_output=$(xcrun xctrace list devices 2>&1)
           
           # Extract iPhone simulators running iOS 18.0 or newer
-          selected_device=$(echo "$devices_output" | grep -E 'iPhone .* \([0-9]+\.[0-9]+\) \([0-9A-F\-]+\)' | \
-            awk -F '[()]' '{if ($4+0 >= 18.0) print $1, $2, $4}' | head -1)
+          selected_device=$(echo "$devices_output" | grep -E 'iPhone .* Simulator \([0-9]+\.[0-9]+\) \([0-9A-F\-]+\)' | \
+            awk -F '[()]' '{if ($2+0 >= 18.0) print $0}' | head -1)
 
-          # Extract device name and UDID
-          device_name=$(echo "$selected_device" | awk '{print $1, $2}')
-          device_id=$(echo "$selected_device" | awk '{print $3}')
+          # Extract device ID and name
+          device_id=$(echo "$selected_device" | awk -F '[()]' '{print $4}')
+          device_name=$(echo "$selected_device" | awk -F ' \\(' '{print $1}')
 
           if [[ -z "$device_id" ]]; then
             echo "No suitable iOS 18.0+ simulator found!"
@@ -46,7 +46,6 @@ jobs:
 
           echo "Using device: $device_name ($device_id)"
           echo "DEVICE_ID=$device_id" >> $GITHUB_ENV
-
       - name: Build
         env:
           scheme: ${{ 'default' }}
