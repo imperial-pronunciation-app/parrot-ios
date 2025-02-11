@@ -68,6 +68,11 @@
 			path = ParrotIos;
 			sourceTree = "<group>";
 		};
+		935007B12D5B6EAC00B96B57 /* ParrotIosUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ParrotIosUITests;
+			sourceTree = "<group>";
+		};
 		B05945FC2D4A5C34000D0280 /* ParrotIosTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = ParrotIosTests;
@@ -103,6 +108,7 @@
 		276AD24C2D4103D200001426 = {
 			isa = PBXGroup;
 			children = (
+				935007B12D5B6EAC00B96B57 /* ParrotIosUITests */,
 				B05945FC2D4A5C34000D0280 /* ParrotIosTests */,
 				276AD2572D4103D200001426 /* ParrotIos */,
 				276AD2562D4103D200001426 /* Products */,
@@ -180,6 +186,9 @@
 			);
 			dependencies = (
 				276AD2732D4103D400001426 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				935007B12D5B6EAC00B96B57 /* ParrotIosUITests */,
 			);
 			name = ParrotIosUITests;
 			packageProductDependencies = (
@@ -431,6 +440,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"ParrotIos/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
+				ENABLE_TESTING_SEARCH_PATHS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ParrotIos/Info.plist;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need access to the microphone to record audio for this app.";
@@ -463,6 +473,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"ParrotIos/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
+				ENABLE_TESTING_SEARCH_PATHS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ParrotIos/Info.plist;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need access to the microphone to record audio for this app.";
