@@ -145,7 +145,6 @@
 			);
 			fileSystemSynchronizedGroups = (
 				276AD2572D4103D200001426 /* ParrotIos */,
-				B05945FC2D4A5C34000D0280 /* ParrotIosTests */,
 			);
 			name = ParrotIos;
 			packageProductDependencies = (
@@ -166,6 +165,9 @@
 			);
 			dependencies = (
 				276AD2692D4103D400001426 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				B05945FC2D4A5C34000D0280 /* ParrotIosTests */,
 			);
 			name = ParrotIosTests;
 			packageProductDependencies = (
