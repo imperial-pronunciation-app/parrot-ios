@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    name: Build and Test default scheme using any iPhone simulator with iOS version 18.0 or newer
+    name: Testing
     runs-on: macos-latest
 
     steps:
