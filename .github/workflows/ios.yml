@@ -26,4 +26,4 @@ jobs:
         run: |
           xcodebuild test \
             -scheme 'ParrotIos' \
-            -destination 'platform=iOS Simulator,name=iPhone 15,OS=18.1'
+            -destination 'platform=iOS Simulator,OS=18.1,type=iPhone'
