@@ -12,7 +12,7 @@ import Foundation
 class MockWebService: WebServiceProtocol, CallTracking {
     var callCounts: [String : Int] = [:]
     var callArguments: [String : [[Any?]]] = [:]
-    var returnValues: [String : [Any?]] = [:]
+    var returnValues: [String : [Result<Any?, Error>]] = [:]
     
     func downloadData<T>(
         fromURL: String,
@@ -22,11 +22,7 @@ class MockWebService: WebServiceProtocol, CallTracking {
         incrementCallCount(for: funcName)
         recordCallArguments(for: funcName, arguments: [fromURL, headers])
         
-        do {
-            return try getReturnValue(for: funcName, callIndex: callCounts[funcName]! - 1)
-        } catch {
-            fatalError("MockWebService failed with error: \(error)")
-        }
+        return try getReturnValue(for: funcName, callIndex: callCounts[funcName]! - 1)
     }
     
     func post<T>(
@@ -37,11 +33,7 @@ class MockWebService: WebServiceProtocol, CallTracking {
         incrementCallCount(for: funcName)
         recordCallArguments(for: funcName, arguments: [toURL, headers])
         
-        do {
-            return try getReturnValue(for: funcName, callIndex: callCounts[funcName]! - 1)
-        } catch {
-            fatalError("MockWebService failed with error: \(error)")
-        }
+        return try getReturnValue(for: funcName, callIndex: callCounts[funcName]! - 1)
     }
     
     func postNoResponse(
@@ -52,11 +44,8 @@ class MockWebService: WebServiceProtocol, CallTracking {
         incrementCallCount(for: funcName)
         recordCallArguments(for: funcName, arguments: [toURL, headers])
         
-        do {
-            return try getReturnValue(for: funcName, callIndex: callCounts[funcName]! - 1)
-        } catch {
-            fatalError("MockWebService failed with error: \(error)")
-        }
+        return try getReturnValue(for: funcName, callIndex: callCounts[funcName]! - 1)
+
     }
     
     func postData<T>(
@@ -68,11 +57,8 @@ class MockWebService: WebServiceProtocol, CallTracking {
         incrementCallCount(for: funcName)
         recordCallArguments(for: funcName, arguments: [data, toURL, headers])
         
-        do {
-            return try getReturnValue(for: funcName, callIndex: callCounts[funcName]! - 1)
-        } catch {
-            fatalError("MockWebService failed with error: \(error)")
-        }
+        return try getReturnValue(for: funcName, callIndex: callCounts[funcName]! - 1)
+
     }
     
     func postMultiPartFormData<T>(
@@ -84,11 +70,8 @@ class MockWebService: WebServiceProtocol, CallTracking {
         incrementCallCount(for: funcName)
         recordCallArguments(for: funcName, arguments: [data, toURL, headers])
         
-        do {
-            return try getReturnValue(for: funcName, callIndex: callCounts[funcName]! - 1)
-        } catch {
-            fatalError("MockWebService failed with error: \(error)")
-        }
+        return try getReturnValue(for: funcName, callIndex: callCounts[funcName]! - 1)
+
     }
     
     func postURLEncodedFormData<T>(
@@ -100,11 +83,7 @@ class MockWebService: WebServiceProtocol, CallTracking {
         incrementCallCount(for: funcName)
         recordCallArguments(for: funcName, arguments: [parameters, toURL, headers])
         
-        do {
-            return try getReturnValue(for: funcName, callIndex: callCounts[funcName]! - 1)
-        } catch {
-            fatalError("MockWebService failed with error: \(error)")
-        }
+        return try getReturnValue(for: funcName, callIndex: callCounts[funcName]! - 1)
     }
 }
 

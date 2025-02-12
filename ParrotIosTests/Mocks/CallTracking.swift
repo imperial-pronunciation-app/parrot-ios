@@ -8,17 +8,21 @@
 protocol CallTracking: AnyObject {
     var callCounts: [String: Int] { get set } // Map method name to number of calls
     var callArguments: [String: [[Any?]]] { get set } // Map method name to ordered list of arguments
-    var returnValues: [String: [Any?]] { get set }  // Map method name to ordered list of return values
+    var returnValues: [String: [Result<Any?, Error>]] { get set }  // Map method name to ordered list of return values
 
     func incrementCallCount(for method: String)
     func recordCallArguments(for method: String, arguments: [Any?])
     func assertCallCount(for method: String, equals expectedCount: Int)
     
-    // Provide return values for methods that throw
+    // Provide return values for methods
     func stub<T>(method: String, toReturn value: T)
     func stub<T>(method: String, toReturnInOrder values: [T])
+    // Provide an error for a method to throw
+    func stub(method: String, toThrow error: Error)
     
     func getReturnValue<T>(for method: String, callIndex: Int) throws -> T
+    
+    func clear()
 }
 
 
@@ -28,9 +32,7 @@ extension CallTracking {
     }
 
     func recordCallArguments(for method: String, arguments: [Any?]) {
-        print(callArguments)
         callArguments[method, default: []].append(arguments)
-        print(callArguments)
     }
 
     func assertCallCount(for method: String, equals expectedCount: Int) {
@@ -55,37 +57,56 @@ extension CallTracking {
     }
 
     func stub<T>(method: String, toReturn value: T) {
-        if returnValues[method] != nil {
-            returnValues[method]?.append(value)
-        } else {
-            returnValues[method] = [value]
+        if returnValues[method] == nil {
+            returnValues[method] = []
         }
+        returnValues[method]?.append(.success(value))
     }
     
     func stub<T>(method: String, toReturnInOrder values: [T]) {
-        if returnValues[method] != nil {
-            returnValues[method]?.append(contentsOf: values)
-        } else {
-            returnValues[method] = values
+        let results = values.map { Result<Any?, Error>.success($0) }
+        if returnValues[method] == nil {
+            returnValues[method] = []
         }
+        returnValues[method]?.append(contentsOf: results)
+    }
+    
+    func stub(method: String, toThrow error: Error) {
+        let result = Result<Any?, Error>.failure(error)
+        if returnValues[method] == nil {
+            returnValues[method] = []
+        }
+        returnValues[method]?.append(result)
     }
     
     func getReturnValue<T>(for method: String, callIndex: Int) throws -> T {
-            guard let values = returnValues[method] else {
-                throw MockError.noReturnValueStubbed(method: method)
-            }
-            
-            let index = values.count == 1 ? 0 : callIndex
-            guard index < values.count else {
-                throw MockError.noMoreReturnValues(method: method, callIndex: callIndex)
-            }
-            
-            guard let value = values[index] as? T else {
+        guard let values = returnValues[method] else {
+            throw MockError.noReturnValueStubbed(method: method)
+        }
+
+        let index = values.count == 1 ? 0 : callIndex
+        guard index < values.count else {
+            throw MockError.noMoreReturnValues(method: method, callIndex: callIndex)
+        }
+
+        let result = values[index]
+        switch result {
+        case .success(let value):
+            guard let castedValue = value as? T else {
                 throw MockError.incorrectReturnType(method: method, expected: String(describing: T.self))
             }
-            
-            return value
+            return castedValue
+        case .failure(let error):
+            throw error
         }
+    }
+    
+    func clear() {
+        callCounts.removeAll()
+        callArguments.removeAll()
+        returnValues.removeAll()
+    }
+
 }
 
 enum MockError: Error, CustomStringConvertible {

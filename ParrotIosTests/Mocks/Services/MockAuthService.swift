@@ -12,7 +12,7 @@ import Foundation
 class MockAuthService: AuthServiceProtocol, CallTracking {
     var callCounts: [String : Int] = [:]
     var callArguments: [String : [[Any?]]] = [:]
-    var returnValues: [String : [Any?]] = [:]
+    var returnValues: [String : [Result<Any?, Error>]] = [:]
     
     
     func login(username: String, password: String) async throws {
