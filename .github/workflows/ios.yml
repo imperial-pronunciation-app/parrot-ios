@@ -20,10 +20,15 @@ jobs:
           xcode-version: '16.1'
 
       - name: List available simulators (debug)
-        run: xcrun simctl list devices
+        run: xcodebuild -scheme ParrotIos -showdestinations
 
       - name: Run Tests
         run: |
+          if xcodebuild -scheme ParrotIos -showdestinations | grep -q 'OS:18.1, name:iPhone 15'; then
+            name='iPhone 15'
+          else
+            name='iPhone 16'
+          fi
           xcodebuild test \
             -scheme 'ParrotIos' \
-            -destination 'platform=iOS Simulator,OS=18.1,type=iPhone'
+            -destination 'platform=iOS Simulator,name=$name,OS=18.1'
