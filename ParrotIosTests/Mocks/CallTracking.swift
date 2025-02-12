@@ -28,7 +28,9 @@ extension CallTracking {
     }
 
     func recordCallArguments(for method: String, arguments: [Any?]) {
+        print(callArguments)
         callArguments[method, default: []].append(arguments)
+        print(callArguments)
     }
 
     func assertCallCount(for method: String, equals expectedCount: Int) {

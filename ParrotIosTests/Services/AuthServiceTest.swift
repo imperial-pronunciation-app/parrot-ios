@@ -7,13 +7,15 @@
 
 import Testing
 
+@testable import ParrotIos
+
 class AuthServiceTests {
-    var mockWebService: MockWebService!
+    var mockWebService: (WebServiceProtocol & CallTracking)!
     var authService: AuthService!
     
     @Test
     func setup() {
-        mockWebService = MockWebService()
+        mockWebService = MockWebService() as (any WebServiceProtocol & CallTracking)
         authService = AuthService(webService: mockWebService)
     }
     
@@ -42,8 +44,9 @@ class AuthServiceTests {
             FormDataURLEncodedElement(key: "username", value: username),
             FormDataURLEncodedElement(key: "password", value: password)
         ]
+        let headers: [HeaderElement] = []
         mockWebService.assertCallCount(for: "postURLEncodedFormData", equals: 1)
-        mockWebService.assertCallArguments(for: "postURLEncodedFormData", at: 0, matches: [expectedParams, "\(authService.baseURL)/auth/jwt/login"])
+        mockWebService.assertCallArguments(for: "postURLEncodedFormData", at: 0, matches: [expectedParams, "\(authService.baseURL)/auth/jwt/login", headers])
     }
     
 //    @Test

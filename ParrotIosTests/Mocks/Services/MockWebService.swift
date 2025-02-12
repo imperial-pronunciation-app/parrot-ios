@@ -7,6 +7,8 @@
 
 import Foundation
 
+@testable import ParrotIos
+
 class MockWebService: WebServiceProtocol, CallTracking {
     var callCounts: [String : Int] = [:]
     var callArguments: [String : [[Any?]]] = [:]

@@ -7,6 +7,8 @@
 
 import Foundation
 
+@testable import ParrotIos
+
 class MockAuthService: AuthServiceProtocol, CallTracking {
     var callCounts: [String : Int] = [:]
     var callArguments: [String : [[Any?]]] = [:]
