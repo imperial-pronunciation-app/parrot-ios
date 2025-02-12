@@ -116,13 +116,13 @@ struct LoginAPIErrorResponse: Codable {
     let detail: LoginAPIErrorResponseDetail
 }
 
-enum LoginError: Error {
+enum LoginError: Error, Equatable {
     case badCredentials
     case userNotVerified
     case customError(String)
 }
 
-enum LogoutError: Error {
+enum LogoutError: Error, Equatable {
     case notLoggedIn
     case customError(String)
 }
@@ -140,7 +140,7 @@ struct RegisterAPIErrorResponse: Codable {
     let detail: RegisterAPIErrorResponseDetail
 }
 
-enum RegisterError: Error {
+enum RegisterError: Error, Equatable {
     case userAlreadyExists
     case customError(String)
 }

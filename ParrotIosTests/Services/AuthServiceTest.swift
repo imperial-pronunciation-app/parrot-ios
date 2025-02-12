@@ -8,21 +8,22 @@
 import Testing
 
 @testable import ParrotIos
+import Foundation
 
-class AuthServiceTests {
-    var mockWebService: (WebServiceProtocol & CallTracking)!
+@Suite("AuthService Tests", .serialized)
+struct AuthServiceTests {
+    var mockWebService: (WebServiceProtocol & CallTracking) = MockWebService() as (any WebServiceProtocol & CallTracking)
     var authService: AuthService!
     
-    @Test
-    func setup() {
-        mockWebService = MockWebService() as (any WebServiceProtocol & CallTracking)
+    init() {
         authService = AuthService(webService: mockWebService)
+        KeychainManager.instance.deleteToken(forKey: "access_token")
+        print(authService.getAccessToken() ?? "")
     }
     
-    @Test
+    @Test("Auth service sets access token correctly after successful login")
+    @MainActor
     func testSuccessfulLogin() async throws {
-        // Arrange
-        setup()
         let username = "test@example.com"
         let password = "password123"
         let expectedToken = "fake_token"
@@ -32,10 +33,12 @@ class AuthServiceTests {
             token_type: "bearer"
         ))
         
+        try #require(authService.getAccessToken() == nil)
+        
         // Act
         try await authService.login(username: username, password: password)
         
-        // Assert
+        // Assert auth service state updated correctly
         #expect(authService.isAuthenticated)
         #expect(authService.getAccessToken() == expectedToken)
         
@@ -49,30 +52,26 @@ class AuthServiceTests {
         mockWebService.assertCallArguments(for: "postURLEncodedFormData", at: 0, matches: [expectedParams, "\(authService.baseURL)/auth/jwt/login", headers])
     }
     
-//    @Test
-//    func testLoginFailureBadCredentials() async throws {
-//        // Arrange
-//        setup()
-//        let username = "wrong@example.com"
-//        let password = "wrongpass"
-//        
-//        mockWebService.stub(method: "postURLEncodedFormData", toThrow: NetworkError.badStatus(
-//            code: 400,
-//            data: try! JSONEncoder().encode(LoginAPIErrorResponse(detail: .LOGIN_BAD_CREDENTIALS))
-//        ))
-//        
-//        // Act & Assert
-//        do {
-//            try await authService.login(username: username, password: password)
-//            #fail("Login should have failed")
-//        } catch let error as LoginError {
-//            #expect(error == LoginError.badCredentials)
-//            #expect(!authService.isAuthenticated)
-//            #expect(authService.getAccessToken() == nil)
-//        } catch {
-//            #fail("Unexpected error type: \(error)")
-//        }
-//    }
+    @Test("Auth service fails properly on unsuccessful login (bad credentials)")
+    func testLoginFailureBadCredentials() async throws {
+        let username = "wrong@example.com"
+        let password = "wrongpass"
+        
+        try #require(authService.getAccessToken() == nil)
+        
+        mockWebService.stub(method: "postURLEncodedFormData", toThrow: NetworkError.badStatus(
+            code: 400,
+            data: try! JSONEncoder().encode(LoginAPIErrorResponse(detail: .LOGIN_BAD_CREDENTIALS))
+        ))
+        
+        // Act & Assert
+        await #expect(throws: LoginError.badCredentials) {
+            try await authService.login(username: username, password: password)
+        }
+
+        #expect(!authService.isAuthenticated)
+        #expect(authService.getAccessToken() == nil)
+    }
 //    
 //    @Test
 //    func testLogoutSuccess() async throws {
