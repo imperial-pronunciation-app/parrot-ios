@@ -1,4 +1,4 @@
-name: iOS starter workflow
+name: CI Pipeline
 
 on:
   push:
@@ -19,9 +19,6 @@ jobs:
         with:
           xcode-version: '16.1'
 
-      - name: List available simulators (debug)
-        run: xcodebuild -scheme ParrotIos -showdestinations
-
       - name: Run Tests
         run: |
           if xcodebuild -scheme ParrotIos -showdestinations | grep -q 'OS:18.1, name:iPhone 15'; then
@@ -31,4 +28,4 @@ jobs:
           fi
           xcodebuild test \
             -scheme 'ParrotIos' \
-            -destination 'platform=iOS Simulator,name=$name,OS=18.1'
+            -destination "platform=iOS Simulator,name=$name,OS=18.1"
