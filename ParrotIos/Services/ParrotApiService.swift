@@ -64,7 +64,7 @@ class ParrotApiService {
                 headers: [generateAuthHeader(accessToken: accessToken)])
             return .success(curriculum)
         } catch NetworkError.badStatus(let code, let data) {
-            return .failure(.customError("Bad status returned by /units."))
+            return .failure(.customError("Bad status  \(code) returned by /units."))
         } catch {
             return .failure(.customError("Failed to fetch the curriculum."))
         }

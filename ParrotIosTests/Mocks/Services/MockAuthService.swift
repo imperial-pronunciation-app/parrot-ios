@@ -14,31 +14,31 @@ class MockAuthService: AuthServiceProtocol, CallTracking {
     
     
     func login(username: String, password: String) async throws {
-        var funcName = "login"
+        let funcName = "login"
         incrementCallCount(for: funcName)
         recordCallArguments(for: funcName, arguments: [username, password])
     }
     
     func logout() async throws {
-        var funcName = "logout"
+        let funcName = "logout"
         incrementCallCount(for: funcName)
         recordCallArguments(for: funcName, arguments: [])
     }
     
     func register(email: String, password: String) async throws {
-        var funcName = "register"
+        let funcName = "register"
         incrementCallCount(for: funcName)
         recordCallArguments(for: funcName, arguments: [email, password])
     }
     
     func saveTokens(accessToken: String) throws {
-        var funcName = "saveTokens"
+        let funcName = "saveTokens"
         incrementCallCount(for: funcName)
         recordCallArguments(for: funcName, arguments: [accessToken])
     }
     
     func getAccessToken() -> String? {
-        var funcName = "getAccessToken"
+        let funcName = "getAccessToken"
         incrementCallCount(for: funcName)
         recordCallArguments(for: funcName, arguments: [])
         

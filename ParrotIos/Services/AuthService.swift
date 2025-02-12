@@ -11,8 +11,9 @@ final class AuthService: AuthServiceProtocol {
     
     static let instance = AuthService()
     private let webService: WebServiceProtocol
-    private let baseURL = "https://" + (Bundle.main.object(forInfoDictionaryKey: "API_BASE_URL") as! String)
-    private(set) var isAuthenticated = false
+    // TODO: Review
+    internal let baseURL = "https://" + (Bundle.main.object(forInfoDictionaryKey: "API_BASE_URL") as! String)
+    internal var isAuthenticated = false
     
     init(webService: WebServiceProtocol = WebService()) {
         self.webService = webService

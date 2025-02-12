@@ -16,7 +16,7 @@ class MockWebService: WebServiceProtocol, CallTracking {
         fromURL: String,
         headers: [HeaderElement]
     ) async throws -> T where T: Decodable & Encodable {
-        var funcName = "downloadData"
+        let funcName = "downloadData"
         incrementCallCount(for: funcName)
         recordCallArguments(for: funcName, arguments: [fromURL, headers])
         
@@ -31,7 +31,7 @@ class MockWebService: WebServiceProtocol, CallTracking {
         toURL: String,
         headers: [HeaderElement] = []
     ) async throws -> T where T: Decodable & Encodable {
-        var funcName = "post"
+        let funcName = "post"
         incrementCallCount(for: funcName)
         recordCallArguments(for: funcName, arguments: [toURL, headers])
         
@@ -46,7 +46,7 @@ class MockWebService: WebServiceProtocol, CallTracking {
         toURL: String,
         headers: [HeaderElement] = []
     ) async throws {
-        var funcName = "postNoResponse"
+        let funcName = "postNoResponse"
         incrementCallCount(for: funcName)
         recordCallArguments(for: funcName, arguments: [toURL, headers])
         
@@ -62,7 +62,7 @@ class MockWebService: WebServiceProtocol, CallTracking {
         toURL: String,
         headers: [HeaderElement] = []
     ) async throws -> T where T: Decodable & Encodable {
-        var funcName = "postData"
+        let funcName = "postData"
         incrementCallCount(for: funcName)
         recordCallArguments(for: funcName, arguments: [data, toURL, headers])
         
@@ -78,7 +78,7 @@ class MockWebService: WebServiceProtocol, CallTracking {
         toURL: String,
         headers: [HeaderElement] = []
     ) async throws -> T where T: Decodable & Encodable {
-        var funcName = "postMultiPartFormData"
+        let funcName = "postMultiPartFormData"
         incrementCallCount(for: funcName)
         recordCallArguments(for: funcName, arguments: [data, toURL, headers])
         
@@ -94,7 +94,7 @@ class MockWebService: WebServiceProtocol, CallTracking {
         toURL: String,
         headers: [HeaderElement] = []
     ) async throws -> T where T: Decodable & Encodable {
-        var funcName = "postURLEncodedFormData"
+        let funcName = "postURLEncodedFormData"
         incrementCallCount(for: funcName)
         recordCallArguments(for: funcName, arguments: [parameters, toURL, headers])
         
