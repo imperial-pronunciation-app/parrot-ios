@@ -7,30 +7,102 @@
 
 import Foundation
 
-class MockWebService: WebService {
+class MockWebService: WebServiceProtocol, CallTracking {
+    var callCounts: [String : Int] = [:]
+    var callArguments: [String : [[Any?]]] = [:]
+    var returnValues: [String : [Any?]] = [:]
     
-    override func downloadData<T>(fromURL: String, headers: [HeaderElement] = []) async throws -> T where T : Decodable, T : Encodable {
-        fatalError("Mock not implemented")
+    func downloadData<T>(
+        fromURL: String,
+        headers: [HeaderElement]
+    ) async throws -> T where T: Decodable & Encodable {
+        var funcName = "downloadData"
+        incrementCallCount(for: funcName)
+        recordCallArguments(for: funcName, arguments: [fromURL, headers])
+        
+        do {
+            return try getReturnValue(for: funcName, callIndex: callCounts[funcName]! - 1)
+        } catch {
+            fatalError("MockWebService failed with error: \(error)")
+        }
     }
     
-    override func post<T>(toURL: String, headers: [HeaderElement] = []) async throws -> T where T : Decodable, T : Encodable {
-        fatalError("Mock not implemented")
+    func post<T>(
+        toURL: String,
+        headers: [HeaderElement] = []
+    ) async throws -> T where T: Decodable & Encodable {
+        var funcName = "post"
+        incrementCallCount(for: funcName)
+        recordCallArguments(for: funcName, arguments: [toURL, headers])
+        
+        do {
+            return try getReturnValue(for: funcName, callIndex: callCounts[funcName]! - 1)
+        } catch {
+            fatalError("MockWebService failed with error: \(error)")
+        }
     }
     
-    override func postNoResponse(toURL: String, headers: [HeaderElement] = []) async throws {
-        fatalError("Mock not implemented")
+    func postNoResponse(
+        toURL: String,
+        headers: [HeaderElement] = []
+    ) async throws {
+        var funcName = "postNoResponse"
+        incrementCallCount(for: funcName)
+        recordCallArguments(for: funcName, arguments: [toURL, headers])
+        
+        do {
+            return try getReturnValue(for: funcName, callIndex: callCounts[funcName]! - 1)
+        } catch {
+            fatalError("MockWebService failed with error: \(error)")
+        }
     }
     
-    override func postData<T>(data: Data, toURL: String, headers: [HeaderElement] = []) async throws -> T where T : Decodable, T : Encodable {
-        fatalError("Mock not implemented")
+    func postData<T>(
+        data: Data,
+        toURL: String,
+        headers: [HeaderElement] = []
+    ) async throws -> T where T: Decodable & Encodable {
+        var funcName = "postData"
+        incrementCallCount(for: funcName)
+        recordCallArguments(for: funcName, arguments: [data, toURL, headers])
+        
+        do {
+            return try getReturnValue(for: funcName, callIndex: callCounts[funcName]! - 1)
+        } catch {
+            fatalError("MockWebService failed with error: \(error)")
+        }
     }
     
-    override func postMultiPartFormData<T>(data: [MultiPartFormDataElement], toURL: String, headers: [HeaderElement] = []) async throws -> T where T : Decodable, T : Encodable {
-        fatalError("Mock not implemented")
+    func postMultiPartFormData<T>(
+        data: [MultiPartFormDataElement],
+        toURL: String,
+        headers: [HeaderElement] = []
+    ) async throws -> T where T: Decodable & Encodable {
+        var funcName = "postMultiPartFormData"
+        incrementCallCount(for: funcName)
+        recordCallArguments(for: funcName, arguments: [data, toURL, headers])
+        
+        do {
+            return try getReturnValue(for: funcName, callIndex: callCounts[funcName]! - 1)
+        } catch {
+            fatalError("MockWebService failed with error: \(error)")
+        }
     }
     
-    override func postURLEncodedFormData<T>(parameters: [FormDataURLEncodedElement], toURL: String, headers: [HeaderElement] = []) async throws -> T where T : Decodable, T : Encodable {
-        fatalError("Mock not implemented")
+    func postURLEncodedFormData<T>(
+        parameters: [FormDataURLEncodedElement],
+        toURL: String,
+        headers: [HeaderElement] = []
+    ) async throws -> T where T: Decodable & Encodable {
+        var funcName = "postURLEncodedFormData"
+        incrementCallCount(for: funcName)
+        recordCallArguments(for: funcName, arguments: [parameters, toURL, headers])
+        
+        do {
+            return try getReturnValue(for: funcName, callIndex: callCounts[funcName]! - 1)
+        } catch {
+            fatalError("MockWebService failed with error: \(error)")
+        }
     }
-    
 }
+
