@@ -18,33 +18,30 @@ class MockWebService: WebServiceProtocol, CallTracking {
         fromURL: String,
         headers: [HeaderElement]
     ) async throws -> T where T: Decodable & Encodable {
-        let funcName = "downloadData"
-        incrementCallCount(for: funcName)
-        recordCallArguments(for: funcName, arguments: [fromURL, headers])
+        let method = "downloadData"
+        recordCall(for: method, with: [fromURL, headers])
         
-        return try getReturnValue(for: funcName, callIndex: callCounts[funcName]! - 1)
+        return try getReturnValue(for: method, callIndex: callCounts[method]! - 1)
     }
     
     func post<T>(
         toURL: String,
         headers: [HeaderElement] = []
     ) async throws -> T where T: Decodable & Encodable {
-        let funcName = "post"
-        incrementCallCount(for: funcName)
-        recordCallArguments(for: funcName, arguments: [toURL, headers])
+        let method = "post"
+        recordCall(for: method, with: [toURL, headers])
         
-        return try getReturnValue(for: funcName, callIndex: callCounts[funcName]! - 1)
+        return try getReturnValue(for: method, callIndex: callCounts[method]! - 1)
     }
     
     func postNoResponse(
         toURL: String,
         headers: [HeaderElement] = []
     ) async throws {
-        let funcName = "postNoResponse"
-        incrementCallCount(for: funcName)
-        recordCallArguments(for: funcName, arguments: [toURL, headers])
+        let method = "postNoResponse"
+        recordCall(for: method, with: [toURL, headers])
         
-        return try getReturnValue(for: funcName, callIndex: callCounts[funcName]! - 1)
+        return try getReturnValue(for: method, callIndex: callCounts[method]! - 1)
 
     }
     
@@ -53,11 +50,10 @@ class MockWebService: WebServiceProtocol, CallTracking {
         toURL: String,
         headers: [HeaderElement] = []
     ) async throws -> T where T: Decodable & Encodable {
-        let funcName = "postData"
-        incrementCallCount(for: funcName)
-        recordCallArguments(for: funcName, arguments: [data, toURL, headers])
+        let method = "postData"
+        recordCall(for: method, with: [data, toURL, headers])
         
-        return try getReturnValue(for: funcName, callIndex: callCounts[funcName]! - 1)
+        return try getReturnValue(for: method, callIndex: callCounts[method]! - 1)
 
     }
     
@@ -66,12 +62,10 @@ class MockWebService: WebServiceProtocol, CallTracking {
         toURL: String,
         headers: [HeaderElement] = []
     ) async throws -> T where T: Decodable & Encodable {
-        let funcName = "postMultiPartFormData"
-        incrementCallCount(for: funcName)
-        recordCallArguments(for: funcName, arguments: [data, toURL, headers])
+        let method = "postMultiPartFormData"
+        recordCall(for: method, with: [data, toURL, headers])
         
-        return try getReturnValue(for: funcName, callIndex: callCounts[funcName]! - 1)
-
+        return try getReturnValue(for: method, callIndex: callCounts[method]! - 1)
     }
     
     func postURLEncodedFormData<T>(
@@ -79,11 +73,10 @@ class MockWebService: WebServiceProtocol, CallTracking {
         toURL: String,
         headers: [HeaderElement] = []
     ) async throws -> T where T: Decodable & Encodable {
-        let funcName = "postURLEncodedFormData"
-        incrementCallCount(for: funcName)
-        recordCallArguments(for: funcName, arguments: [parameters, toURL, headers])
+        let method = "postURLEncodedFormData"
+        recordCall(for: method, with: [parameters, toURL, headers])
         
-        return try getReturnValue(for: funcName, callIndex: callCounts[funcName]! - 1)
+        return try getReturnValue(for: method, callIndex: callCounts[method]! - 1)
     }
 }
 

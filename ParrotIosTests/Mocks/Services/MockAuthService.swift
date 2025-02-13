@@ -16,36 +16,27 @@ class MockAuthService: AuthServiceProtocol, CallTracking {
     
     
     func login(username: String, password: String) async throws {
-        let funcName = "login"
-        incrementCallCount(for: funcName)
-        recordCallArguments(for: funcName, arguments: [username, password])
+        recordCall(for: "login", with: [username, password])
     }
     
     func logout() async throws {
-        let funcName = "logout"
-        incrementCallCount(for: funcName)
-        recordCallArguments(for: funcName, arguments: [])
+        recordCall(for: "logout")
     }
     
     func register(email: String, password: String) async throws {
-        let funcName = "register"
-        incrementCallCount(for: funcName)
-        recordCallArguments(for: funcName, arguments: [email, password])
+        recordCall(for: "register", with: [email, password])
     }
     
     func saveTokens(accessToken: String) throws {
-        let funcName = "saveTokens"
-        incrementCallCount(for: funcName)
-        recordCallArguments(for: funcName, arguments: [accessToken])
+        recordCall(for: "saveTokens", with: [accessToken])
     }
     
     func getAccessToken() -> String? {
-        let funcName = "getAccessToken"
-        incrementCallCount(for: funcName)
-        recordCallArguments(for: funcName, arguments: [])
+        let method = "getAccessToken"
+        recordCall(for: method)
         
         do {
-            return try getReturnValue(for: funcName, callIndex: callCounts[funcName]! - 1)
+            return try getReturnValue(for: method, callIndex: callCounts[method]! - 1)
         } catch {
             fatalError("MockWebService failed with error: \(error)")
         }

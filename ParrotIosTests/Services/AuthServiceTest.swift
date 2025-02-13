@@ -16,9 +16,9 @@ struct AuthServiceTests {
     var authService: AuthService!
     
     init() {
+        mockWebService.clear()
         authService = AuthService(webService: mockWebService)
         KeychainManager.instance.deleteToken(forKey: "access_token")
-        print(authService.getAccessToken() ?? "")
     }
     
     @Test("Auth service sets access token correctly after successful login")
@@ -34,6 +34,7 @@ struct AuthServiceTests {
         ))
         
         try #require(authService.getAccessToken() == nil)
+        try #require(!authService.isAuthenticated)
         
         // Act
         try await authService.login(username: username, password: password)

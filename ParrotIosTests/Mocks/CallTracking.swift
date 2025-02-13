@@ -10,19 +10,21 @@ protocol CallTracking: AnyObject {
     var callArguments: [String: [[Any?]]] { get set } // Map method name to ordered list of arguments
     var returnValues: [String: [Result<Any?, Error>]] { get set }  // Map method name to ordered list of return values
 
-    func incrementCallCount(for method: String)
-    func recordCallArguments(for method: String, arguments: [Any?])
-    func assertCallCount(for method: String, equals expectedCount: Int)
-    
-    // Provide return values for methods
-    func stub<T>(method: String, toReturn value: T)
-    func stub<T>(method: String, toReturnInOrder values: [T])
-    // Provide an error for a method to throw
-    func stub(method: String, toThrow error: Error)
-    
-    func getReturnValue<T>(for method: String, callIndex: Int) throws -> T
-    
-    func clear()
+//    func incrementCallCount(for method: String)
+//    func recordCallArguments(for method: String, with arguments: [Any?])
+//    func assertCallCount(for method: String, equals expectedCount: Int)
+//    
+//    // Provide return values for methods
+//    func stub<T>(method: String, toReturn value: T)
+//    func stub<T>(method: String, toReturnInOrder values: [T])
+//    // Provide an error for a method to throw
+//    func stub(method: String, toThrow error: Error)
+//    
+//    func getReturnValue<T>(for method: String, callIndex: Int) throws -> T
+//    
+//    func clear()
+//    
+//    func recordCall(for method: String, with arguments: [Any?])
 }
 
 
@@ -31,7 +33,7 @@ extension CallTracking {
         callCounts[method, default: 0] += 1
     }
 
-    func recordCallArguments(for method: String, arguments: [Any?]) {
+    func recordCallArguments(for method: String, with arguments: [Any?]) {
         callArguments[method, default: []].append(arguments)
     }
 
@@ -105,6 +107,15 @@ extension CallTracking {
         callCounts.removeAll()
         callArguments.removeAll()
         returnValues.removeAll()
+    }
+    
+    func recordCall(for method: String, with arguments: [Any?]) {
+        incrementCallCount(for: method)
+        recordCallArguments(for: method, with: arguments)
+    }
+    
+    func recordCall(for method: String) {
+        recordCall(for: method, with: [])
     }
 
 }
