@@ -72,86 +72,80 @@ struct AuthServiceTests {
         #expect(!authService.isAuthenticated)
         #expect(authService.getAccessToken() == nil)
     }
-//    
-//    @Test
-//    func testLogoutSuccess() async throws {
-//        // Arrange
-//        setup()
-//        try authService.saveTokens(accessToken: "test_token")
-//        mockWebService.stub(method: "postNoResponse", toReturn: ())
-//        
-//        // Act
-//        try await authService.logout()
-//        
-//        // Assert
-//        #expect(!authService.isAuthenticated)
-//        
-//        // Verify correct headers were sent
-//        let expectedHeaders = [HeaderElement(key: "Authorization", value: "Bearer test_token")]
-//        mockWebService.assertCallCount(for: "postNoResponse", equals: 1)
-//        mockWebService.assertCallArguments(for: "postNoResponse", at: 0, matches: ["\(authService.baseURL)/auth/jwt/logout", expectedHeaders])
-//    }
-//    
-//    @Test
-//    func testLogoutFailureNotLoggedIn() async throws {
-//        // Arrange
-//        setup()
-//        
-//        // Act & Assert
-//        do {
-//            try await authService.logout()
-//            #fail("Logout should have failed")
-//        } catch let error as LogoutError {
-//            #expect(error == LogoutError.notLoggedIn)
-//        } catch {
-//            #fail("Unexpected error type: \(error)")
-//        }
-//    }
-//    
-//    @Test
-//    func testRegisterSuccess() async throws {
-//        // Arrange
-//        setup()
-//        let email = "new@example.com"
-//        let password = "newpass123"
-//        
-//        mockWebService.stub(method: "postData", toReturn: RegisterAPIResponse(
-//            id: 1,
-//            email: email
-//        ))
-//        
-//        // Act
-//        try await authService.register(email: email, password: password)
-//        
-//        // Assert
-//        mockWebService.assertCallCount(for: "postData", equals: 1)
-//        
-//        // Verify the correct data was sent
-//        let expectedBody: [String: Any] = ["email": email, "password": password]
-//        let expectedData = try JSONSerialization.data(withJSONObject: expectedBody)
-//        mockWebService.assertCallArguments(for: "postData", at: 0, matches: [expectedData, "\(authService.baseURL)/users/register", []])
-//    }
-//    
-//    @Test
-//    func testRegisterFailureUserExists() async throws {
-//        // Arrange
-//        setup()
-//        let email = "existing@example.com"
-//        let password = "pass123"
-//        
-//        mockWebService.stub(method: "postData", toThrow: NetworkError.badStatus(
-//            code: 400,
-//            data: try! JSONEncoder().encode(RegisterAPIErrorResponse(detail: .REGISTER_USER_ALREADY_EXISTS))
-//        ))
-//        
-//        // Act & Assert
-//        do {
-//            try await authService.register(email: email, password: password)
-//            #fail("Register should have failed")
-//        } catch let error as RegisterError {
-//            #expect(error == RegisterError.userAlreadyExists)
-//        } catch {
-//            #fail("Unexpected error type: \(error)")
-//        }
-//    }
+    
+    @Test("Auth service deauthenticates itself properly on logout")
+    func testLogoutSuccess() async throws {
+        // Setup
+        let username = "test@example.com"
+        let password = "password123"
+        let expectedToken = "fake_token"
+        mockWebService.stub(method: "postURLEncodedFormData", toReturn: LoginAPIResponse(
+            access_token: expectedToken,
+            token_type: "bearer"
+        ))
+        try await authService.login(username: username, password: password)
+        
+        mockWebService.stub(method: "postNoResponse", toReturn: ())
+        
+        // Act
+        try await authService.logout()
+        
+        // Assert
+        #expect(!authService.isAuthenticated)
+        #expect(authService.getAccessToken() == "fake_token")
+        
+        // Verify correct headers were sent
+        let expectedHeaders = [HeaderElement(key: "Authorization", value: "Bearer test_token")]
+        mockWebService.assertCallCount(for: "postNoResponse", equals: 1)
+        mockWebService.assertCallArguments(for: "postNoResponse", at: 0, matches: ["\(authService.baseURL)/auth/jwt/logout", expectedHeaders])
+    }
+    
+    @Test("Auth service fails to log out when not logged in")
+    func testLogoutFailureNotLoggedIn() async throws {
+        try #require(!authService.isAuthenticated)
+        
+        await #expect(throws: LogoutError.notLoggedIn) {
+            try await authService.logout()
+        }
+    }
+    
+    @Test("Auth service registers properly")
+    func testRegisterSuccess() async throws {
+        // Arrange
+        let email = "new@example.com"
+        let password = "newpass123"
+        
+        mockWebService.stub(method: "postData", toReturn: RegisterAPIResponse(
+            id: 1,
+            email: email
+        ))
+        
+        // Act
+        try await authService.register(email: email, password: password)
+        
+        // Assert
+        mockWebService.assertCallCount(for: "postData", equals: 1)
+        
+        // Verify the correct data was sent
+        let expectedBody: [String: Any] = ["email": email, "password": password]
+        let expectedData = try JSONSerialization.data(withJSONObject: expectedBody)
+        mockWebService.assertCallArguments(for: "postData", at: 0, matches: [expectedData, "\(authService.baseURL)/users/register", []])
+    }
+    
+    @Test("Auth service fails to register if user already exists")
+    func testRegisterFailureUserExists() async throws {
+        // Arrange
+        let email = "existing@example.com"
+        let password = "pass123"
+        
+        mockWebService.stub(method: "postData", toThrow: NetworkError.badStatus(
+            code: 400,
+            data: try! JSONEncoder().encode(RegisterAPIErrorResponse(detail: .REGISTER_USER_ALREADY_EXISTS))
+        ))
+        
+        // Act & Assert
+        async #expect(throws: RegisterError.userAlreadyExists) {
+            try await authService.register(email: email, password: password)
+        }
+    }
 }
