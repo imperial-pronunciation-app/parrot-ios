@@ -22,7 +22,6 @@ struct AuthServiceTests {
     }
     
     @Test("Auth service sets access token correctly after successful login")
-    @MainActor
     func testSuccessfulLogin() async throws {
         let username = "test@example.com"
         let password = "password123"

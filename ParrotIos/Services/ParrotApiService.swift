@@ -8,20 +8,10 @@
 import Foundation
 
 class ParrotApiService {
-    private let baseURL = "https://" + (Bundle.main.object(forInfoDictionaryKey: "API_BASE_URL") as! String) + "/api/v1"
+    // TODO: 
+    internal let baseURL = "https://" + (Bundle.main.object(forInfoDictionaryKey: "API_BASE_URL") as! String) + "/api/v1"
     private let webService: WebServiceProtocol
     private let authService: AuthServiceProtocol
-    
-    enum ParrotApiError: Error, LocalizedError {
-        case customError(String)
-        
-        var errorDescription: String? {
-            switch self {
-            case .customError(let message):
-                return NSLocalizedString("Parrot API Error: \(message)", comment: message)
-            }
-        }
-    }
     
     init(webService: WebServiceProtocol = WebService(), authService: AuthServiceProtocol = AuthService()) {
         self.webService = webService
@@ -107,5 +97,16 @@ class ParrotApiService {
     
     private func generateAuthHeader(accessToken: String) -> HeaderElement {
         return HeaderElement(key: "Authorization", value: "Bearer " + accessToken)
+    }
+}
+
+enum ParrotApiError: Error, LocalizedError, Equatable {
+    case customError(String)
+    
+    var errorDescription: String? {
+        switch self {
+        case .customError(let message):
+            return NSLocalizedString("Parrot API Error: \(message)", comment: message)
+        }
     }
 }

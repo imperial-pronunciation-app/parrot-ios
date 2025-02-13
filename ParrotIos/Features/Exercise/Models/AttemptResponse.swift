@@ -5,7 +5,7 @@
 //  Created by Tom Smail on 04/02/2025.
 //
 
-struct AttemptResponse: Codable {
+struct AttemptResponse: Codable, Equatable {
     let recording_id: Int
     let score: Int
     let recording_phonemes: [Phoneme]

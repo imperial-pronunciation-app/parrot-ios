@@ -5,6 +5,6 @@
 //  Created by Tom Smail on 04/02/2025.
 //
 
-struct Curriculum: Codable {
+struct Curriculum: Codable, Equatable {
     let units: [Unit]
 }
