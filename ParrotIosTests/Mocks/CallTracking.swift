@@ -22,12 +22,8 @@ extension CallTracking {
         callArguments[method, default: []].append(arguments)
     }
 
-    func assertCallCount(for method: String, equals expectedCount: Int) {
-        let actualCount = callCounts[method, default: 0]
-        assert(
-            actualCount == expectedCount,
-            "Expected \(method) to be called \(expectedCount) times, but was called \(actualCount) times."
-        )
+    func callCount(for method: String) -> Int {
+        return callCounts[method, default: 0]
     }
     
     func assertCallArguments(for method: String, at index: Int, matches expectedArguments: [Any?]) {
