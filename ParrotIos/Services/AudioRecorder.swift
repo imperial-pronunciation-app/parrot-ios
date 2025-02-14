@@ -7,7 +7,8 @@
 
 import AVFoundation
 
-class AudioRecorder: NSObject, ObservableObject, AVAudioRecorderDelegate {
+class AudioRecorder: NSObject, ObservableObject, AVAudioRecorderDelegate, AudioRecorderProtocol {
+    
     var audioRecorder: AVAudioRecorder!
     private(set) var isRecording = false
     

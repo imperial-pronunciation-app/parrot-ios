@@ -7,6 +7,7 @@
 
 import Testing
 
+@Suite("AttemptView ViewModel Tests")
 struct AttemptView_ViewModelTests {
 
     @Test func test() async throws {
