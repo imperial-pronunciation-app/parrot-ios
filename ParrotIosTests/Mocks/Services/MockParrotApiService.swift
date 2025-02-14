@@ -67,9 +67,5 @@ class MockParrotApiService: ParrotApiServiceProtocol, CallTracking {
         } catch {
             fatalError("MockParrotApiService failed with error: \(error)")
         }
-    }
-    
-
-    
-    
+    }    
 }

@@ -13,7 +13,7 @@ extension AttemptView {
     class ViewModel {
         private let audioRecorder: AudioRecorderProtocol
         private let audioPlayer: AudioPlayerProtocol
-        private let parrotApi = ParrotApiService()
+        private let parrotApi: ParrotApiServiceProtocol
         
         private(set) var isRecording: Bool = false
         private(set) var isPlaying: Bool = false
@@ -25,9 +25,10 @@ extension AttemptView {
         private(set) var recording_phonemes: [Phoneme]?
         private(set) var xp_gain: Int?
         
-        init(exerciseId: Int, audioRecoder: AudioRecorderProtocol = AudioRecorder(), audioPlayer: AudioPlayerProtocol = AudioPlayer()) {
+        init(exerciseId: Int, audioRecoder: AudioRecorderProtocol = AudioRecorder(), audioPlayer: AudioPlayerProtocol = AudioPlayer(), parrotApi: ParrotApiServiceProtocol = ParrotApiService(webService: WebService(), authService: AuthService())) {
             self.audioRecorder = audioRecoder
             self.audioPlayer = audioPlayer
+            self.parrotApi = parrotApi
             Task {
                 await fetchExercise(withID: exerciseId)
             }
@@ -66,7 +67,7 @@ extension AttemptView {
         func stopRecording() async {
             isRecording = false
             audioRecorder.stopRecording()
-            await uploadRecording(recordingURL: audioRecorder.audioRecorder.url)
+            await uploadRecording(recordingURL: audioRecorder.getRecordingURL())
         }
         
         func uploadRecording(recordingURL: URL) async {
