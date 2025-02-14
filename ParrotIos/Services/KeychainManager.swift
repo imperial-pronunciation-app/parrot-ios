@@ -11,12 +11,12 @@ import Security
 final class KeychainManager {
     static let instance = KeychainManager()
     private init() {}
-
+    
     enum KeychainError: Error {
         case duplicateEntry
         case unknown(OSStatus)
     }
-
+    
     func saveToken(_ token: String, forKey key: String) throws {
         if let data = token.data(using: .utf8) {
             let query: [String: Any] = [
@@ -35,7 +35,7 @@ final class KeychainManager {
             }
         }
     }
-
+    
     func getToken(forKey key: String) -> String? {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
@@ -49,5 +49,13 @@ final class KeychainManager {
             return String(data: data, encoding: .utf8)
         }
         return nil
+    }
+    
+    func deleteToken(forKey key: String) {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: key,
+        ]
+        SecItemDelete(query as CFDictionary)
     }
 }

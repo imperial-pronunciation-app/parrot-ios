@@ -6,7 +6,7 @@
 //
 import SwiftUI
 
-struct Lesson: Identifiable, Codable {
+struct Lesson: Identifiable, Codable, Equatable {
     let id: Int
     let title: String
     let firstExerciseID: Int

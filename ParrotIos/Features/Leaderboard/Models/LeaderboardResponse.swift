@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct LeaderboardResponse: Codable  {
+struct LeaderboardResponse: Codable, Equatable  {
     let league: String
     let daysUntilEnd: Int
     let leaders: [User]

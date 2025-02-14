@@ -8,19 +8,13 @@
 import Foundation
 
 class ParrotApiService {
-    private let baseURL = "https://" + (Bundle.main.object(forInfoDictionaryKey: "API_BASE_URL") as! String) + "/api/v1"
-    private let webService = WebService()
-    private let authService = AuthService()
+    internal let baseURL = "https://" + (Bundle.main.object(forInfoDictionaryKey: "API_BASE_URL") as! String) + "/api/v1"
+    private let webService: WebServiceProtocol
+    private let authService: AuthServiceProtocol
     
-    enum ParrotApiError: Error, LocalizedError {
-        case customError(String)
-        
-        var errorDescription: String? {
-            switch self {
-            case .customError(let message):
-                return NSLocalizedString("Parrot API Error: \(message)", comment: message)
-            }
-        }
+    init(webService: WebServiceProtocol = WebService(), authService: AuthServiceProtocol = AuthService()) {
+        self.webService = webService
+        self.authService = authService
     }
 
     func getLeaderboard() async -> Result<LeaderboardResponse, ParrotApiError> {
@@ -59,7 +53,7 @@ class ParrotApiService {
                 headers: [generateAuthHeader(accessToken: accessToken)])
             return .success(curriculum)
         } catch NetworkError.badStatus(let code, let data) {
-            return .failure(.customError("Bad status returned by /units."))
+            return .failure(.customError("Bad status  \(code) returned by /units."))
         } catch {
             return .failure(.customError("Failed to fetch the curriculum."))
         }
@@ -102,5 +96,16 @@ class ParrotApiService {
     
     private func generateAuthHeader(accessToken: String) -> HeaderElement {
         return HeaderElement(key: "Authorization", value: "Bearer " + accessToken)
+    }
+}
+
+enum ParrotApiError: Error, LocalizedError, Equatable {
+    case customError(String)
+    
+    var errorDescription: String? {
+        switch self {
+        case .customError(let message):
+            return NSLocalizedString("Parrot API Error: \(message)", comment: message)
+        }
     }
 }

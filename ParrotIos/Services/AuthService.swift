@@ -7,11 +7,16 @@
 
 import Foundation
 
-final class AuthService {
+final class AuthService: AuthServiceProtocol {
+    
     static let instance = AuthService()
-    private let webService = WebService()
-    private let baseURL = "https://" + (Bundle.main.object(forInfoDictionaryKey: "API_BASE_URL") as! String)
-    private(set) var isAuthenticated = false
+    private let webService: WebServiceProtocol
+    internal let baseURL = "https://" + (Bundle.main.object(forInfoDictionaryKey: "API_BASE_URL") as! String)
+    internal var isAuthenticated = false
+    
+    init(webService: WebServiceProtocol = WebService()) {
+        self.webService = webService
+    }
     
     func login(username: String, password: String) async throws {
         let parameters = [
@@ -110,13 +115,13 @@ struct LoginAPIErrorResponse: Codable {
     let detail: LoginAPIErrorResponseDetail
 }
 
-enum LoginError: Error {
+enum LoginError: Error, Equatable {
     case badCredentials
     case userNotVerified
     case customError(String)
 }
 
-enum LogoutError: Error {
+enum LogoutError: Error, Equatable {
     case notLoggedIn
     case customError(String)
 }
@@ -134,7 +139,7 @@ struct RegisterAPIErrorResponse: Codable {
     let detail: RegisterAPIErrorResponseDetail
 }
 
-enum RegisterError: Error {
+enum RegisterError: Error, Equatable {
     case userAlreadyExists
     case customError(String)
 }

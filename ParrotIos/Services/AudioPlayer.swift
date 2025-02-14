@@ -7,7 +7,7 @@
 
 import AVFoundation
 
-class AudioPlayer {
+class AudioPlayer: AudioPlayerProtocol {
     private let synthesizer: AVSpeechSynthesizer
 
     init() {
