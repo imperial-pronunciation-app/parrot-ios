@@ -11,8 +11,9 @@ import Foundation
 extension AttemptView {
     @Observable
     class ViewModel {
-        private let audioRecorder = AudioRecorder()
-        private let audioPlayer = AudioPlayer()
+        private let audioRecorder: AudioRecorderProtocol
+        private let audioPlayer: AudioPlayerProtocol
+        private let parrotApi = ParrotApiService()
         
         private(set) var isRecording: Bool = false
         private(set) var isPlaying: Bool = false
@@ -24,9 +25,9 @@ extension AttemptView {
         private(set) var recording_phonemes: [Phoneme]?
         private(set) var xp_gain: Int?
         
-        private let parrotApi = ParrotApiService()
-        
-        init(exerciseId: Int) {
+        init(exerciseId: Int, audioRecoder: AudioRecorderProtocol = AudioRecorder(), audioPlayer: AudioPlayerProtocol = AudioPlayer()) {
+            self.audioRecorder = audioRecoder
+            self.audioPlayer = audioPlayer
             Task {
                 await fetchExercise(withID: exerciseId)
             }
