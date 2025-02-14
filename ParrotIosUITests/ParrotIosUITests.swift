@@ -7,14 +7,7 @@
 
 import XCTest
 
-import Testing
-
-@testable import ParrotIos
-@testable import ParrotIosTests
-
 final class ParrotIosUITests: XCTestCase {
-    
-    let mockWebService = MockAuthService()
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
