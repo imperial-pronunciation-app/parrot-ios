@@ -36,7 +36,6 @@ struct ParrotApiServiceTests {
         let result = await parrotApiService.getLeaderboard()
         
         #expect(try result.get() == expectedResponse)
-        
         #expect(mockWebService.callCount(for: "downloadData") == 1)
         mockWebService.assertCallArguments(for: "downloadData", at: 0, matches: [
             "\(parrotApiService.baseURL)/leaderboard/global",
@@ -94,7 +93,6 @@ struct ParrotApiServiceTests {
         
         // Assert
         #expect(try result.get() == expectedCurriculum)
-        
         #expect(mockWebService.callCount(for: "downloadData") == 1)
         mockWebService.assertCallArguments(for: "downloadData", at: 0, matches: [
             "\(parrotApiService.baseURL)/units",
@@ -119,7 +117,6 @@ struct ParrotApiServiceTests {
         
         // Assert
         #expect(try result.get() == expectedResponse)
-        
         #expect(mockWebService.callCount(for: "postMultiPartFormData") == 1)
         
         // Clean up
