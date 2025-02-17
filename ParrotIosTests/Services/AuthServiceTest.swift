@@ -12,7 +12,7 @@ import Foundation
 
 @Suite("AuthService Tests", .serialized)
 struct AuthServiceTests {
-    var mockWebService: (WebServiceProtocol & CallTracking) = MockWebService() as (any WebServiceProtocol & CallTracking)
+    var mockWebService: (any WebServiceProtocol & CallTracking) = MockWebService() as (any WebServiceProtocol & CallTracking)
     var authService: AuthService!
     
     init() {
@@ -27,7 +27,7 @@ struct AuthServiceTests {
         let password = "password123"
         let expectedToken = "fake_token"
         
-        mockWebService.stub(method: "postURLEncodedFormData", toReturn: LoginAPIResponse(
+        mockWebService.stub(method: WebServiceMethods.postURLEncodedFormData, toReturn: LoginAPIResponse(
             access_token: expectedToken,
             token_type: "bearer"
         ))
@@ -48,8 +48,8 @@ struct AuthServiceTests {
             FormDataURLEncodedElement(key: "password", value: password)
         ]
         let headers: [HeaderElement] = []
-        #expect(mockWebService.callCount(for: "postURLEncodedFormData") == 1)
-        mockWebService.assertCallArguments(for: "postURLEncodedFormData", at: 0, matches: [expectedParams, "\(authService.baseURL)/auth/jwt/login", headers])
+        #expect(mockWebService.callCounts(for: WebServiceMethods.postURLEncodedFormData) == 1)
+        mockWebService.assertCallArguments(for: WebServiceMethods.postURLEncodedFormData, matches: [expectedParams, "\(authService.baseURL)/auth/jwt/login", headers])
     }
     
     @Test("Auth service fails properly on unsuccessful login (bad credentials)")
@@ -59,7 +59,7 @@ struct AuthServiceTests {
         
         try #require(authService.getAccessToken() == nil)
         
-        mockWebService.stub(method: "postURLEncodedFormData", toThrow: NetworkError.badStatus(
+        mockWebService.stub(method: WebServiceMethods.postURLEncodedFormData, toThrow: NetworkError.badStatus(
             code: 400,
             data: try! JSONEncoder().encode(LoginAPIErrorResponse(detail: .LOGIN_BAD_CREDENTIALS))
         ))
@@ -79,13 +79,13 @@ struct AuthServiceTests {
         let username = "test@example.com"
         let password = "password123"
         let expectedToken = "fake_token"
-        mockWebService.stub(method: "postURLEncodedFormData", toReturn: LoginAPIResponse(
+        mockWebService.stub(method: WebServiceMethods.postURLEncodedFormData, toReturn: LoginAPIResponse(
             access_token: expectedToken,
             token_type: "bearer"
         ))
         try await authService.login(username: username, password: password)
         
-        mockWebService.stub(method: "postNoResponse", toReturn: ())
+        mockWebService.stub(method: WebServiceMethods.postNoResponse, toReturn: ())
         
         // Act
         try await authService.logout()
@@ -96,8 +96,8 @@ struct AuthServiceTests {
         
         // Verify correct headers were sent
         let expectedHeaders = [HeaderElement(key: "Authorization", value: "Bearer test_token")]
-        #expect(mockWebService.callCount(for: "postNoResponse") == 1)
-        mockWebService.assertCallArguments(for: "postNoResponse", at: 0, matches: ["\(authService.baseURL)/auth/jwt/logout", expectedHeaders])
+        #expect(mockWebService.callCounts(for: WebServiceMethods.postNoResponse) == 1)
+        mockWebService.assertCallArguments(for: WebServiceMethods.postNoResponse, matches: ["\(authService.baseURL)/auth/jwt/logout", expectedHeaders])
     }
     
     @Test("Auth service fails to log out when not logged in")
@@ -115,7 +115,7 @@ struct AuthServiceTests {
         let email = "new@example.com"
         let password = "newpass123"
         
-        mockWebService.stub(method: "postData", toReturn: RegisterAPIResponse(
+        mockWebService.stub(method: WebServiceMethods.postData, toReturn: RegisterAPIResponse(
             id: 1,
             email: email
         ))
@@ -124,12 +124,12 @@ struct AuthServiceTests {
         try await authService.register(email: email, password: password)
         
         // Assert
-        #expect(mockWebService.callCount(for: "postData") == 1)
+        #expect(mockWebService.callCounts(for: WebServiceMethods.postData) == 1)
         
         // Verify the correct data was sent
         let expectedBody: [String: Any] = ["email": email, "password": password]
         let expectedData = try JSONSerialization.data(withJSONObject: expectedBody)
-        mockWebService.assertCallArguments(for: "postData", at: 0, matches: [expectedData, "\(authService.baseURL)/users/register", []])
+        mockWebService.assertCallArguments(for: WebServiceMethods.postData, matches: [expectedData, "\(authService.baseURL)/users/register", []])
     }
     
     @Test("Auth service fails to register if user already exists")
@@ -138,7 +138,7 @@ struct AuthServiceTests {
         let email = "existing@example.com"
         let password = "pass123"
         
-        mockWebService.stub(method: "postData", toThrow: NetworkError.badStatus(
+        mockWebService.stub(method: WebServiceMethods.postData, toThrow: NetworkError.badStatus(
             code: 400,
             data: try! JSONEncoder().encode(RegisterAPIErrorResponse(detail: .REGISTER_USER_ALREADY_EXISTS))
         ))

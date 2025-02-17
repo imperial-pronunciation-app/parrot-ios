@@ -9,6 +9,15 @@ import Foundation
 
 @testable import ParrotIos
 
+struct WebServiceMethods {
+    static let downloadData = "downloadData"
+    static let post = "post"
+    static let postNoResponse = "postNoRespones"
+    static let postData = "postData"
+    static let postMultiPartFormData = "postMultiPartFormData"
+    static let postURLEncodedFormData = "postURLEncodedFormData"
+}
+
 class MockWebService: WebServiceProtocol, CallTracking {
     var callCounts: [String : Int] = [:]
     var callArguments: [String : [[Any?]]] = [:]
@@ -18,7 +27,7 @@ class MockWebService: WebServiceProtocol, CallTracking {
         fromURL: String,
         headers: [HeaderElement]
     ) async throws -> T where T: Decodable & Encodable {
-        let method = "downloadData"
+        let method = WebServiceMethods.downloadData
         recordCall(for: method, with: [fromURL, headers])
         
         return try getReturnValue(for: method, callIndex: callCounts[method]! - 1)
@@ -28,7 +37,7 @@ class MockWebService: WebServiceProtocol, CallTracking {
         toURL: String,
         headers: [HeaderElement] = []
     ) async throws -> T where T: Decodable & Encodable {
-        let method = "post"
+        let method = WebServiceMethods.post
         recordCall(for: method, with: [toURL, headers])
         
         return try getReturnValue(for: method, callIndex: callCounts[method]! - 1)
@@ -38,7 +47,7 @@ class MockWebService: WebServiceProtocol, CallTracking {
         toURL: String,
         headers: [HeaderElement] = []
     ) async throws {
-        let method = "postNoResponse"
+        let method = WebServiceMethods.postNoResponse
         recordCall(for: method, with: [toURL, headers])
         
         return try getReturnValue(for: method, callIndex: callCounts[method]! - 1)
@@ -50,7 +59,7 @@ class MockWebService: WebServiceProtocol, CallTracking {
         toURL: String,
         headers: [HeaderElement] = []
     ) async throws -> T where T: Decodable & Encodable {
-        let method = "postData"
+        let method = WebServiceMethods.postData
         recordCall(for: method, with: [data, toURL, headers])
         
         return try getReturnValue(for: method, callIndex: callCounts[method]! - 1)
@@ -62,7 +71,7 @@ class MockWebService: WebServiceProtocol, CallTracking {
         toURL: String,
         headers: [HeaderElement] = []
     ) async throws -> T where T: Decodable & Encodable {
-        let method = "postMultiPartFormData"
+        let method = WebServiceMethods.postMultiPartFormData
         recordCall(for: method, with: [data, toURL, headers])
         
         return try getReturnValue(for: method, callIndex: callCounts[method]! - 1)
@@ -73,7 +82,7 @@ class MockWebService: WebServiceProtocol, CallTracking {
         toURL: String,
         headers: [HeaderElement] = []
     ) async throws -> T where T: Decodable & Encodable {
-        let method = "postURLEncodedFormData"
+        let method = WebServiceMethods.postURLEncodedFormData
         recordCall(for: method, with: [parameters, toURL, headers])
         
         return try getReturnValue(for: method, callIndex: callCounts[method]! - 1)

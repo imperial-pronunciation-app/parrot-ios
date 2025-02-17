@@ -9,25 +9,34 @@ import AVFoundation
 
 @testable import ParrotIos
 
+struct AudioRecorderMethods {
+    static let startRecording = "startRecording"
+    static let stopRecording = "stopRecording"
+    static let audioRecorderDidFinishRecording = "audioRecorderDidFinishRecording"
+    static let getDocumentsDirectory = "getDocumentsDirectory"
+    static let getRecordingURL = "getRecordingURL"
+}
+
 class MockAudioRecorder: AudioRecorderProtocol, CallTracking {
+    
     var callCounts: [String : Int] = [:]
     var callArguments: [String : [[Any?]]] = [:]
     var returnValues: [String : [Result<Any?, Error>]] = [:]
     
     func startRecording() {
-        recordCall(for: "startRecording")
+        recordCall(for: AudioRecorderMethods.startRecording)
     }
     
     func stopRecording() {
-        recordCall(for: "stopRecording")
+        recordCall(for: AudioRecorderMethods.stopRecording)
     }
     
     func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
-        recordCall(for: "audoRecorderDidFinishRecording", with: [recorder, flag])
+        recordCall(for: AudioRecorderMethods.audioRecorderDidFinishRecording, with: [recorder, flag])
     }
     
     func getDocumentsDirectory() -> URL {
-        let method = "getDocumentsDirectory"
+        let method = AudioRecorderMethods.getDocumentsDirectory
         recordCall(for: method)
         
         do {
@@ -38,7 +47,7 @@ class MockAudioRecorder: AudioRecorderProtocol, CallTracking {
     }
     
     func getRecordingURL() -> URL {
-        let method = "getRecordingURL"
+        let method = AudioRecorderMethods.getRecordingURL
         recordCall(for: method)
         
         do {
