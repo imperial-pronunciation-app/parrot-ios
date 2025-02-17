@@ -19,17 +19,12 @@ struct AttemptView_ViewModelTests {
     let exercise2 = Exercise(id: 2, word: Word(id: 3, text: "b", phonemes: [Phoneme(id: 1, ipa: "b", respelling: "b")]), previousExerciseID: 1, nextExerciseID: 2)
     
     init() {
-        mockParrotApiService.stub(method: "getExercise", toReturn: Result<ParrotIos.Exercise, ParrotIos.ParrotApiError>.success(exercise1))
         viewModel = AttemptView.ViewModel(exerciseId: exerciseId, audioRecoder: MockAudioRecorder(), audioPlayer: MockAudioPlayer(), parrotApi: mockParrotApiService)
     }
     
     @Test("Fetch exercise retrieves the correct exercise")
     func testFetchExercise() async throws {
         // Setup
-        // TODO: Figure out nice way of doing this in the init
-        // ViewModel has an async call that isn't cleared in time
-        try? await Task.sleep(nanoseconds: 5_000_000_000)
-        mockParrotApiService.clear()
         mockParrotApiService.stub(method: "getExercise", toReturn: Result<ParrotIos.Exercise, ParrotIos.ParrotApiError>.success(exercise2))
         
         // Act

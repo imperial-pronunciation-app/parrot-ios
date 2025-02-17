@@ -20,6 +20,7 @@ extension AttemptView {
         private(set) var isLoading: Bool = false
         private(set) var errorMessage: String?
         
+        private var exerciseId: Int
         private(set) var exercise: Exercise?
         private(set) var score: Int?
         private(set) var recording_phonemes: [Phoneme]?
@@ -29,9 +30,11 @@ extension AttemptView {
             self.audioRecorder = audioRecoder
             self.audioPlayer = audioPlayer
             self.parrotApi = parrotApi
-            Task {
-                await fetchExercise(withID: exerciseId)
-            }
+            self.exerciseId = exerciseId
+        }
+        
+        func loadExercise() async {
+            await fetchExercise(withID: self.exerciseId)
         }
         
         func fetchNextExercise(finish: Binding<Bool>) async {
@@ -52,6 +55,7 @@ extension AttemptView {
             switch result {
             case .success(let exercise):
                 self.exercise = exercise
+                self.exerciseId = id
             case .failure(let error):
                 errorMessage = error.localizedDescription
             }

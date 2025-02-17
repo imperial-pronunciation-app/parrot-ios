@@ -147,5 +147,8 @@ struct AttemptView: View {
                 dismiss()
             }
         }
+        .task {
+            await viewModel.loadExercise()
+        }
     }
 }
