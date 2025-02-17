@@ -20,7 +20,7 @@ extension AttemptView {
         private(set) var isLoading: Bool = false
         private(set) var errorMessage: String?
         
-        private var exerciseId: Int
+        private(set) var exerciseId: Int
         private(set) var exercise: Exercise?
         private(set) var score: Int?
         private(set) var recording_phonemes: [Phoneme]?
