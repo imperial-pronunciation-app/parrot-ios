@@ -8,7 +8,7 @@
 import Foundation
 
 protocol WebServiceProtocol {
-    func downloadData<T: Codable>(fromURL: String, headers: [HeaderElement]) async throws -> T
+    func get<T: Codable>(fromURL: String, headers: [HeaderElement]) async throws -> T
     func post<T: Codable>(toURL: String, headers: [HeaderElement]) async throws -> T
     func postNoResponse(toURL: String, headers: [HeaderElement]) async throws
     func postData<T: Codable>(data: Data, toURL: String, headers: [HeaderElement]) async throws -> T
@@ -23,8 +23,8 @@ protocol WebServiceProtocol {
 }
 
 extension WebServiceProtocol {
-    func downloadData<T: Codable>(fromURL: String) async throws -> T {
-        try await downloadData(fromURL: fromURL, headers: [])
+    func get<T: Codable>(fromURL: String) async throws -> T {
+        try await get(fromURL: fromURL, headers: [])
     }
     func post<T: Codable>(toURL: String) async throws -> T {
         try await post(toURL: toURL, headers: [])

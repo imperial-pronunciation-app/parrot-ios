@@ -20,7 +20,7 @@ class ParrotApiService: ParrotApiServiceProtocol {
     private func getData<T: Codable>(endpoint: String) async throws -> T {
         guard let accessToken = authService.getAccessToken() else { throw ParrotApiError.notLoggedIn }
         do {
-            let response: T = try await webService.downloadData(
+            let response: T = try await webService.get(
                 fromURL: baseURL + endpoint,
                 headers: [generateAuthHeader(accessToken: accessToken)])
             return response
