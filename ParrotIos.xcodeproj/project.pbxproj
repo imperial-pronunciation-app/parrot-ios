@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		B0A6E5482D54EF4100DB2DDE /* dev.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = B0A6E5472D54EF4100DB2DDE /* dev.xcconfig */; };
 		B0A6E54A2D54EF4A00DB2DDE /* prod.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = B0A6E5492D54EF4A00DB2DDE /* prod.xcconfig */; };
+		CCD8884C2D63F5CA00F5B109 /* ViewInspector in Frameworks */ = {isa = PBXBuildFile; productRef = CCD8884B2D63F5CA00F5B109 /* ViewInspector */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -127,13 +128,6 @@
 			);
 			target = 276AD2542D4103D200001426 /* ParrotIos */;
 		};
-		D1B300632D5D155400C3F090 /* Exceptions for "ParrotIosTests" folder in "ParrotIos" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Services/WebServiceTest.swift,
-			);
-			target = 276AD2542D4103D200001426 /* ParrotIos */;
-		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -152,9 +146,6 @@
 		};
 		B05945FC2D4A5C34000D0280 /* ParrotIosTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				D1B300632D5D155400C3F090 /* Exceptions for "ParrotIosTests" folder in "ParrotIos" target */,
-			);
 			path = ParrotIosTests;
 			sourceTree = "<group>";
 		};
@@ -172,6 +163,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CCD8884C2D63F5CA00F5B109 /* ViewInspector in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -665,6 +657,7 @@
 			);
 			name = ParrotIosTests;
 			packageProductDependencies = (
+				CCD8884B2D63F5CA00F5B109 /* ViewInspector */,
 			);
 			productName = ParrotIosTests;
 			productReference = 276AD2672D4103D400001426 /* ParrotIosTests.xctest */;
@@ -708,7 +701,7 @@
 					};
 					276AD2662D4103D400001426 = {
 						CreatedOnToolsVersion = 16.2;
-						LastSwiftMigration = 1600;
+						LastSwiftMigration = 1620;
 						TestTargetID = 276AD2542D4103D200001426;
 					};
 					276AD2702D4103D400001426 = {
@@ -727,6 +720,7 @@
 			mainGroup = 276AD24C2D4103D200001426;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				CCD8884A2D63F5CA00F5B109 /* XCRemoteSwiftPackageReference "ViewInspector" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 276AD2562D4103D200001426 /* Products */;
@@ -1105,6 +1099,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CCD8884A2D63F5CA00F5B109 /* XCRemoteSwiftPackageReference "ViewInspector" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/nalexn/ViewInspector";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.10.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CCD8884B2D63F5CA00F5B109 /* ViewInspector */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CCD8884A2D63F5CA00F5B109 /* XCRemoteSwiftPackageReference "ViewInspector" */;
+			productName = ViewInspector;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 276AD24D2D4103D200001426 /* Project object */;
 }
