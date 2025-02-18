@@ -7,19 +7,19 @@
 
 import SwiftUI
 
-enum AppScreen: Hashable {
-    case login
-    case mainPage
-}
-
 struct LoginView: View {
 
-    @State private var viewModel = ViewModel()
+    @State private var viewModel: ViewModelProtocol
     @State private var usernameField = ""
     @State private var passwordField = ""
     @State private var succeed = false
     
-    
+    internal var didAppear: ((Self) -> Void)?
+
+    init(viewModel: ViewModelProtocol = ViewModel()) {
+        self.viewModel = viewModel
+    }
+
     var body: some View {
         NavigationStack {
             VStack {
@@ -56,5 +56,6 @@ struct LoginView: View {
             }
         }
         .navigationBarBackButtonHidden()
+        .onAppear { self.didAppear?(self) }
     }
 }
