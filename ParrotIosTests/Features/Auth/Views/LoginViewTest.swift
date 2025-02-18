@@ -41,7 +41,7 @@ final class LoginViewTest: XCTestCase {
             Task {
                 try loginButton.tap()
                 try await Task.sleep(nanoseconds: 100_000)  // Ensure async call completes
-                LoginViewTest.viewModel.assertCallCount(for: "login", equals: 1)
+                XCTAssertEqual(LoginViewTest.viewModel.callCount(for: "login"), 1)
                 LoginViewTest.viewModel.assertCallArguments(for: "login", at: 0, matches: [username, password])
             }
         }
