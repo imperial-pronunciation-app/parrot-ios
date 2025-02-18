@@ -16,82 +16,51 @@ class ParrotApiService: ParrotApiServiceProtocol {
         self.webService = webService
         self.authService = authService
     }
+    
+    private func getData<T: Codable>(endpoint: String) async throws -> T {
+        guard let accessToken = authService.getAccessToken() else { throw ParrotApiError.notLoggedIn }
+        do {
+            let response: T = try await webService.downloadData(
+                fromURL: baseURL + endpoint,
+                headers: [generateAuthHeader(accessToken: accessToken)])
+            return response
+        } catch NetworkError.badStatus(let code, _) {
+            throw ParrotApiError.badStatus(code: code, endpoint: endpoint)
+        }
+    }
 
-    func getLeaderboard() async -> Result<LeaderboardResponse, ParrotApiError> {
-        do {
-            guard let accessToken = authService.getAccessToken() else { throw LogoutError.notLoggedIn }
-            let leaderboardResponse: LeaderboardResponse = try await webService.downloadData(
-                fromURL: baseURL + "/leaderboard/global",
-                headers: [generateAuthHeader(accessToken: accessToken)])
-            return .success(leaderboardResponse)
-        } catch {
-            // TODO: Handle the case when user might not be logged in or missing token in keychain
-            return .failure(.customError("Failed to fetch the leaderboard."))
-        }
+    func getLeaderboard() async throws -> LeaderboardResponse {
+        return try await getData(endpoint: "/leaderboard/global")
     }
     
-    func getRandomWord() async -> Result<Word, ParrotApiError> {
-        do {
-            guard let accessToken = authService.getAccessToken() else { throw LogoutError.notLoggedIn }
-            let word: Word = try await webService.downloadData(
-                fromURL: "\(baseURL)/random_word",
-                headers: [generateAuthHeader(accessToken: accessToken)])
-            return .success(word)
-        } catch NetworkError.badStatus(let code, let data) {
-            let dataString = String(data: data!, encoding: .utf8) ?? ""
-            return .failure(.customError("API returned bad status \(code): \(dataString)"))
-        } catch {
-            return .failure(.customError("Failed to fetch the word."))
-        }
+    func getRandomWord() async throws -> Word {
+        return try await getData(endpoint: "/random_word")
+        
     }
     
-    func getCurriculum() async -> Result<Curriculum, ParrotApiError> {
-        do {
-            guard let accessToken = authService.getAccessToken() else { throw LogoutError.notLoggedIn }
-            let curriculum: Curriculum = try await webService.downloadData(
-                fromURL: baseURL + "/units",
-                headers: [generateAuthHeader(accessToken: accessToken)])
-            return .success(curriculum)
-        } catch NetworkError.badStatus(let code, let data) {
-            return .failure(.customError("Bad status  \(code) returned by /units."))
-        } catch {
-            return .failure(.customError("Failed to fetch the curriculum."))
-        }
+    func getCurriculum() async throws -> Curriculum {
+        return try await getData(endpoint: "/units")
     }
     
-    func getExercise(exerciseId: Int) async -> Result<Exercise, ParrotApiError> {
-        do {
-            guard let accessToken = authService.getAccessToken() else { throw LogoutError.notLoggedIn }
-            let exercise: Exercise = try await webService.downloadData(
-                fromURL: baseURL + "/exercises/\(exerciseId)",
-                headers: [generateAuthHeader(accessToken: accessToken)])
-            return .success(exercise)
-        } catch {
-            return .failure(.customError("Failed to fetch the exercise."))
-        }
+    func getExercise(exerciseId: Int) async throws -> Exercise {
+        return try await getData(endpoint: "/exercises/\(exerciseId)")
     }
     
-    func postExerciseAttempt(recordingURL: URL, exercise: Exercise) async -> Result<AttemptResponse, ParrotApiError> {
-        do {
-            guard let accessToken = authService.getAccessToken() else { throw LogoutError.notLoggedIn }
+    func postExerciseAttempt(recordingURL: URL, exercise: Exercise) async throws -> AttemptResponse {
+        guard let accessToken = authService.getAccessToken() else { throw LogoutError.notLoggedIn }
             
-            let audioFile = try Data(contentsOf: recordingURL)
+        let audioFile = try Data(contentsOf: recordingURL)
             
-            let formData: [MultiPartFormDataElement] = [
-                MultiPartFormDataElement(name: "audio_file", filename: "recording.wav", contentType: "audio/wav", data: audioFile)
-            ]
+        let formData: [MultiPartFormDataElement] = [
+            MultiPartFormDataElement(name: "audio_file", filename: "recording.wav", contentType: "audio/wav", data: audioFile)
+        ]
             
-            let response: AttemptResponse = try await webService.postMultiPartFormData(
-                data: formData,
-                toURL: baseURL + "/exercises/\(exercise.id)/attempts",
-                headers: [generateAuthHeader(accessToken: accessToken)])
+        let response: AttemptResponse = try await webService.postMultiPartFormData(
+            data: formData,
+            toURL: baseURL + "/exercises/\(exercise.id)/attempts",
+            headers: [generateAuthHeader(accessToken: accessToken)])
             
-            return .success(response)
-        } catch NetworkError.badStatus(let code, let data) {
-            return .failure(.customError("Bad status \(code)"))
-        } catch {
-            return .failure(.customError("Failed to get exercise feedback. \(error.localizedDescription)"))
-        }
+        return response
     }
     
     private func generateAuthHeader(accessToken: String) -> HeaderElement {
@@ -100,12 +69,15 @@ class ParrotApiService: ParrotApiServiceProtocol {
 }
 
 enum ParrotApiError: Error, LocalizedError, Equatable {
-    case customError(String)
+    case notLoggedIn
+    case badStatus(code: Int, endpoint: String)
     
     var errorDescription: String? {
         switch self {
-        case .customError(let message):
-            return NSLocalizedString("Parrot API Error: \(message)", comment: message)
+        case .notLoggedIn:
+            return "Parrot API Error: Not Logged In"
+        case .badStatus(let code, let endpoint):
+            return "Parrot API Error: Bad status  \(code) returned by \(endpoint)."
         }
     }
 }

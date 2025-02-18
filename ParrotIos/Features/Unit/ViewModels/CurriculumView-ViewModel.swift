@@ -23,12 +23,10 @@ extension CurriculumView {
         
         func loadCurriculum() async {
             self.isLoading = true
-            let getCurriculumResult = await parrotApi.getCurriculum()
             
-            switch getCurriculumResult {
-            case .success(let c):
-                self.curriculum = c
-            case .failure(let error):
+            do {
+                try self.curriculum = await parrotApi.getCurriculum()
+            } catch {
                 self.errorMessage = error.localizedDescription
             }
             self.isLoading = false

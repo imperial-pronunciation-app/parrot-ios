@@ -33,9 +33,9 @@ struct ParrotApiServiceTests {
         mockWebService.stub(method: WebServiceMethods.downloadData, toReturn: expectedResponse)
         
         // Act
-        let result = await parrotApiService.getLeaderboard()
+        let result = try await parrotApiService.getLeaderboard()
         
-        #expect(try result.get() == expectedResponse)
+        #expect(result == expectedResponse)
         #expect(mockWebService.callCounts(for: WebServiceMethods.downloadData) == 1)
         mockWebService.assertCallArguments(for: WebServiceMethods.downloadData, matches: [
             "\(parrotApiService.baseURL)/leaderboard/global",
@@ -48,12 +48,10 @@ struct ParrotApiServiceTests {
         // Arrange
         mockAuthService.stub(method: AuthServiceMethods.getAccessToken, toReturn: nil as String?)
         
-        // Act
-        let result = await parrotApiService.getLeaderboard()
-        
         // Assert
-        #expect(throws: ParrotApiError.customError("Failed to fetch the leaderboard.")) {
-            try result.get()
+        await #expect(throws: ParrotApiError.notLoggedIn) {
+            // Act
+            _ = try await parrotApiService.getLeaderboard()
         }
     }
     
@@ -65,10 +63,10 @@ struct ParrotApiServiceTests {
         mockWebService.stub(method: WebServiceMethods.downloadData, toReturn: expectedWord)
         
         // Act
-        let result = await parrotApiService.getRandomWord()
+        let result = try await parrotApiService.getRandomWord()
         
         // Assert
-        #expect(try result.get() == expectedWord)
+        #expect(result == expectedWord)
         
         #expect(mockWebService.callCounts(for: WebServiceMethods.downloadData) == 1)
         mockWebService.assertCallArguments(for: WebServiceMethods.downloadData, matches: [
@@ -89,10 +87,10 @@ struct ParrotApiServiceTests {
         mockWebService.stub(method: WebServiceMethods.downloadData, toReturn: expectedCurriculum)
         
         // Act
-        let result = await parrotApiService.getCurriculum()
+        let result = try await parrotApiService.getCurriculum()
         
         // Assert
-        #expect(try result.get() == expectedCurriculum)
+        #expect(result == expectedCurriculum)
         #expect(mockWebService.callCounts(for: WebServiceMethods.downloadData) == 1)
         mockWebService.assertCallArguments(for: WebServiceMethods.downloadData, matches: [
             "\(parrotApiService.baseURL)/units",
@@ -113,10 +111,10 @@ struct ParrotApiServiceTests {
         mockWebService.stub(method: WebServiceMethods.postMultiPartFormData, toReturn: expectedResponse)
         
         // Act
-        let result = await parrotApiService.postExerciseAttempt(recordingURL: recordingURL, exercise: exercise)
+        let result = try await parrotApiService.postExerciseAttempt(recordingURL: recordingURL, exercise: exercise)
         
         // Assert
-        #expect(try result.get() == expectedResponse)
+        #expect(result == expectedResponse)
         #expect(mockWebService.callCounts(for: WebServiceMethods.postMultiPartFormData) == 1)
         
         // Clean up

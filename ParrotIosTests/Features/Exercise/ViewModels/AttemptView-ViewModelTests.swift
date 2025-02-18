@@ -29,7 +29,7 @@ struct AttemptView_ViewModelTests {
     @Test("Fetch exercise retrieves the correct exercise")
     func testFetchExercise() async throws {
         // Setup
-        mockParrotApiService.stub(method: ParrotApiServiceMethods.getExercise, toReturn: Result<ParrotIos.Exercise, ParrotIos.ParrotApiError>.success(exercise2))
+        mockParrotApiService.stub(method: ParrotApiServiceMethods.getExercise, toReturn: exercise2)
         
         // Act
         await viewModel.fetchExercise(withID: exercise2.id)
@@ -62,9 +62,9 @@ struct AttemptView_ViewModelTests {
         // Setup
         
         mockAudioRecorder.stub(method: AudioRecorderMethods.getRecordingURL, toReturn: url)
-        mockParrotApiService.stub(method: ParrotApiServiceMethods.getExercise, toReturn: Result<ParrotIos.Exercise, ParrotIos.ParrotApiError>.success(exercise1))
+        mockParrotApiService.stub(method: ParrotApiServiceMethods.getExercise, toReturn: exercise1)
         await viewModel.fetchExercise(withID: exercise1.id)
-        mockParrotApiService.stub(method: ParrotApiServiceMethods.postExerciseAttempt, toReturn: Result<ParrotIos.AttemptResponse, ParrotIos.ParrotApiError>.success(AttemptResponse(recording_id: 1, score: 2, recording_phonemes: [], xp_gain: 1)))
+        mockParrotApiService.stub(method: ParrotApiServiceMethods.postExerciseAttempt, toReturn: AttemptResponse(recording_id: 1, score: 2, recording_phonemes: [], xp_gain: 1))
         // Act
         await viewModel.stopRecording()
         
@@ -79,10 +79,10 @@ struct AttemptView_ViewModelTests {
     @Test("Upload recording posts an exercise attempt and updates internal state")
     func testUploadRecordingSuccess() async throws {
         // Setup
-        mockParrotApiService.stub(method: ParrotApiServiceMethods.getExercise, toReturn: Result<ParrotIos.Exercise, ParrotIos.ParrotApiError>.success(exercise1))
+        mockParrotApiService.stub(method: ParrotApiServiceMethods.getExercise, toReturn: exercise1)
         await viewModel.fetchExercise(withID: exercise1.id)
         let attemptResponse = AttemptResponse(recording_id: 2, score: 2, recording_phonemes: [Phoneme(id: 1, ipa: "a", respelling: "a")], xp_gain: 2)
-        mockParrotApiService.stub(method: ParrotApiServiceMethods.postExerciseAttempt, toReturn: Result<ParrotIos.AttemptResponse, ParrotIos.ParrotApiError>.success(attemptResponse))
+        mockParrotApiService.stub(method: ParrotApiServiceMethods.postExerciseAttempt, toReturn: attemptResponse)
         
         // Act
         await viewModel.uploadRecording(recordingURL: url)
@@ -101,7 +101,7 @@ struct AttemptView_ViewModelTests {
     @Test("Play word sends the right word to the audio player")
     func testPlayWord() async throws {
         // Setup
-        mockParrotApiService.stub(method: ParrotApiServiceMethods.getExercise, toReturn: Result<ParrotIos.Exercise, ParrotIos.ParrotApiError>.success(exercise1))
+        mockParrotApiService.stub(method: ParrotApiServiceMethods.getExercise, toReturn: exercise1)
         await viewModel.fetchExercise(withID: exercise1.id)
         
         let rate = 0.5

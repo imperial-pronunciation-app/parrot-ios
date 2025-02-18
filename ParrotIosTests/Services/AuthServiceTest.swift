@@ -12,7 +12,7 @@ import Foundation
 
 @Suite("AuthService Tests", .serialized)
 struct AuthServiceTests {
-    var mockWebService: (any WebServiceProtocol & CallTracking) = MockWebService() as (any WebServiceProtocol & CallTracking)
+    var mockWebService: (any WebServiceProtocol & CallTracking) = MockWebService() /*as (any WebServiceProtocol & CallTracking)*/
     var authService: AuthService!
     
     init() {
