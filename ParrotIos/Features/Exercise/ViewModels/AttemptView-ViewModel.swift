@@ -11,25 +11,30 @@ import Foundation
 extension AttemptView {
     @Observable
     class ViewModel {
-        private let audioRecorder = AudioRecorder()
-        private let audioPlayer = AudioPlayer()
+        private let audioRecorder: AudioRecorderProtocol
+        private let audioPlayer: AudioPlayerProtocol
+        private let parrotApi: ParrotApiServiceProtocol
         
         private(set) var isRecording: Bool = false
         private(set) var isPlaying: Bool = false
         private(set) var isLoading: Bool = false
         private(set) var errorMessage: String?
         
+        private(set) var exerciseId: Int
         private(set) var exercise: Exercise?
         private(set) var score: Int?
         private(set) var recording_phonemes: [Phoneme]?
         private(set) var xp_gain: Int?
         
-        private let parrotApi = ParrotApiService()
+        init(exerciseId: Int, audioRecoder: AudioRecorderProtocol = AudioRecorder(), audioPlayer: AudioPlayerProtocol = AudioPlayer(), parrotApi: ParrotApiServiceProtocol = ParrotApiService(webService: WebService(), authService: AuthService())) {
+            self.audioRecorder = audioRecoder
+            self.audioPlayer = audioPlayer
+            self.parrotApi = parrotApi
+            self.exerciseId = exerciseId
+        }
         
-        init(exerciseId: Int) {
-            Task {
-                await fetchExercise(withID: exerciseId)
-            }
+        func loadExercise() async {
+            await fetchExercise(withID: self.exerciseId)
         }
         
         func fetchNextExercise(finish: Binding<Bool>) async {
@@ -50,6 +55,7 @@ extension AttemptView {
             switch result {
             case .success(let exercise):
                 self.exercise = exercise
+                self.exerciseId = id
             case .failure(let error):
                 errorMessage = error.localizedDescription
             }
@@ -65,7 +71,7 @@ extension AttemptView {
         func stopRecording() async {
             isRecording = false
             audioRecorder.stopRecording()
-            await uploadRecording(recordingURL: audioRecorder.audioRecorder.url)
+            await uploadRecording(recordingURL: audioRecorder.getRecordingURL())
         }
         
         func uploadRecording(recordingURL: URL) async {

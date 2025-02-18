@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ParrotApiService {
+class ParrotApiService: ParrotApiServiceProtocol {
     internal let baseURL = "https://" + (Bundle.main.object(forInfoDictionaryKey: "API_BASE_URL") as! String) + "/api/v1"
     private let webService: WebServiceProtocol
     private let authService: AuthServiceProtocol

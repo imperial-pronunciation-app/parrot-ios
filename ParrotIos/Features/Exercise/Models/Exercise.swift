@@ -7,7 +7,7 @@
 import SwiftUI
 
 
-struct Exercise: Identifiable, Codable {
+struct Exercise: Identifiable, Codable, Equatable {
     let id: Int
     let word: Word
     let previousExerciseID: Int?

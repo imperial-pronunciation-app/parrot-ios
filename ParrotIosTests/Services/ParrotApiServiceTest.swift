@@ -36,8 +36,7 @@ struct ParrotApiServiceTests {
         let result = await parrotApiService.getLeaderboard()
         
         #expect(try result.get() == expectedResponse)
-        
-        mockWebService.assertCallCount(for: "downloadData", equals: 1)
+        #expect(mockWebService.callCount(for: "downloadData") == 1)
         mockWebService.assertCallArguments(for: "downloadData", at: 0, matches: [
             "\(parrotApiService.baseURL)/leaderboard/global",
             [expectedAuthHeader]
@@ -71,7 +70,7 @@ struct ParrotApiServiceTests {
         // Assert
         #expect(try result.get() == expectedWord)
         
-        mockWebService.assertCallCount(for: "downloadData", equals: 1)
+        #expect(mockWebService.callCount(for: "downloadData") == 1)
         mockWebService.assertCallArguments(for: "downloadData", at: 0, matches: [
             "\(parrotApiService.baseURL)/random_word",
             [expectedAuthHeader]
@@ -94,8 +93,7 @@ struct ParrotApiServiceTests {
         
         // Assert
         #expect(try result.get() == expectedCurriculum)
-        
-        mockWebService.assertCallCount(for: "downloadData", equals: 1)
+        #expect(mockWebService.callCount(for: "downloadData") == 1)
         mockWebService.assertCallArguments(for: "downloadData", at: 0, matches: [
             "\(parrotApiService.baseURL)/units",
             [expectedAuthHeader]
@@ -119,8 +117,7 @@ struct ParrotApiServiceTests {
         
         // Assert
         #expect(try result.get() == expectedResponse)
-        
-        mockWebService.assertCallCount(for: "postMultiPartFormData", equals: 1)
+        #expect(mockWebService.callCount(for: "postMultiPartFormData") == 1)
         
         // Clean up
         try FileManager.default.removeItem(at: recordingURL)

@@ -127,46 +127,9 @@
 			);
 			target = 276AD2542D4103D200001426 /* ParrotIos */;
 		};
-		D186EA6F2D5B74CB00BF8162 /* Exceptions for "ParrotIosTests" folder in "ParrotIosTests" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				"Features/Auth/ViewModels/LoginView-ViewModelTests.swift",
-				"Features/Auth/ViewModels/SignupView-ViewModelTests.swift",
-				Features/Exercise/Models/AudioPlayerTests.swift,
-				Features/Exercise/Models/AudioRecorderTests.swift,
-				"Features/Exercise/ViewModels/AttemptView-ViewModelTests.swift",
-				"Features/Leaderboard/ViewModels/LeaderboardView-ViewModelTests.swift",
-				"Features/Unit/ViewModels/CurriculumView-ViewModelTests.swift",
-				Mocks/CallTracking.swift,
-				Mocks/Services/MockAudioPlayer.swift,
-				Mocks/Services/MockAudioRecorder.swift,
-				Mocks/Services/MockAuthService.swift,
-				Mocks/Services/MockWebService.swift,
-				ParrotIosTests.swift,
-				Services/AuthServiceTest.swift,
-				Services/ParrotApiServiceTest.swift,
-				Services/WebServiceTest.swift,
-			);
-			target = 276AD2662D4103D400001426 /* ParrotIosTests */;
-		};
 		D1B300632D5D155400C3F090 /* Exceptions for "ParrotIosTests" folder in "ParrotIos" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				"Features/Auth/ViewModels/LoginView-ViewModelTests.swift",
-				"Features/Auth/ViewModels/SignupView-ViewModelTests.swift",
-				Features/Exercise/Models/AudioPlayerTests.swift,
-				Features/Exercise/Models/AudioRecorderTests.swift,
-				"Features/Exercise/ViewModels/AttemptView-ViewModelTests.swift",
-				"Features/Leaderboard/ViewModels/LeaderboardView-ViewModelTests.swift",
-				"Features/Unit/ViewModels/CurriculumView-ViewModelTests.swift",
-				Mocks/CallTracking.swift,
-				Mocks/Services/MockAudioPlayer.swift,
-				Mocks/Services/MockAudioRecorder.swift,
-				Mocks/Services/MockAuthService.swift,
-				Mocks/Services/MockWebService.swift,
-				ParrotIosTests.swift,
-				Services/AuthServiceTest.swift,
-				Services/ParrotApiServiceTest.swift,
 				Services/WebServiceTest.swift,
 			);
 			target = 276AD2542D4103D200001426 /* ParrotIos */;
@@ -191,7 +154,6 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				D1B300632D5D155400C3F090 /* Exceptions for "ParrotIosTests" folder in "ParrotIos" target */,
-				D186EA6F2D5B74CB00BF8162 /* Exceptions for "ParrotIosTests" folder in "ParrotIosTests" target */,
 			);
 			path = ParrotIosTests;
 			sourceTree = "<group>";

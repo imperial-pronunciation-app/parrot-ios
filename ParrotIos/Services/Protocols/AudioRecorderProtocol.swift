@@ -16,4 +16,6 @@ protocol AudioRecorderProtocol {
     func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool)
     
     func getDocumentsDirectory() -> URL
+    
+    func getRecordingURL() -> URL
 }

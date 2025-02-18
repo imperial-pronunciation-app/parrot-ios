@@ -48,7 +48,7 @@ struct AuthServiceTests {
             FormDataURLEncodedElement(key: "password", value: password)
         ]
         let headers: [HeaderElement] = []
-        mockWebService.assertCallCount(for: "postURLEncodedFormData", equals: 1)
+        #expect(mockWebService.callCount(for: "postURLEncodedFormData") == 1)
         mockWebService.assertCallArguments(for: "postURLEncodedFormData", at: 0, matches: [expectedParams, "\(authService.baseURL)/auth/jwt/login", headers])
     }
     
@@ -96,7 +96,7 @@ struct AuthServiceTests {
         
         // Verify correct headers were sent
         let expectedHeaders = [HeaderElement(key: "Authorization", value: "Bearer test_token")]
-        mockWebService.assertCallCount(for: "postNoResponse", equals: 1)
+        #expect(mockWebService.callCount(for: "postNoResponse") == 1)
         mockWebService.assertCallArguments(for: "postNoResponse", at: 0, matches: ["\(authService.baseURL)/auth/jwt/logout", expectedHeaders])
     }
     
@@ -124,7 +124,7 @@ struct AuthServiceTests {
         try await authService.register(email: email, password: password)
         
         // Assert
-        mockWebService.assertCallCount(for: "postData", equals: 1)
+        #expect(mockWebService.callCount(for: "postData") == 1)
         
         // Verify the correct data was sent
         let expectedBody: [String: Any] = ["email": email, "password": password]
