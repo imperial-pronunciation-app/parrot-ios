@@ -41,8 +41,8 @@ final class LoginViewTest: XCTestCase {
             Task {
                 try loginButton.tap()
                 try await Task.sleep(nanoseconds: 100_000)  // Ensure async call completes
-                XCTAssertEqual(LoginViewTest.viewModel.callCount(for: "login"), 1)
-                LoginViewTest.viewModel.assertCallArguments(for: "login", at: 0, matches: [username, password])
+                XCTAssertEqual(LoginViewTest.viewModel.callCounts(for: "login"), 1)
+                LoginViewTest.viewModel.assertCallArguments(for: "login", matches: [username, password])
             }
         }
         ViewHosting.host(view: sut)

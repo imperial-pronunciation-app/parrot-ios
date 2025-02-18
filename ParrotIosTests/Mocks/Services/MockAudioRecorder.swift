@@ -57,14 +57,4 @@ class MockAudioRecorder: AudioRecorderProtocol, CallTracking {
         }
     }
     
-    func getRecordingURL() -> URL {
-        let method = "getRecordingURL"
-        recordCall(for: method)
-        
-        do {
-            return try getReturnValue(for: method, callIndex: callCounts[method]! - 1)
-        } catch {
-            fatalError("MockWebService failed with error: \(error)")
-        }
-    }
 }
