@@ -12,7 +12,6 @@ import Foundation
 
 @Suite("AttemptView ViewModel Tests")
 struct AttemptView_ViewModelTests {
-    
     var mockParrotApiService: (ParrotApiServiceProtocol & CallTracking) = MockParrotApiService() as (ParrotApiServiceProtocol & CallTracking)
     var mockAudioRecorder: (AudioRecorderProtocol & CallTracking) = MockAudioRecorder() as (AudioRecorderProtocol & CallTracking)
     var mockAudioPlayer: (AudioPlayerProtocol & CallTracking) = MockAudioPlayer() as (AudioPlayerProtocol & CallTracking)

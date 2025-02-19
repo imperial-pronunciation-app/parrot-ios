@@ -12,8 +12,8 @@ import Foundation
 
 @Suite("ParrotApiService Tests", .serialized)
 struct ParrotApiServiceTests {
-    var mockWebService: (WebServiceProtocol & CallTracking) = MockWebService() as (any WebServiceProtocol & CallTracking)
-    var mockAuthService: (AuthServiceProtocol & CallTracking) = MockAuthService() as (any AuthServiceProtocol & CallTracking)
+    var mockWebService: (WebServiceProtocol & CallTracking) = MockWebService() as (WebServiceProtocol & CallTracking)
+    var mockAuthService: (AuthServiceProtocol & CallTracking) = MockAuthService() as (AuthServiceProtocol & CallTracking)
     var parrotApiService: ParrotApiService!
     
     let testAccessToken = "test_access_token"

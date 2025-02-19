@@ -10,8 +10,15 @@ import Combine
 import SwiftUI
 
 extension LoginView {
+
+    protocol ViewModelProtocol {
+        var errorMessage: String? { get }
+        func login(username: String, password: String, succeed: Binding<Bool>) async
+        func logout() async
+    }
+
     @Observable
-    class ViewModel {
+    class ViewModel: ViewModelProtocol {
         private(set) var errorMessage: String?
         
         func login(username: String, password: String, succeed: Binding<Bool>) async {

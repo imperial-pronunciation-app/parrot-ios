@@ -56,4 +56,5 @@ class MockAudioRecorder: AudioRecorderProtocol, CallTracking {
             fatalError("MockWebService failed with error: \(error)")
         }
     }
+    
 }
