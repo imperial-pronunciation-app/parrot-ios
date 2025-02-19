@@ -28,21 +28,33 @@ struct AttemptView: View {
         }
     }
     
-    private func feedbackView(word: Word, goldPhonemes: [Phoneme], recordingPhonemes: [Phoneme], xp_gain: Int) -> some View {
+    private func formatFeedbackPhoneme(_ feedbackPhoneme: PhonemePair) -> Text {
+        let pronounced = feedbackPhoneme.second
+        // expected nil, pronounced not -> said extra phoneme
+        // pronounced nil, expected not -> missed phoneme/incorrect
+        if let expected = feedbackPhoneme.first {
+            if let pronounced = feedbackPhoneme.second {
+                if expected == pronounced {
+                    return Text(expected.respelling).foregroundColor(.green)
+                }
+            } else {
+                return Text(expected.respelling).foregroundColor(.red)
+            }
+        } else if let pronounced = feedbackPhoneme.second {
+            return Text(pronounced.respelling).foregroundColor(.orange)
+        }
+        return Text(" ")
+    }
+    
+    private func feedbackView(word: Word, feedbackPhonemes: [PhonemePair], xpGain: Int) -> some View {
         VStack {
             Text(word.text).font(.largeTitle)
-            Text(goldPhonemes
-                .compactMap { $0.respelling }
-                .joined(separator: "."))
+            feedbackPhonemes
+                .map(formatFeedbackPhoneme)
+                .reduce(Text(""), +)
             .font(.title)
-            .foregroundColor(.green)
-            Text(recordingPhonemes
-                .compactMap { $0.respelling }
-                .joined(separator: "."))
-            .font(.title)
-            .foregroundColor(.red)
             HStack(spacing: 4) {
-                Text("\(xp_gain) XP")
+                Text("\(xpGain) XP")
                     .font(.headline)
                     .foregroundColor(.red)
                 Text("🔥")
@@ -86,13 +98,14 @@ struct AttemptView: View {
             } else if let exercise = viewModel.exercise {
                 Spacer()
                 VStack(spacing: 32) {
-                    if let score = viewModel.score {
+                    if let score = viewModel.score,
+                       let feedbackPhonemes = viewModel.feedbackPhonemes,
+                       let xpGain = viewModel.xpGain {
                         scoreView(score: score)
                         feedbackView(
                             word: exercise.word,
-                            goldPhonemes: exercise.word.phonemes,
-                            recordingPhonemes: viewModel.recording_phonemes!,
-                            xp_gain: viewModel.xp_gain!)
+                            feedbackPhonemes: feedbackPhonemes,
+                            xpGain: xpGain)
                     } else {
                         wordView(word: exercise.word)
                     }
