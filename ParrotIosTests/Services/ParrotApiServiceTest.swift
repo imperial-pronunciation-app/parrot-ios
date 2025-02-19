@@ -12,8 +12,8 @@ import Foundation
 
 @Suite("ParrotApiService Tests", .serialized)
 struct ParrotApiServiceTests {
-    var mockWebService: (WebServiceProtocol & CallTracking) = MockWebService() as (any WebServiceProtocol & CallTracking)
-    var mockAuthService: (AuthServiceProtocol & CallTracking) = MockAuthService() as (any AuthServiceProtocol & CallTracking)
+    var mockWebService: (WebServiceProtocol & CallTracking) = MockWebService() as (WebServiceProtocol & CallTracking)
+    var mockAuthService: (AuthServiceProtocol & CallTracking) = MockAuthService() as (AuthServiceProtocol & CallTracking)
     var parrotApiService: ParrotApiService!
     
     let testAccessToken = "test_access_token"
@@ -29,15 +29,15 @@ struct ParrotApiServiceTests {
     func testGetLeaderboardSuccess() async throws {
         // Arrange
         let expectedResponse = LeaderboardResponse(league: "test", daysUntilEnd: 2, leaders: [User(rank: 1, username: "a", xp: 1)], userPosition: [User(rank: 1, username: "a", xp: 1)])
-        mockAuthService.stub(method: "getAccessToken", toReturn: testAccessToken)
-        mockWebService.stub(method: "downloadData", toReturn: expectedResponse)
+        mockAuthService.stub(method: AuthServiceMethods.getAccessToken, toReturn: testAccessToken)
+        mockWebService.stub(method: WebServiceMethods.downloadData, toReturn: expectedResponse)
         
         // Act
         let result = await parrotApiService.getLeaderboard()
         
         #expect(try result.get() == expectedResponse)
-        #expect(mockWebService.callCount(for: "downloadData") == 1)
-        mockWebService.assertCallArguments(for: "downloadData", at: 0, matches: [
+        #expect(mockWebService.callCounts(for: WebServiceMethods.downloadData) == 1)
+        mockWebService.assertCallArguments(for: WebServiceMethods.downloadData, matches: [
             "\(parrotApiService.baseURL)/leaderboard/global",
             [expectedAuthHeader]
         ])
@@ -46,7 +46,7 @@ struct ParrotApiServiceTests {
     @Test("Get leaderboard fails when not authenticated")
     func testGetLeaderboardNotAuthenticated() async throws {
         // Arrange
-        mockAuthService.stub(method: "getAccessToken", toReturn: nil as String?)
+        mockAuthService.stub(method: AuthServiceMethods.getAccessToken, toReturn: nil as String?)
         
         // Act
         let result = await parrotApiService.getLeaderboard()
@@ -60,9 +60,9 @@ struct ParrotApiServiceTests {
     @Test("Get random word returns success with valid response")
     func testGetRandomWordSuccess() async throws {
         // Arrange
-        mockAuthService.stub(method: "getAccessToken", toReturn: testAccessToken)
+        mockAuthService.stub(method: AuthServiceMethods.getAccessToken, toReturn: testAccessToken)
         let expectedWord = Word(id: 1, text: "a", phonemes: [Phoneme(id: 1, ipa: "a", respelling: "a")])
-        mockWebService.stub(method: "downloadData", toReturn: expectedWord)
+        mockWebService.stub(method: WebServiceMethods.downloadData, toReturn: expectedWord)
         
         // Act
         let result = await parrotApiService.getRandomWord()
@@ -70,8 +70,8 @@ struct ParrotApiServiceTests {
         // Assert
         #expect(try result.get() == expectedWord)
         
-        #expect(mockWebService.callCount(for: "downloadData") == 1)
-        mockWebService.assertCallArguments(for: "downloadData", at: 0, matches: [
+        #expect(mockWebService.callCounts(for: WebServiceMethods.downloadData) == 1)
+        mockWebService.assertCallArguments(for: WebServiceMethods.downloadData, matches: [
             "\(parrotApiService.baseURL)/random_word",
             [expectedAuthHeader]
         ])
@@ -80,21 +80,21 @@ struct ParrotApiServiceTests {
     @Test("Get curriculum returns success with valid response")
     func testGetCurriculumSuccess() async throws {
         // Arrange
-        mockAuthService.stub(method: "getAccessToken", toReturn: testAccessToken)
+        mockAuthService.stub(method: AuthServiceMethods.getAccessToken, toReturn: testAccessToken)
         let expectedCurriculum = Curriculum(units: [
             Unit(id: 1, name: "test", description: "desc", lessons: [
                 Lesson(id: 1, title: "lesson", firstExerciseID: 1, isCompleted: false)
             ])
         ])
-        mockWebService.stub(method: "downloadData", toReturn: expectedCurriculum)
+        mockWebService.stub(method: WebServiceMethods.downloadData, toReturn: expectedCurriculum)
         
         // Act
         let result = await parrotApiService.getCurriculum()
         
         // Assert
         #expect(try result.get() == expectedCurriculum)
-        #expect(mockWebService.callCount(for: "downloadData") == 1)
-        mockWebService.assertCallArguments(for: "downloadData", at: 0, matches: [
+        #expect(mockWebService.callCounts(for: WebServiceMethods.downloadData) == 1)
+        mockWebService.assertCallArguments(for: WebServiceMethods.downloadData, matches: [
             "\(parrotApiService.baseURL)/units",
             [expectedAuthHeader]
         ])
@@ -103,21 +103,21 @@ struct ParrotApiServiceTests {
     @Test("Post exercise attempt returns success with valid response")
     func testPostExerciseAttemptSuccess() async throws {
         // Arrange
-        mockAuthService.stub(method: "getAccessToken", toReturn: testAccessToken)
+        mockAuthService.stub(method: AuthServiceMethods.getAccessToken, toReturn: testAccessToken)
         let exercise = Exercise(id: 1, word: Word(id: 1, text: "a", phonemes: [Phoneme(id: 1, ipa: "a", respelling: "a")]), previousExerciseID: nil, nextExerciseID: nil)
         let recordingURL = FileManager.default.temporaryDirectory.appendingPathComponent("test_recording.wav")
         let testAudioData = "test audio data".data(using: .utf8)!
         try testAudioData.write(to: recordingURL)
         
         let expectedResponse = AttemptResponse(recording_id: 1, score: 1, recording_phonemes: [Phoneme(id: 2, ipa: "a", respelling: "a")], xp_gain: 1)
-        mockWebService.stub(method: "postMultiPartFormData", toReturn: expectedResponse)
+        mockWebService.stub(method: WebServiceMethods.postMultiPartFormData, toReturn: expectedResponse)
         
         // Act
         let result = await parrotApiService.postExerciseAttempt(recordingURL: recordingURL, exercise: exercise)
         
         // Assert
         #expect(try result.get() == expectedResponse)
-        #expect(mockWebService.callCount(for: "postMultiPartFormData") == 1)
+        #expect(mockWebService.callCounts(for: WebServiceMethods.postMultiPartFormData) == 1)
         
         // Clean up
         try FileManager.default.removeItem(at: recordingURL)

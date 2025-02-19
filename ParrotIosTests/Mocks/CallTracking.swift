@@ -18,24 +18,25 @@ extension CallTracking {
         callCounts[method, default: 0] += 1
     }
 
-    func recordCallArguments(for method: String, with arguments: [Any?]) {
+    func addCallArguments(for method: String, with arguments: [Any?]) {
         callArguments[method, default: []].append(arguments)
     }
 
-    func callCount(for method: String) -> Int {
+    func callCounts(for method: String) -> Int {
         return callCounts[method, default: 0]
     }
     
-    func assertCallArguments(for method: String, at index: Int, matches expectedArguments: [Any?]) {
-        guard let argumentsList = callArguments[method], argumentsList.count > index else {
-            assertionFailure("No call recorded for \(method) at index \(index)")
+    func assertCallArguments(for method: String, matches expectedArguments: [Any?]) {
+        guard var actualArguments = callArguments[method]?.first else {
+            assertionFailure("No more call(s) recorded for \(method)")
             return
         }
+        
+        callArguments[method]?.removeFirst()
 
-        let actualArguments = argumentsList[index]
         assert(
             actualArguments.elementsEqual(expectedArguments, by: { $0 as? AnyHashable == $1 as? AnyHashable }),
-            "Expected arguments for \(method) at index \(index) to be \(expectedArguments), but got \(actualArguments)"
+            "Expected arguments for \(method) at to be \(expectedArguments), but got \(actualArguments)"
         )
     }
 
@@ -64,19 +65,19 @@ extension CallTracking {
     
     func getReturnValue<T>(for method: String, callIndex: Int) throws -> T {
         guard let values = returnValues[method] else {
-            throw MockError.noReturnValueStubbed(method: method)
+            throw MockError.noReturnValueStubbed(method: method.description)
         }
 
         let index = values.count == 1 ? 0 : callIndex
         guard index < values.count else {
-            throw MockError.noMoreReturnValues(method: method, callIndex: callIndex)
+            throw MockError.noMoreReturnValues(method: method.description)
         }
 
         let result = values[index]
         switch result {
         case .success(let value):
             guard let castedValue = value as? T else {
-                throw MockError.incorrectReturnType(method: method, expected: String(describing: T.self))
+                throw MockError.incorrectReturnType(method: method.description, expected: String(describing: T.self))
             }
             return castedValue
         case .failure(let error):
@@ -92,7 +93,7 @@ extension CallTracking {
     
     func recordCall(for method: String, with arguments: [Any?]) {
         incrementCallCount(for: method)
-        recordCallArguments(for: method, with: arguments)
+        addCallArguments(for: method, with: arguments)
     }
     
     func recordCall(for method: String) {
@@ -103,15 +104,15 @@ extension CallTracking {
 
 enum MockError: Error, CustomStringConvertible {
     case noReturnValueStubbed(method: String)
-    case noMoreReturnValues(method: String, callIndex: Int)
+    case noMoreReturnValues(method: String)
     case incorrectReturnType(method: String, expected: String)
     
     var description: String {
         switch self {
         case .noReturnValueStubbed(let method):
             return "No return value stubbed for \(method)"
-        case .noMoreReturnValues(let method, let callIndex):
-            return "No more return values stubbed for \(method) at \(callIndex) calls"
+        case .noMoreReturnValues(let method):
+            return "No more return values stubbed for \(method)"
         case .incorrectReturnType(let method, let expected):
             return "Incorrect return type subbed for \(method), expected \(expected)"
         }

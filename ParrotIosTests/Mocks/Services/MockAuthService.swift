@@ -9,6 +9,14 @@ import Foundation
 
 @testable import ParrotIos
 
+struct AuthServiceMethods {
+    static let login = "login"
+    static let logout = "logout"
+    static let register = "register"
+    static let saveTokens = "saveTokens"
+    static let getAccessToken = "getAccessToken"
+}
+
 class MockAuthService: AuthServiceProtocol, CallTracking {
     var callCounts: [String : Int] = [:]
     var callArguments: [String : [[Any?]]] = [:]
@@ -16,23 +24,23 @@ class MockAuthService: AuthServiceProtocol, CallTracking {
     
     
     func login(username: String, password: String) async throws {
-        recordCall(for: "login", with: [username, password])
+        recordCall(for: AuthServiceMethods.login, with: [username, password])
     }
     
     func logout() async throws {
-        recordCall(for: "logout")
+        recordCall(for: AuthServiceMethods.logout)
     }
     
     func register(email: String, password: String) async throws {
-        recordCall(for: "register", with: [email, password])
+        recordCall(for: AuthServiceMethods.register, with: [email, password])
     }
     
     func saveTokens(accessToken: String) throws {
-        recordCall(for: "saveTokens", with: [accessToken])
+        recordCall(for: AuthServiceMethods.saveTokens, with: [accessToken])
     }
     
     func getAccessToken() -> String? {
-        let method = "getAccessToken"
+        let method = AuthServiceMethods.getAccessToken
         recordCall(for: method)
         
         do {
