@@ -9,13 +9,13 @@ import Foundation
 
 protocol ParrotApiServiceProtocol {
     
-    func getLeaderboard() async -> Result<LeaderboardResponse, ParrotApiError>
+    func getLeaderboard() async throws -> LeaderboardResponse
     
-    func getRandomWord() async -> Result<Word, ParrotApiError>
+    func getRandomWord() async throws -> Word
     
-    func getCurriculum() async -> Result<Curriculum, ParrotApiError>
+    func getCurriculum() async throws -> Curriculum
     
-    func getExercise(exerciseId: Int) async -> Result<Exercise, ParrotApiError>
+    func getExercise(exerciseId: Int) async throws -> Exercise
     
-    func postExerciseAttempt(recordingURL: URL, exercise: Exercise) async -> Result<AttemptResponse, ParrotApiError>
+    func postExerciseAttempt(recordingURL: URL, exercise: Exercise) async throws -> AttemptResponse
 }

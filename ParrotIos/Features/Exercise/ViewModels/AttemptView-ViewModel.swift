@@ -51,12 +51,10 @@ extension AttemptView {
             score = nil
             recording_phonemes = nil
             xp_gain = nil
-            let result = await parrotApi.getExercise(exerciseId: id)
-            switch result {
-            case .success(let exercise):
-                self.exercise = exercise
+            do {
+                self.exercise = try await parrotApi.getExercise(exerciseId: id)
                 self.exerciseId = id
-            case .failure(let error):
+            } catch {
                 errorMessage = error.localizedDescription
             }
             
@@ -79,16 +77,14 @@ extension AttemptView {
             errorMessage = nil
             
             let exercise: Exercise = self.exercise!
-            let result = await parrotApi.postExerciseAttempt(recordingURL: recordingURL, exercise: exercise)
-            switch result {
-            case .success(let attemptResponse):
+            do {
+                let attemptResponse = try await parrotApi.postExerciseAttempt(recordingURL: recordingURL, exercise: exercise)
                 self.score = attemptResponse.score
                 self.recording_phonemes = attemptResponse.recording_phonemes
                 self.xp_gain = attemptResponse.xp_gain
-            case .failure(let error):
+            } catch {
                 errorMessage = error.localizedDescription
             }
-            
             isLoading = false
         }
         

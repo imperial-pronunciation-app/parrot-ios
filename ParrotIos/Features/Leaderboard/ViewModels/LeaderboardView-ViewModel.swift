@@ -26,16 +26,14 @@ extension LeaderboardView {
         }
         
         func loadLeaderboard() async {
-            let leaderboardResponse = await parrotApi.getLeaderboard()
-    
-            switch leaderboardResponse {
-            case .failure(let error):
-                print("Error fetching leaderboard: \(error)")
-            case .success(let leaderboardResponse):
+            do {
+                let leaderboardResponse = try await parrotApi.getLeaderboard()
                 topUsers = leaderboardResponse.leaders
                 currentUsers = leaderboardResponse.userPosition
                 league = leaderboardResponse.league
                 daysProgress = (7 - leaderboardResponse.daysUntilEnd, 7)
+            } catch {
+                print("Error fetching leaderboard: \(error)")
             }
         }
         

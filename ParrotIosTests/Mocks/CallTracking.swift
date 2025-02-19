@@ -27,7 +27,7 @@ extension CallTracking {
     }
     
     func assertCallArguments(for method: String, matches expectedArguments: [Any?]) {
-        guard var actualArguments = callArguments[method]?.first else {
+        guard let actualArguments = callArguments[method]?.first else {
             assertionFailure("No more call(s) recorded for \(method)")
             return
         }

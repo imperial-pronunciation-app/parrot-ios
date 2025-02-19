@@ -22,58 +22,33 @@ class MockParrotApiService: ParrotApiServiceProtocol, CallTracking {
     var callArguments: [String : [[Any?]]] = [:]
     var returnValues: [String : [Result<Any?, any Error>]] = [:]
     
-    func getLeaderboard() async -> Result<ParrotIos.LeaderboardResponse, ParrotIos.ParrotApiError> {
+    func getLeaderboard() async throws -> LeaderboardResponse {
         let method = ParrotApiServiceMethods.getLeaderboard
         recordCall(for: method)
-        
-        do {
-            return try getReturnValue(for: method, callIndex: callCounts[method]! - 1)
-        } catch {
-            fatalError("MockParrotApiService failed with error: \(error)")
-        }
+        return try getReturnValue(for: method, callIndex: callCounts[method]! - 1)
     }
     
-    func getRandomWord() async -> Result<ParrotIos.Word, ParrotIos.ParrotApiError> {
+    func getRandomWord() async throws -> ParrotIos.Word {
         let method = ParrotApiServiceMethods.getRandomWord
         recordCall(for: method)
-        
-        do {
-            return try getReturnValue(for: method, callIndex: callCounts[method]! - 1)
-        } catch {
-            fatalError("MockParrotApiService failed with error: \(error)")
-        }
+        return try getReturnValue(for: method, callIndex: callCounts[method]! - 1)
     }
     
-    func getCurriculum() async -> Result<ParrotIos.Curriculum, ParrotIos.ParrotApiError> {
+    func getCurriculum() async throws -> ParrotIos.Curriculum {
         let method = ParrotApiServiceMethods.getCurriculum
         recordCall(for: method)
-        
-        do {
-            return try getReturnValue(for: method, callIndex: callCounts[method]! - 1)
-        } catch {
-            fatalError("MockParrotApiService failed with error: \(error)")
-        }
+        return try getReturnValue(for: method, callIndex: callCounts[method]! - 1)
     }
     
-    func getExercise(exerciseId: Int) async -> Result<ParrotIos.Exercise, ParrotIos.ParrotApiError> {
+    func getExercise(exerciseId: Int) async throws -> ParrotIos.Exercise {
         let method = ParrotApiServiceMethods.getExercise
         recordCall(for: method, with: [exerciseId])
-        
-        do {
-            return try getReturnValue(for: method, callIndex: callCounts[method]! - 1)
-        } catch {
-            fatalError("MockParrotApiService failed with error: \(error)")
-        }
+        return try getReturnValue(for: method, callIndex: callCounts[method]! - 1)
     }
     
-    func postExerciseAttempt(recordingURL: URL, exercise: ParrotIos.Exercise) async -> Result<ParrotIos.AttemptResponse, ParrotIos.ParrotApiError> {
+    func postExerciseAttempt(recordingURL: URL, exercise: ParrotIos.Exercise) async throws -> ParrotIos.AttemptResponse {
         let method = ParrotApiServiceMethods.postExerciseAttempt
         recordCall(for: method, with: [recordingURL, exercise])
-        
-        do {
-            return try getReturnValue(for: method, callIndex: callCounts[method]! - 1)
-        } catch {
-            fatalError("MockParrotApiService failed with error: \(error)")
-        }
-    }    
+        return try getReturnValue(for: method, callIndex: callCounts[method]! - 1)
+    }
 }
