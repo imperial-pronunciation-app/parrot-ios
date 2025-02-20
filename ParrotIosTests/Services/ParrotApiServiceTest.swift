@@ -54,8 +54,8 @@ struct ParrotApiServiceTests {
             _ = try await parrotApiService.getLeaderboard()
         }
     }
-    
-    @Test("Get random word returns success with valid response")
+
+    @Test("Get word of the day returns success with valid response")
     func testGetWordOfTheDaySuccess() async throws {
         // Arrange
         mockAuthService.stub(method: AuthServiceMethods.getAccessToken, toReturn: testAccessToken)
@@ -70,7 +70,7 @@ struct ParrotApiServiceTests {
         
         #expect(mockWebService.callCounts(for: WebServiceMethods.get) == 1)
         mockWebService.assertCallArguments(for: WebServiceMethods.get, matches: [
-            "\(parrotApiService.baseURL)/random_word",
+            "\(parrotApiService.baseURL)/word_of_day",
             [expectedAuthHeader]
         ])
     }
