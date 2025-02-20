@@ -11,7 +11,7 @@ protocol ParrotApiServiceProtocol {
     
     func getLeaderboard() async throws -> LeaderboardResponse
     
-    func getRandomWord() async throws -> Word
+    func getWordOfTheDay() async throws -> Word
     
     func getCurriculum() async throws -> Curriculum
     

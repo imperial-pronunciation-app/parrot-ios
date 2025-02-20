@@ -33,9 +33,8 @@ class ParrotApiService: ParrotApiServiceProtocol {
         return try await getData(endpoint: "/leaderboard/global")
     }
     
-    func getRandomWord() async throws -> Word {
-        return try await getData(endpoint: "/random_word")
-        
+    func getWordOfTheDay() async throws -> Word {
+        return try await getData(endpoint: "/word_of_day")
     }
     
     func getCurriculum() async throws -> Curriculum {

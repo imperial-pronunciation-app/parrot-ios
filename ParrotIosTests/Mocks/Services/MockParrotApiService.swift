@@ -11,7 +11,7 @@ import Foundation
 
 struct ParrotApiServiceMethods {
     static let getLeaderboard = "getLeaderboard"
-    static let getRandomWord = "getRandomWord"
+    static let getWordOfTheDay = "getWordOfTheDay"
     static let getCurriculum = "getCurriculum"
     static let getExercise = "getExercise"
     static let postExerciseAttempt = "postExerciseAttempt"
@@ -28,8 +28,8 @@ class MockParrotApiService: ParrotApiServiceProtocol, CallTracking {
         return try getReturnValue(for: method, callIndex: callCounts[method]! - 1)
     }
     
-    func getRandomWord() async throws -> ParrotIos.Word {
-        let method = ParrotApiServiceMethods.getRandomWord
+    func getWordOfTheDay() async throws -> ParrotIos.Word {
+        let method = ParrotApiServiceMethods.getWordOfTheDay
         recordCall(for: method)
         return try getReturnValue(for: method, callIndex: callCounts[method]! - 1)
     }

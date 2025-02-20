@@ -56,14 +56,14 @@ struct ParrotApiServiceTests {
     }
     
     @Test("Get random word returns success with valid response")
-    func testGetRandomWordSuccess() async throws {
+    func testGetWordOfTheDaySuccess() async throws {
         // Arrange
         mockAuthService.stub(method: AuthServiceMethods.getAccessToken, toReturn: testAccessToken)
         let expectedWord = Word(id: 1, text: "a", phonemes: [Phoneme(id: 1, ipa: "a", respelling: "a")])
         mockWebService.stub(method: WebServiceMethods.get, toReturn: expectedWord)
         
         // Act
-        let result = try await parrotApiService.getRandomWord()
+        let result = try await parrotApiService.getWordOfTheDay()
         
         // Assert
         #expect(result == expectedWord)
