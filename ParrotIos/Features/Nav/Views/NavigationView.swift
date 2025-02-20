@@ -18,6 +18,11 @@ struct NavigationView: View {
                     Label("Learn", systemImage: "text.book.closed")
                 }
             
+            WordOfTheDayView()
+                .tabItem {
+                    Label("Word of the Day", systemImage: "calendar.badge.clock")
+                }
+            
             LeaderboardView()
                 .tabItem {
                     Label("Leaderboard", systemImage: "medal")

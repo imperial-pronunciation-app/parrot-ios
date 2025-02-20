@@ -10,7 +10,7 @@ import SwiftUI
 
 struct UtilComponents {
 
-    public static let loadingView: some View {
+    public static var loadingView: some View {
         ProgressView("Loading...")
             .scaleEffect(1.5, anchor: .center)
             .padding()
