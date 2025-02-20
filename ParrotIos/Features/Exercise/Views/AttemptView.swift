@@ -64,6 +64,7 @@ struct AttemptView: View {
                             .background(viewModel.isRecording ? Color.red.opacity(0.8) : Color.blue)
                             .clipShape(Circle())
                     }
+                    .disabled(viewModel.disableRecording)
                     
                     Spacer()
                     
