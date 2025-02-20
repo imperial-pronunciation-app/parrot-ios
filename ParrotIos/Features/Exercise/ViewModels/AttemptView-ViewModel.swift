@@ -23,7 +23,7 @@ extension AttemptView {
         private(set) var exerciseId: Int
         private(set) var exercise: Exercise?
         private(set) var score: Int?
-        private(set) var feedbackPhonemes: [PhonemePair]?
+        private(set) var feedbackPhonemes: [(Phoneme?, Phoneme?)]?
         private(set) var xpGain: Int?
         
         init(exerciseId: Int, audioRecoder: AudioRecorderProtocol = AudioRecorder(), audioPlayer: AudioPlayerProtocol = AudioPlayer(), parrotApi: ParrotApiServiceProtocol = ParrotApiService(webService: WebService(), authService: AuthService())) {

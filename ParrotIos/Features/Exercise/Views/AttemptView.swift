@@ -28,30 +28,34 @@ struct AttemptView: View {
         }
     }
     
-    private func formatFeedbackPhoneme(_ feedbackPhoneme: PhonemePair) -> Text {
-        let pronounced = feedbackPhoneme.second
+    private func formatFeedbackPhoneme(_ feedbackPhoneme: (Phoneme?, Phoneme?)) -> Text {
         // expected nil, pronounced not -> said extra phoneme
         // pronounced nil, expected not -> missed phoneme/incorrect
-        if let expected = feedbackPhoneme.first {
-            if let pronounced = feedbackPhoneme.second {
+        if let expected = feedbackPhoneme.0 {
+            if let pronounced = feedbackPhoneme.1 {
                 if expected == pronounced {
                     return Text(expected.respelling).foregroundColor(.green)
                 }
             } else {
                 return Text(expected.respelling).foregroundColor(.red)
             }
-        } else if let pronounced = feedbackPhoneme.second {
+        } else if let pronounced = feedbackPhoneme.1 {
             return Text(pronounced.respelling).foregroundColor(.orange)
         }
-        return Text(" ")
+        return Text("")
     }
     
-    private func feedbackView(word: Word, feedbackPhonemes: [PhonemePair], xpGain: Int) -> some View {
+    func feedbackView(word: Word, feedbackPhonemes: [(Phoneme?, Phoneme?)], xpGain: Int) -> some View {
         VStack {
             Text(word.text).font(.largeTitle)
             feedbackPhonemes
                 .map(formatFeedbackPhoneme)
-                .reduce(Text(""), +)
+                .reduce(Text("")) { partialResult, text in
+                    if partialResult == Text("") {
+                        return text
+                    }
+                    return partialResult + Text(" ") + text
+                }
             .font(.title)
             HStack(spacing: 4) {
                 Text("\(xpGain) XP")
@@ -164,4 +168,9 @@ struct AttemptView: View {
             await viewModel.loadExercise()
         }
     }
+}
+
+
+#Preview {
+    AttemptView(exerciseId: 1).feedbackView(word: Word(id: 1, text: "mouse", phonemes: [Phoneme(id: 5, ipa: "m'", respelling: "m"), Phoneme(id: 6, ipa: "aʊ", respelling: "ow"), Phoneme(id: 7, ipa: "s", respelling:"s")]), feedbackPhonemes: [(Phoneme(id: 5, ipa: "m'", respelling: "m"), Phoneme(id: 5, ipa: "m'", respelling: "m")), (Phoneme(id: 6, ipa: "aʊ", respelling: "ow"), nil), (nil, Phoneme(id: 7, ipa: "s", respelling:"s"))], xpGain: 5)
 }

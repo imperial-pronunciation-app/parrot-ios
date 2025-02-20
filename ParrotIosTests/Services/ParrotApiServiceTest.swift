@@ -107,7 +107,7 @@ struct ParrotApiServiceTests {
         let testAudioData = "test audio data".data(using: .utf8)!
         try testAudioData.write(to: recordingURL)
         
-        let expectedResponse = AttemptResponse(recording_id: 1, score: 1, recording_phonemes: [Phoneme(id: 2, ipa: "a", respelling: "a")], xp_gain: 1)
+        let expectedResponse = AttemptResponse(recordingId: 1, score: 1, phonemes: [(Phoneme(id: 5, ipa: "m'", respelling: "m"), Phoneme(id: 5, ipa: "m'", respelling: "m")), (Phoneme(id: 6, ipa: "aʊ", respelling: "ow"), nil), (nil, Phoneme(id: 7, ipa: "s", respelling:"s"))], xpGain: 2)
         mockWebService.stub(method: WebServiceMethods.postMultiPartFormData, toReturn: expectedResponse)
         
         // Act
