@@ -10,9 +10,9 @@ import SwiftUI
 struct AttemptView: View {
     @State private var viewModel: ViewModel
     @State private var finish: Bool = false
-    
+
     @Environment(\.dismiss) private var dismiss
-    
+
     init(exerciseId: Int) {
         self.viewModel = ViewModel(exerciseId: exerciseId)
     }
@@ -96,9 +96,9 @@ struct AttemptView: View {
     var body: some View {
         VStack {
             if viewModel.isLoading {
-                loadingView
+                UtilComponents.loadingView
             } else if let errorMessage = viewModel.errorMessage {
-                errorView(errorMessage: errorMessage)
+                UtilComponents.errorView(errorMessage: errorMessage)
             } else if let exercise = viewModel.exercise {
                 Spacer()
                 VStack(spacing: 32) {
@@ -111,7 +111,7 @@ struct AttemptView: View {
                             feedbackPhonemes: feedbackPhonemes,
                             xpGain: xpGain)
                     } else {
-                        wordView(word: exercise.word)
+                        AttemptComponents.wordView(word: exercise.word)
                     }
                 }
                 Spacer()
@@ -141,6 +141,7 @@ struct AttemptView: View {
                             .background(viewModel.isRecording ? Color.red.opacity(0.8) : Color.blue)
                             .clipShape(Circle())
                     }
+                    .disabled(viewModel.disableRecording)
                     
                     Spacer()
                     
