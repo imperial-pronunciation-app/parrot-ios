@@ -11,15 +11,9 @@ extension CurriculumView {
     class ViewModel {
         private(set) var curriculum: Curriculum?
         private(set) var errorMessage: String?
-        private(set) var isLoading: Bool = false
+        private(set) var isLoading: Bool = true
         
         private let parrotApi = ParrotApiService()
-        
-        init() {
-            Task {
-                await loadCurriculum()
-            }
-        }
         
         func loadCurriculum() async {
             self.isLoading = true

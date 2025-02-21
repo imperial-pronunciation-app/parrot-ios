@@ -13,5 +13,10 @@ struct UnitView: View {
         ForEach(unit.lessons) { lesson in
             LessonDetailView(lesson: lesson)
         }
+        if let recap = unit.recapLesson {
+            LessonDetailView(lesson: recap)
+        } else {
+            RecapLockedView()
+        }
     }
 }

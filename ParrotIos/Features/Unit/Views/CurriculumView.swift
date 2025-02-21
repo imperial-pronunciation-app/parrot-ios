@@ -28,14 +28,10 @@ struct CurriculumView: View {
                 }
             }
             .padding()
-        }.onAppear{
+        }.onAppear {
             Task {
                 await viewModel.loadCurriculum()
             }
         }
     }
-}
-
-#Preview {
-    CurriculumView()
 }

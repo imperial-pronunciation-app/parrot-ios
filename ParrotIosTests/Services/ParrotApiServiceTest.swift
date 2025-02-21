@@ -82,7 +82,7 @@ struct ParrotApiServiceTests {
         let expectedCurriculum = Curriculum(units: [
             Unit(id: 1, name: "test", description: "desc", lessons: [
                 Lesson(id: 1, title: "lesson", firstExerciseID: 1, isCompleted: false)
-            ])
+            ], recapLesson: nil)
         ])
         mockWebService.stub(method: WebServiceMethods.get, toReturn: expectedCurriculum)
         
