@@ -28,6 +28,8 @@ struct AttemptComponents {
             if let pronounced = feedbackPhoneme.1 {
                 if expected == pronounced {
                     return Text(expected.respelling).foregroundColor(.green)
+                } else {
+                    return Text(expected.respelling).foregroundColor(.red)
                 }
             } else {
                 return Text(expected.respelling).foregroundColor(.red)
