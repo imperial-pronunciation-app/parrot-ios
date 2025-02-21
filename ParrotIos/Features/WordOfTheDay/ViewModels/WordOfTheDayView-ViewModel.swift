@@ -13,7 +13,6 @@ extension WordOfTheDayView {
     @Observable
     class ViewModel {
         private let audioRecorder: AudioRecorderProtocol
-        private let audioPlayer: AudioPlayerProtocol
         private let parrotApi: ParrotApiServiceProtocol
 
         private(set) var isRecording: Bool = false
@@ -26,9 +25,8 @@ extension WordOfTheDayView {
         private(set) var recording_phonemes: [Phoneme]?
         private(set) var xp_gain: Int?
 
-        init(audioRecoder: AudioRecorderProtocol = AudioRecorder(), audioPlayer: AudioPlayerProtocol = AudioPlayer(), parrotApi: ParrotApiServiceProtocol = ParrotApiService(webService: WebService(), authService: AuthService())) {
+        init(audioRecoder: AudioRecorderProtocol = AudioRecorder(), parrotApi: ParrotApiServiceProtocol = ParrotApiService(webService: WebService(), authService: AuthService())) {
             self.audioRecorder = audioRecoder
-            self.audioPlayer = audioPlayer
             self.parrotApi = parrotApi
         }
 
@@ -78,14 +76,6 @@ extension WordOfTheDayView {
             } else {
                 startRecording()
             }
-        }
-
-        func playWord() {
-            let word: String = self.word?.text ?? ""
-            isPlaying = true
-            // Rate currently set so that the automated voice speaks slowly
-            audioPlayer.play(word: word, rate: 0.5)
-            isPlaying = false
         }
     }
 }
