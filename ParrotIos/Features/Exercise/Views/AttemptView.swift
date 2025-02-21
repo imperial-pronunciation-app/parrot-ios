@@ -16,83 +16,7 @@ struct AttemptView: View {
     init(exerciseId: Int) {
         self.viewModel = ViewModel(exerciseId: exerciseId)
     }
-    
-    private func wordView(word: Word) -> some View {
-        VStack {
-            Text(word.text).font(.largeTitle)
-            Text(word.phonemes
-                .compactMap { $0.respelling }
-                .joined(separator: "."))
-            .font(.title)
-            .foregroundColor(Color.gray)
-        }
-    }
-    
-    private func formatFeedbackPhoneme(_ feedbackPhoneme: (Phoneme?, Phoneme?)) -> Text {
-        // expected nil, pronounced not -> said extra phoneme
-        // pronounced nil, expected not -> missed phoneme/incorrect
-        if let expected = feedbackPhoneme.0 {
-            if let pronounced = feedbackPhoneme.1 {
-                if expected == pronounced {
-                    return Text(expected.respelling).foregroundColor(.green)
-                }
-            } else {
-                return Text(expected.respelling).foregroundColor(.red)
-            }
-        } else if let pronounced = feedbackPhoneme.1 {
-            return Text(pronounced.respelling).foregroundColor(.orange)
-        }
-        return Text("")
-    }
-    
-    func feedbackView(word: Word, feedbackPhonemes: [(Phoneme?, Phoneme?)], xpGain: Int) -> some View {
-        VStack {
-            Text(word.text).font(.largeTitle)
-            feedbackPhonemes
-                .map(formatFeedbackPhoneme)
-                .reduce(Text("")) { partialResult, text in
-                    if partialResult == Text("") {
-                        return text
-                    }
-                    return partialResult + Text(" ") + text
-                }
-            .font(.title)
-            HStack(spacing: 4) {
-                Text("\(xpGain) XP")
-                    .font(.headline)
-                    .foregroundColor(.red)
-                Text("🔥")
-            }
-        }
-    }
-    
-    private func scoreView(score: Int) -> some View {
-        VStack {
-            Text("\(score)%")
-                .font(.headline)
-                .multilineTextAlignment(.center)
-                .padding(.bottom, 8)
-            
-            ProgressView(value: Float(score) / 100.0)
-                .padding(.horizontal, 128)
-        }
-    }
-    
-    private var loadingView: some View {
-        ProgressView("Loading...")
-            .scaleEffect(1.5, anchor: .center)
-            .padding()
-    }
-    
-    private func errorView(errorMessage: String) -> some View {
-        VStack {
-            Text(errorMessage)
-                .foregroundColor(.red)
-                .multilineTextAlignment(.center)
-                .padding()
-        }
-    }
-    
+
     var body: some View {
         VStack {
             if viewModel.isLoading {
@@ -105,8 +29,8 @@ struct AttemptView: View {
                     if let score = viewModel.score,
                        let feedbackPhonemes = viewModel.feedbackPhonemes,
                        let xpGain = viewModel.xpGain {
-                        scoreView(score: score)
-                        feedbackView(
+                        AttemptComponents.scoreView(score: score)
+                        AttemptComponents.feedbackView(
                             word: exercise.word,
                             feedbackPhonemes: feedbackPhonemes,
                             xpGain: xpGain)
@@ -172,6 +96,6 @@ struct AttemptView: View {
 }
 
 
-#Preview {
-    AttemptView(exerciseId: 1).feedbackView(word: Word(id: 1, text: "mouse", phonemes: [Phoneme(id: 5, ipa: "m'", respelling: "m"), Phoneme(id: 6, ipa: "aʊ", respelling: "ow"), Phoneme(id: 7, ipa: "s", respelling:"s")]), feedbackPhonemes: [(Phoneme(id: 5, ipa: "m'", respelling: "m"), Phoneme(id: 5, ipa: "m'", respelling: "m")), (Phoneme(id: 6, ipa: "aʊ", respelling: "ow"), nil), (nil, Phoneme(id: 7, ipa: "s", respelling:"s"))], xpGain: 5)
-}
+//#Preview {
+//    AttemptView(exerciseId: 1).feedbackView(word: Word(id: 1, text: "mouse", phonemes: [Phoneme(id: 5, ipa: "m'", respelling: "m"), Phoneme(id: 6, ipa: "aʊ", respelling: "ow"), Phoneme(id: 7, ipa: "s", respelling:"s")]), feedbackPhonemes: [(Phoneme(id: 5, ipa: "m'", respelling: "m"), Phoneme(id: 5, ipa: "m'", respelling: "m")), (Phoneme(id: 6, ipa: "aʊ", respelling: "ow"), nil), (nil, Phoneme(id: 7, ipa: "s", respelling:"s"))], xpGain: 5)
+//}
