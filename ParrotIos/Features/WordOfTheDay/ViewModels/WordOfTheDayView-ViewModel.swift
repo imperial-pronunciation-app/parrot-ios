@@ -58,8 +58,18 @@ extension WordOfTheDayView {
         }
 
         func uploadRecording(recordingURL: URL) async {
+            isLoading = true
             errorMessage = nil
-            // TODO: upload to word of the day post endpoint
+
+            do {
+                let attemptResponse = try await parrotApi.postWordOfTheDayAttempt(recordingURL: recordingURL)
+                self.score = attemptResponse.score
+                self.recording_phonemes = attemptResponse.recording_phonemes
+                self.xp_gain = attemptResponse.xp_gain
+            } catch {
+                errorMessage = error.localizedDescription
+            }
+            isLoading = false
         }
 
         func toggleRecording() async {

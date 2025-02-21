@@ -22,7 +22,20 @@ struct WordOfTheDayView: View {
             } else if let errorMessage = viewModel.errorMessage {
                 UtilComponents.errorView(errorMessage: errorMessage)
             } else if let word = viewModel.word {
+                Text("🗓️ Word of the Day")
+                    .font(.title)
+                    .bold()
+                    .padding(.top, 20)
+                Text(Date.now.formatted(date: .long, time: .omitted))
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
+                    .padding(.bottom, 20)
+                Text("No audio demo for you, challenge yourself!")
+                    .font(.caption)
+                    .foregroundColor(.gray)
+
                 Spacer()
+
                 VStack(spacing: 32) {
                     if let score = viewModel.score {
                         AttemptComponents.scoreView(score: score)
@@ -38,32 +51,19 @@ struct WordOfTheDayView: View {
 
                 Spacer()
 
-                HStack {
-                    Button(action: { viewModel.playWord() }) {
-                        Image(systemName: "speaker.wave.3")
-                            .font(.title3)
-                            .foregroundColor(.white)
-                            .frame(width: 50, height: 50)
-                            .background(viewModel.isPlaying ? Color.red.opacity(0.8) : Color.blue)
-                            .clipShape(Circle())
+                Button(action: {
+                    Task {
+                        await viewModel.toggleRecording()
                     }
-
-                    Spacer()
-
-                    Button(action: {
-                        Task {
-                            await viewModel.toggleRecording()
-                        }
-                    }) {
-                        Image(systemName: "mic")
-                            .font(.largeTitle)
-                            .foregroundColor(.white)
-                            .frame(width: 80, height: 80)
-                            .background(viewModel.isRecording ? Color.red.opacity(0.8) : Color.blue)
-                            .clipShape(Circle())
-                    }
+                }) {
+                    Image(systemName: "mic")
+                        .font(.largeTitle)
+                        .foregroundColor(.white)
+                        .frame(width: 80, height: 80)
+                        .background(viewModel.isRecording ? Color.red.opacity(0.8) : Color.blue)
+                        .clipShape(Circle())
                 }
-                .padding(.horizontal, 50)
+                .padding(.bottom, 20)
             }
         }
         .task {

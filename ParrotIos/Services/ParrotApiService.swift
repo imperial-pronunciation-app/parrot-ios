@@ -33,10 +33,6 @@ class ParrotApiService: ParrotApiServiceProtocol {
         return try await getData(endpoint: "/leaderboard/global")
     }
     
-    func getWordOfTheDay() async throws -> Word {
-        return try await getData(endpoint: "/word_of_day")
-    }
-    
     func getCurriculum() async throws -> Curriculum {
         return try await getData(endpoint: "/units")
     }
@@ -61,7 +57,28 @@ class ParrotApiService: ParrotApiServiceProtocol {
             
         return response
     }
-    
+
+    func getWordOfTheDay() async throws -> Word {
+        return try await getData(endpoint: "/word_of_day")
+    }
+
+    func postWordOfTheDayAttempt(recordingURL: URL) async throws -> AttemptResponse {
+        guard let accessToken = authService.getAccessToken() else { throw LogoutError.notLoggedIn }
+
+        let audioFile = try Data(contentsOf: recordingURL)
+
+        let formData: [MultiPartFormDataElement] = [
+            MultiPartFormDataElement(name: "audio_file", filename: "recording.wav", contentType: "audio/wav", data: audioFile)
+        ]
+
+        let response: AttemptResponse = try await webService.postMultiPartFormData(
+            data: formData,
+            toURL: baseURL + "/word_of_day",
+            headers: [generateAuthHeader(accessToken: accessToken)])
+
+        return response
+    }
+
     private func generateAuthHeader(accessToken: String) -> HeaderElement {
         return HeaderElement(key: "Authorization", value: "Bearer " + accessToken)
     }

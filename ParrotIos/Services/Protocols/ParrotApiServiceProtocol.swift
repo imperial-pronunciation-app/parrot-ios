@@ -11,11 +11,13 @@ protocol ParrotApiServiceProtocol {
     
     func getLeaderboard() async throws -> LeaderboardResponse
     
-    func getWordOfTheDay() async throws -> Word
-    
     func getCurriculum() async throws -> Curriculum
     
     func getExercise(exerciseId: Int) async throws -> Exercise
     
     func postExerciseAttempt(recordingURL: URL, exercise: Exercise) async throws -> AttemptResponse
+
+    func getWordOfTheDay() async throws -> Word
+
+    func postWordOfTheDayAttempt(recordingURL: URL) async throws -> AttemptResponse
 }
