@@ -15,7 +15,7 @@ struct Unit: Identifiable, Codable, Equatable {
     let recapLesson: Lesson?
 
     private enum CodingKeys: String, CodingKey {
-        case id, name, description, lessons, recapLesson
+        case id, name, description, lessons, recapLesson = "recap_lesson"
     }
     
     // For JSON
