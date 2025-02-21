@@ -63,7 +63,7 @@ struct AttemptView_ViewModelTests {
         mockAudioRecorder.stub(method: AudioRecorderMethods.getRecordingURL, toReturn: url)
         mockParrotApiService.stub(method: ParrotApiServiceMethods.getExercise, toReturn: exercise1)
         await viewModel.fetchExercise(withID: exercise1.id)
-        mockParrotApiService.stub(method: ParrotApiServiceMethods.postExerciseAttempt, toReturn: AttemptResponse(recording_id: 1, score: 2, recording_phonemes: [], xp_gain: 1))
+        mockParrotApiService.stub(method: ParrotApiServiceMethods.postExerciseAttempt, toReturn: AttemptResponse(recordingId: 1, score: 1, phonemes: [(Phoneme(id: 5, ipa: "m'", respelling: "m"), Phoneme(id: 5, ipa: "m'", respelling: "m")), (Phoneme(id: 6, ipa: "aʊ", respelling: "ow"), nil), (nil, Phoneme(id: 7, ipa: "s", respelling:"s"))], xpGain: 2))
         // Act
         await viewModel.stopRecording()
         
@@ -80,7 +80,7 @@ struct AttemptView_ViewModelTests {
         // Setup
         mockParrotApiService.stub(method: ParrotApiServiceMethods.getExercise, toReturn: exercise1)
         await viewModel.fetchExercise(withID: exercise1.id)
-        let attemptResponse = AttemptResponse(recording_id: 2, score: 2, recording_phonemes: [Phoneme(id: 1, ipa: "a", respelling: "a")], xp_gain: 2)
+        let attemptResponse = AttemptResponse(recordingId: 1, score: 1, phonemes: [(Phoneme(id: 5, ipa: "m'", respelling: "m"), Phoneme(id: 5, ipa: "m'", respelling: "m")), (Phoneme(id: 6, ipa: "aʊ", respelling: "ow"), nil), (nil, Phoneme(id: 7, ipa: "s", respelling:"s"))], xpGain: 2)
         mockParrotApiService.stub(method: ParrotApiServiceMethods.postExerciseAttempt, toReturn: attemptResponse)
         
         // Act
@@ -88,8 +88,8 @@ struct AttemptView_ViewModelTests {
         
         // Assert
         #expect(viewModel.score == attemptResponse.score)
-        #expect(viewModel.recording_phonemes == attemptResponse.recording_phonemes)
-        #expect(viewModel.xp_gain == attemptResponse.xp_gain)
+        #expect(zip(viewModel.feedbackPhonemes!, attemptResponse.phonemes).allSatisfy({ $0 == $1 }))
+        #expect(viewModel.xpGain == attemptResponse.xpGain)
         #expect(!viewModel.isLoading)
         
         // Verify calls

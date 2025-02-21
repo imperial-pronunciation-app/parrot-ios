@@ -16,7 +16,7 @@ struct AttemptView: View {
     init(exerciseId: Int) {
         self.viewModel = ViewModel(exerciseId: exerciseId)
     }
-    
+
     var body: some View {
         VStack {
             if viewModel.isLoading {
@@ -26,13 +26,14 @@ struct AttemptView: View {
             } else if let exercise = viewModel.exercise {
                 Spacer()
                 VStack(spacing: 32) {
-                    if let score = viewModel.score {
+                    if let score = viewModel.score,
+                       let feedbackPhonemes = viewModel.feedbackPhonemes,
+                       let xpGain = viewModel.xpGain {
                         AttemptComponents.scoreView(score: score)
                         AttemptComponents.feedbackView(
                             word: exercise.word,
-                            goldPhonemes: exercise.word.phonemes,
-                            recordingPhonemes: viewModel.recording_phonemes!,
-                            xp_gain: viewModel.xp_gain!)
+                            feedbackPhonemes: feedbackPhonemes,
+                            xpGain: xpGain)
                     } else {
                         AttemptComponents.wordView(word: exercise.word)
                     }
@@ -93,3 +94,8 @@ struct AttemptView: View {
         }
     }
 }
+
+
+//#Preview {
+//    AttemptView(exerciseId: 1).feedbackView(word: Word(id: 1, text: "mouse", phonemes: [Phoneme(id: 5, ipa: "m'", respelling: "m"), Phoneme(id: 6, ipa: "aʊ", respelling: "ow"), Phoneme(id: 7, ipa: "s", respelling:"s")]), feedbackPhonemes: [(Phoneme(id: 5, ipa: "m'", respelling: "m"), Phoneme(id: 5, ipa: "m'", respelling: "m")), (Phoneme(id: 6, ipa: "aʊ", respelling: "ow"), nil), (nil, Phoneme(id: 7, ipa: "s", respelling:"s"))], xpGain: 5)
+//}

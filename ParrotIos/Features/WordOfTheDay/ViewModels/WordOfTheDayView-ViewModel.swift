@@ -22,8 +22,8 @@ extension WordOfTheDayView {
 
         private(set) var word: Word?
         private(set) var score: Int?
-        private(set) var recording_phonemes: [Phoneme]?
-        private(set) var xp_gain: Int?
+        private(set) var feedbackPhonemes: [(Phoneme?, Phoneme?)]?
+        private(set) var xpGain: Int?
 
         init(audioRecoder: AudioRecorderProtocol = AudioRecorder(), parrotApi: ParrotApiServiceProtocol = ParrotApiService(webService: WebService(), authService: AuthService())) {
             self.audioRecorder = audioRecoder
@@ -34,8 +34,8 @@ extension WordOfTheDayView {
             isLoading = true
             errorMessage = nil
             score = nil
-            recording_phonemes = nil
-            xp_gain = nil
+            feedbackPhonemes = nil
+            xpGain = nil
             do {
                 self.word = try await parrotApi.getWordOfTheDay()
             } catch {
@@ -62,8 +62,8 @@ extension WordOfTheDayView {
             do {
                 let attemptResponse = try await parrotApi.postWordOfTheDayAttempt(recordingURL: recordingURL)
                 self.score = attemptResponse.score
-                self.recording_phonemes = attemptResponse.recording_phonemes
-                self.xp_gain = attemptResponse.xp_gain
+                self.feedbackPhonemes = attemptResponse.phonemes
+                self.xpGain = attemptResponse.xpGain
             } catch {
                 errorMessage = error.localizedDescription
             }

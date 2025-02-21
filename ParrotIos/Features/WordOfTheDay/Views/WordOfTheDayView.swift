@@ -37,13 +37,14 @@ struct WordOfTheDayView: View {
                 Spacer()
 
                 VStack(spacing: 32) {
-                    if let score = viewModel.score {
+                    if let score = viewModel.score,
+                       let feedbackPhonemes = viewModel.feedbackPhonemes,
+                       let xpGain = viewModel.xpGain {
                         AttemptComponents.scoreView(score: score)
                         AttemptComponents.feedbackView(
                             word: word,
-                            goldPhonemes: word.phonemes,
-                            recordingPhonemes: viewModel.recording_phonemes!,
-                            xp_gain: viewModel.xp_gain!)
+                            feedbackPhonemes: feedbackPhonemes,
+                            xpGain: xpGain)
                     } else {
                         AttemptComponents.wordView(word: word)
                     }

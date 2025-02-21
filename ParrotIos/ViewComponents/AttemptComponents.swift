@@ -21,21 +21,39 @@ struct AttemptComponents {
         }
     }
     
-    public static func feedbackView(word: Word, goldPhonemes: [Phoneme], recordingPhonemes: [Phoneme], xp_gain: Int) -> some View {
+    public static func formatFeedbackPhoneme(_ feedbackPhoneme: (Phoneme?, Phoneme?)) -> Text {
+        // expected nil, pronounced not -> said extra phoneme
+        // pronounced nil, expected not -> missed phoneme/incorrect
+        if let expected = feedbackPhoneme.0 {
+            if let pronounced = feedbackPhoneme.1 {
+                if expected == pronounced {
+                    return Text(expected.respelling).foregroundColor(.green)
+                } else {
+                    return Text(expected.respelling).foregroundColor(.red)
+                }
+            } else {
+                return Text(expected.respelling).foregroundColor(.red)
+            }
+        } else if let pronounced = feedbackPhoneme.1 {
+            return Text(pronounced.respelling).foregroundColor(.orange)
+        }
+        return Text("")
+    }
+    
+    public static func feedbackView(word: Word, feedbackPhonemes: [(Phoneme?, Phoneme?)], xpGain: Int) -> some View {
         VStack {
             Text(word.text).font(.largeTitle)
-            Text(goldPhonemes
-                .compactMap { $0.respelling }
-                .joined(separator: "."))
+            feedbackPhonemes
+                .map(formatFeedbackPhoneme)
+                .reduce(Text("")) { partialResult, text in
+                    if partialResult == Text("") {
+                        return text
+                    }
+                    return partialResult + Text(" ") + text
+                }
             .font(.title)
-            .foregroundColor(.green)
-            Text(recordingPhonemes
-                .compactMap { $0.respelling }
-                .joined(separator: "."))
-            .font(.title)
-            .foregroundColor(.red)
             HStack(spacing: 4) {
-                Text("\(xp_gain) XP")
+                Text("\(xpGain) XP")
                     .font(.headline)
                     .foregroundColor(.red)
                 Text("🔥")
