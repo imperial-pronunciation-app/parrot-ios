@@ -8,15 +8,15 @@
 import Foundation
 
 class ParrotApiService: ParrotApiServiceProtocol {
-    internal let baseURL = "https://" + (Bundle.main.object(forInfoDictionaryKey: "API_BASE_URL") as! String) + "/api/v1"
+    internal let baseURL = getBaseUrl() + "/api/v1"
     private let webService: WebServiceProtocol
     private let authService: AuthServiceProtocol
-    
+
     init(webService: WebServiceProtocol = WebService(), authService: AuthServiceProtocol = AuthService()) {
         self.webService = webService
         self.authService = authService
     }
-    
+
     private func getData<T: Codable>(endpoint: String) async throws -> T {
         guard let accessToken = authService.getAccessToken() else { throw ParrotApiError.notLoggedIn }
         do {
@@ -32,29 +32,33 @@ class ParrotApiService: ParrotApiServiceProtocol {
     func getLeaderboard() async throws -> LeaderboardResponse {
         return try await getData(endpoint: "/leaderboard/global")
     }
-    
+
     func getCurriculum() async throws -> Curriculum {
         return try await getData(endpoint: "/units")
     }
-    
+
     func getExercise(exerciseId: Int) async throws -> Exercise {
         return try await getData(endpoint: "/exercises/\(exerciseId)")
     }
-    
+
     func postExerciseAttempt(recordingURL: URL, exercise: Exercise) async throws -> AttemptResponse {
         guard let accessToken = authService.getAccessToken() else { throw LogoutError.notLoggedIn }
-            
+
         let audioFile = try Data(contentsOf: recordingURL)
-            
+
         let formData: [MultiPartFormDataElement] = [
-            MultiPartFormDataElement(name: "audio_file", filename: "recording.wav", contentType: "audio/wav", data: audioFile)
+            MultiPartFormDataElement(
+                name: "audio_file",
+                filename: "recording.wav",
+                contentType: "audio/wav",
+                data: audioFile)
         ]
-            
+
         let response: AttemptResponse = try await webService.postMultiPartFormData(
             data: formData,
             toURL: baseURL + "/exercises/\(exercise.id)/attempts",
             headers: [generateAuthHeader(accessToken: accessToken)])
-            
+
         return response
     }
 
@@ -68,7 +72,11 @@ class ParrotApiService: ParrotApiServiceProtocol {
         let audioFile = try Data(contentsOf: recordingURL)
 
         let formData: [MultiPartFormDataElement] = [
-            MultiPartFormDataElement(name: "audio_file", filename: "recording.wav", contentType: "audio/wav", data: audioFile)
+            MultiPartFormDataElement(
+                name: "audio_file",
+                filename: "recording.wav",
+                contentType: "audio/wav",
+                data: audioFile)
         ]
 
         let response: AttemptResponse = try await webService.postMultiPartFormData(
@@ -87,7 +95,7 @@ class ParrotApiService: ParrotApiServiceProtocol {
 enum ParrotApiError: Error, LocalizedError, Equatable {
     case notLoggedIn
     case badStatus(code: Int, endpoint: String)
-    
+
     var errorDescription: String? {
         switch self {
         case .notLoggedIn:

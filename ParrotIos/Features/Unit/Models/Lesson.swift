@@ -15,7 +15,7 @@ struct Lesson: Identifiable, Codable, Equatable {
     private enum CodingKeys: String, CodingKey {
         case id, title, firstExerciseID = "first_exercise_id", isCompleted = "is_completed"
     }
-    
+
     // For JSON
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -24,7 +24,7 @@ struct Lesson: Identifiable, Codable, Equatable {
         self.firstExerciseID = try container.decode(Int.self, forKey: .firstExerciseID)
         self.isCompleted = try container.decode(Bool.self, forKey: .isCompleted)
     }
-    
+
     // Default
     init(id: Int, title: String, firstExerciseID: Int, isCompleted: Bool) {
         self.id = id

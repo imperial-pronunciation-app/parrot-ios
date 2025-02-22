@@ -16,7 +16,8 @@ class AudioPlayer: AudioPlayerProtocol {
 
     func play(word: String, rate: Float, language: String = "en-US") {
         let utterance = AVSpeechUtterance(string: word)
-        if let maleVoice = AVSpeechSynthesisVoice(identifier: AVSpeechSynthesisVoice.speechVoices().first(where: { $0.gender == .male && $0.language == "en-US" })?.identifier ?? "") {
+        if let maleVoice = AVSpeechSynthesisVoice(identifier: AVSpeechSynthesisVoice.speechVoices().first(
+            where: { $0.gender == .male && $0.language == "en-US" })?.identifier ?? "") {
             utterance.voice = maleVoice
             utterance.pitchMultiplier = 1.5
         } else {

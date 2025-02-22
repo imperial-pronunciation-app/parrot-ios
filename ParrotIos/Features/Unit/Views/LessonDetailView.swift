@@ -16,7 +16,7 @@ struct LessonDetailView: View {
                 Text(lesson.title)
                     .font(.subheadline)
                     .padding(.bottom, 2)
-                
+
                 Spacer()
                 Text(lesson.isCompleted ? "Completed" : "In Progress")
                     .foregroundColor(lesson.isCompleted ? .green : .orange)
@@ -30,6 +30,6 @@ struct LessonDetailView: View {
             .background(lesson.isCompleted ? Color.green.opacity(0.1) : Color.gray.opacity(0.1))
             .cornerRadius(10)
         }
-        .buttonStyle(.plain) 
+        .buttonStyle(.plain)
     }
 }

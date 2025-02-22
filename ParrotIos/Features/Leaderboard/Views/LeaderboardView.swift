@@ -8,16 +8,19 @@
 import SwiftUI
 
 struct LeaderboardView: View {
-    
+
     private let viewModel = ViewModel()
-    
+
     private func weekProgress() -> some View {
         VStack {
             Text("\(self.viewModel.daysProgress.current)/\(self.viewModel.daysProgress.total) days")
                             .font(.subheadline)
                             .foregroundColor(.gray)
 
-            ProgressView(value: Double(self.viewModel.daysProgress.current), total: Double(self.viewModel.daysProgress.total))
+            ProgressView(
+                value: Double(self.viewModel.daysProgress.current),
+                total: Double(self.viewModel.daysProgress.total)
+            )
                 .progressViewStyle(LinearProgressViewStyle(tint: .green))
                 .padding(.horizontal, 40)
 
@@ -31,14 +34,14 @@ struct LeaderboardView: View {
         let user = viewModel.topUsers.count >= rank ? viewModel.topUsers[rank-1] : User.placeholder(for: rank)
         var medal: String
         switch rank {
-            case 1:
-                medal = "🥇"
-            case 2:
-                medal = "🥈"
-            case 3:
-                medal = "🥉"
-            default:
-                medal = ""
+        case 1:
+            medal = "🥇"
+        case 2:
+            medal = "🥈"
+        case 3:
+            medal = "🥉"
+        default:
+            medal = ""
         }
         return LeaderboardTopUser(user: user, medal: medal)
     }
@@ -93,8 +96,8 @@ struct LeaderboardView: View {
                 }
             }
             .padding(.horizontal)
-        }.onAppear{
-            Task{await viewModel.loadLeaderboard()}
+        }.onAppear {
+            Task {await viewModel.loadLeaderboard()}
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top )
     }
@@ -110,17 +113,17 @@ extension User {
 struct LeaderboardTopUser: View {
     let user: User
     let medal: String
-    
+
     var body: some View {
         let rank = user.rank
-        
+
         VStack {
             Text(medal)
                 .font(.largeTitle)
-            
+
             Text(user.username)
                 .bold()
-            
+
             Text("\(user.xp) xp")
                 .foregroundColor(.gray)
         }

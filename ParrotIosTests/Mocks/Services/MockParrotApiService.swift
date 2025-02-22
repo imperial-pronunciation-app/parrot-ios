@@ -19,9 +19,9 @@ struct ParrotApiServiceMethods {
 }
 
 class MockParrotApiService: ParrotApiServiceProtocol, CallTracking {
-    var callCounts: [String : Int] = [:]
-    var callArguments: [String : [[Any?]]] = [:]
-    var returnValues: [String : [Result<Any?, any Error>]] = [:]
+    var callCounts: [String: Int] = [:]
+    var callArguments: [String: [[Any?]]] = [:]
+    var returnValues: [String: [Result<Any?, any Error>]] = [:]
 
     func getLeaderboard() async throws -> LeaderboardResponse {
         let method = ParrotApiServiceMethods.getLeaderboard

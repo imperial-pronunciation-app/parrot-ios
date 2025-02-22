@@ -6,9 +6,9 @@
 //
 
 protocol AudioPlayerProtocol {
-    
+
     func play(word: String, rate: Float, language: String)
-    
+
     func stop()
 }
 

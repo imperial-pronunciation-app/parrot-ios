@@ -39,7 +39,7 @@ struct AttemptView: View {
                     }
                 }
                 Spacer()
-                
+
                 HStack {
                     Button(action: { viewModel.playWord() }) {
                         Image(systemName: "speaker.wave.3")
@@ -48,11 +48,10 @@ struct AttemptView: View {
                             .frame(width: 50, height: 50)
                             .background(viewModel.isPlaying ? Color.red.opacity(0.8) : Color.blue)
                             .clipShape(Circle())
-                        
                     }
-                    
+
                     Spacer()
-                    
+
                     Button(action: {
                         Task {
                             await viewModel.toggleRecording()
@@ -66,9 +65,9 @@ struct AttemptView: View {
                             .clipShape(Circle())
                     }
                     .disabled(viewModel.disableRecording)
-                    
+
                     Spacer()
-                    
+
                     Button(action: {
                         Task {
                             await viewModel.fetchNextExercise(finish: $finish)
@@ -84,7 +83,7 @@ struct AttemptView: View {
                 .padding(.horizontal, 50)
             }
         }
-        .onChange(of: finish) { old, new in
+        .onChange(of: finish) { _, new in
             if new {
                 dismiss()
             }
@@ -94,8 +93,3 @@ struct AttemptView: View {
         }
     }
 }
-
-
-//#Preview {
-//    AttemptView(exerciseId: 1).feedbackView(word: Word(id: 1, text: "mouse", phonemes: [Phoneme(id: 5, ipa: "m'", respelling: "m"), Phoneme(id: 6, ipa: "aʊ", respelling: "ow"), Phoneme(id: 7, ipa: "s", respelling:"s")]), feedbackPhonemes: [(Phoneme(id: 5, ipa: "m'", respelling: "m"), Phoneme(id: 5, ipa: "m'", respelling: "m")), (Phoneme(id: 6, ipa: "aʊ", respelling: "ow"), nil), (nil, Phoneme(id: 7, ipa: "s", respelling:"s"))], xpGain: 5)
-//}

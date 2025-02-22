@@ -9,9 +9,9 @@ import SwiftUI
 
 // Main Navigation View
 struct NavigationView: View {
-    
+
     @State private var selection: Int = 1
-    
+
     var body: some View {
         TabView(selection: $selection) {
             NavigationStack {

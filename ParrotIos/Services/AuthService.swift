@@ -8,38 +8,41 @@
 import Foundation
 
 final class AuthService: AuthServiceProtocol {
-    
+
     static let instance = AuthService()
     private let webService: WebServiceProtocol
-    internal let baseURL = "https://" + (Bundle.main.object(forInfoDictionaryKey: "API_BASE_URL") as! String)
+    internal let baseURL = getBaseUrl()
     internal var isAuthenticated = false
-    
+
     init(webService: WebServiceProtocol = WebService()) {
         self.webService = webService
     }
-    
+
     func login(username: String, password: String) async throws {
         let parameters = [
             FormDataURLEncodedElement(key: "username", value: username),
             FormDataURLEncodedElement(key: "password", value: password)
         ]
-        
+
         do {
-            let response: LoginAPIResponse = try await webService.postURLEncodedFormData(parameters: parameters, toURL: "\(baseURL)/auth/jwt/login")
-            try saveTokens(accessToken: response.access_token)
+            let response: LoginAPIResponse = try await webService.postURLEncodedFormData(
+                parameters: parameters, toURL: "\(baseURL)/auth/jwt/login")
+            try saveTokens(accessToken: response.accessToken)
             self.isAuthenticated = true
             return
         } catch NetworkError.badStatus(let code, let data) {
             if code != 400 {
                 throw LoginError.customError("Error during login: bad status.")
             }
-            
+
             if let data = data {
-                guard let decodedResponse = try? JSONDecoder().decode(LoginAPIErrorResponse.self, from: data) else { throw LoginError.customError("Failed to decode error response.") }
+                guard let decodedResponse = try? JSONDecoder().decode(LoginAPIErrorResponse.self, from: data) else {
+                    throw LoginError.customError("Failed to decode error response.")
+                }
                 switch decodedResponse.detail {
-                case LoginAPIErrorResponseDetail.LOGIN_BAD_CREDENTIALS:
+                case LoginAPIErrorResponseDetail.loginBadCredentials:
                     throw LoginError.badCredentials
-                case LoginAPIErrorResponseDetail.LOGIN_USER_NOT_VERIFIED:
+                case LoginAPIErrorResponseDetail.loginUserNotVerified:
                     throw LoginError.userNotVerified
                 }
             } else {
@@ -49,11 +52,11 @@ final class AuthService: AuthServiceProtocol {
             throw LoginError.customError("Error during login: \(error.localizedDescription)")
         }
     }
-    
+
     func logout() async throws {
         guard let accessToken = getAccessToken() else { throw LogoutError.notLoggedIn }
         let authHeaders = [HeaderElement(key: "Authorization", value: "Bearer " + accessToken)]
-        
+
         do {
             try await webService.postNoResponse(toURL: "\(baseURL)/auth/jwt/logout", headers: authHeaders)
             self.isAuthenticated = false
@@ -65,24 +68,28 @@ final class AuthService: AuthServiceProtocol {
     func register(email: String, password: String) async throws {
         let body: [String: Any] = [
             "email": email,
-            "password": password,
+            "password": password
             // TODO: include the optional fields such as super_user?
         ]
-        
-        guard let data = try? JSONSerialization.data(withJSONObject: body) else { throw RegisterError.customError("Error in JSON serialization") }
-        
+
+        guard let data = try? JSONSerialization.data(withJSONObject: body) else {
+            throw RegisterError.customError("Error in JSON serialization")
+        }
+
         do {
             let _: RegisterAPIResponse = try await webService.postData(data: data, toURL: "\(baseURL)/users/register")
             return
-        } catch NetworkError.badStatus(let code, let data){
+        } catch NetworkError.badStatus(let code, let data) {
             if code != 400 {
                 throw RegisterError.customError("Error during login: bad status.")
             }
-            
+
             if let data = data {
-                guard let decodedResponse = try? JSONDecoder().decode(RegisterAPIErrorResponse.self, from: data) else { throw LoginError.customError("Failed to decode error response.") }
+                guard let decodedResponse = try? JSONDecoder().decode(RegisterAPIErrorResponse.self, from: data) else {
+                    throw LoginError.customError("Failed to decode error response.")
+                }
                 switch decodedResponse.detail {
-                case RegisterAPIErrorResponseDetail.REGISTER_USER_ALREADY_EXISTS:
+                case RegisterAPIErrorResponseDetail.registerUserAlreadyExists:
                     throw RegisterError.userAlreadyExists
                 }
             } else {
@@ -91,24 +98,28 @@ final class AuthService: AuthServiceProtocol {
         }
     }
 
-
     func saveTokens(accessToken: String) throws {
         try KeychainManager.instance.saveToken(accessToken, forKey: "access_token")
     }
-    
+
     func getAccessToken() -> String? {
         return KeychainManager.instance.getToken(forKey: "access_token")
     }
 }
 
 struct LoginAPIResponse: Codable {
-    let access_token: String
-    let token_type: String
+    let accessToken: String
+    let tokenType: String
+
+    private enum CodingKeys: String, CodingKey {
+        case accessToken = "access_token"
+        case tokenType = "token_type"
+    }
 }
 
 enum LoginAPIErrorResponseDetail: String, Codable {
-    case LOGIN_BAD_CREDENTIALS = "LOGIN_BAD_CREDENTIALS"
-    case LOGIN_USER_NOT_VERIFIED = "LOGIN_USER_NOT_VERIFIED"
+    case loginBadCredentials
+    case loginUserNotVerified
 }
 
 struct LoginAPIErrorResponse: Codable {
@@ -132,7 +143,7 @@ struct RegisterAPIResponse: Codable {
 }
 
 enum RegisterAPIErrorResponseDetail: String, Codable {
-    case REGISTER_USER_ALREADY_EXISTS = "REGISTER_USER_ALREADY_EXISTS"
+    case registerUserAlreadyExists
 }
 
 struct RegisterAPIErrorResponse: Codable {

@@ -9,7 +9,7 @@ import SwiftUI
 // Curriculum View
 struct CurriculumView: View {
     let viewModel = ViewModel()
-    
+
     var body: some View {
         ScrollView {
             VStack {

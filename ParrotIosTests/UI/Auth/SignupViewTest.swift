@@ -26,7 +26,7 @@ final class SignupViewTest: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         app.terminate()
     }
-    
+
     func testSignupFieldsDisplay() throws {
         let emailField = app.textFields["Email"]
         let passwordField = app.secureTextFields["Password"]
@@ -40,16 +40,16 @@ final class SignupViewTest: XCTestCase {
         XCTAssertTrue(registerButton.exists)
         XCTAssertTrue(loginLink.exists)
     }
-    
+
     func testNavigationToLogin() throws {
         let loginLink = app.buttons["Already have an account?"]
         loginLink.tap()
-        
+
         // Verify that we have navigated to login screen
         let loginButton = app.buttons["Login"]
         XCTAssertTrue(loginButton.waitForExistence(timeout: 5))
     }
-    
+
     func testNavigationToHome() throws {
         // Mock a signup attempt with MockWebService
     }

@@ -6,7 +6,6 @@
 //
 import SwiftUI
 
-
 struct Exercise: Identifiable, Codable, Equatable {
     let id: Int
     let word: Word
@@ -16,7 +15,7 @@ struct Exercise: Identifiable, Codable, Equatable {
     private enum CodingKeys: String, CodingKey {
         case id, word, previousExerciseID = "previous_exercise_id", nextExerciseID = "next_exercise_id"
     }
-    
+
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(Int.self, forKey: .id)
@@ -24,7 +23,7 @@ struct Exercise: Identifiable, Codable, Equatable {
         self.previousExerciseID = try container.decodeIfPresent(Int.self, forKey: .previousExerciseID)
         self.nextExerciseID = try container.decodeIfPresent(Int.self, forKey: .nextExerciseID)
     }
-    
+
     init(id: Int, word: Word, previousExerciseID: Int?, nextExerciseID: Int?) {
         self.id = id
         self.word = word
@@ -32,4 +31,3 @@ struct Exercise: Identifiable, Codable, Equatable {
         self.nextExerciseID = nextExerciseID
     }
 }
-

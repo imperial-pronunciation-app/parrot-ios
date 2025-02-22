@@ -14,12 +14,12 @@ struct RecapLockedView: View {
             Text("Recap")
                 .font(.subheadline)
                 .padding(.bottom, 2)
-            
+
             Spacer()
             Image(systemName: "lock.fill")
                 .foregroundColor(.black)
                 .font(.title2)
-            
+
         }
         .padding()
         .background( Color.gray.opacity(0.1))

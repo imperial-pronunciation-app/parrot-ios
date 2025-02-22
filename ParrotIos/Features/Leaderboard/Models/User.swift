@@ -7,9 +7,8 @@
 
 import Foundation
 
-struct User: Codable, Equatable  {
+struct User: Codable, Equatable {
     let rank: Int
     let username: String
     let xp: Int
 }
-
