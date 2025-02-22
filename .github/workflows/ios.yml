@@ -26,7 +26,7 @@ jobs:
           else
             name='iPhone 16'
           fi
-          xcodebuild -resolvePackageDependencies
           xcodebuild test \
             -scheme 'ParrotIos' \
-            -destination "platform=iOS Simulator,name=$name,OS=18.1"
+            -destination "platform=iOS Simulator,name=$name,OS=18.1" \
+            -enablePackagePluginValidation YES
