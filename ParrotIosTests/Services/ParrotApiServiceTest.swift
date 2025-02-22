@@ -54,23 +54,23 @@ struct ParrotApiServiceTests {
             _ = try await parrotApiService.getLeaderboard()
         }
     }
-    
-    @Test("Get random word returns success with valid response")
-    func testGetRandomWordSuccess() async throws {
+
+    @Test("Get word of the day returns success with valid response")
+    func testGetWordOfTheDaySuccess() async throws {
         // Arrange
         mockAuthService.stub(method: AuthServiceMethods.getAccessToken, toReturn: testAccessToken)
         let expectedWord = Word(id: 1, text: "a", phonemes: [Phoneme(id: 1, ipa: "a", respelling: "a")])
         mockWebService.stub(method: WebServiceMethods.get, toReturn: expectedWord)
         
         // Act
-        let result = try await parrotApiService.getRandomWord()
+        let result = try await parrotApiService.getWordOfTheDay()
         
         // Assert
         #expect(result == expectedWord)
         
         #expect(mockWebService.callCounts(for: WebServiceMethods.get) == 1)
         mockWebService.assertCallArguments(for: WebServiceMethods.get, matches: [
-            "\(parrotApiService.baseURL)/random_word",
+            "\(parrotApiService.baseURL)/word_of_day",
             [expectedAuthHeader]
         ])
     }
@@ -82,7 +82,7 @@ struct ParrotApiServiceTests {
         let expectedCurriculum = Curriculum(units: [
             Unit(id: 1, name: "test", description: "desc", lessons: [
                 Lesson(id: 1, title: "lesson", firstExerciseID: 1, isCompleted: false)
-            ])
+            ], recapLesson: nil)
         ])
         mockWebService.stub(method: WebServiceMethods.get, toReturn: expectedCurriculum)
         
@@ -107,7 +107,7 @@ struct ParrotApiServiceTests {
         let testAudioData = "test audio data".data(using: .utf8)!
         try testAudioData.write(to: recordingURL)
         
-        let expectedResponse = AttemptResponse(recording_id: 1, score: 1, recording_phonemes: [Phoneme(id: 2, ipa: "a", respelling: "a")], xp_gain: 1)
+        let expectedResponse = AttemptResponse(recordingId: 1, score: 1, phonemes: [(Phoneme(id: 5, ipa: "m'", respelling: "m"), Phoneme(id: 5, ipa: "m'", respelling: "m")), (Phoneme(id: 6, ipa: "aʊ", respelling: "ow"), nil), (nil, Phoneme(id: 7, ipa: "s", respelling:"s"))], xpGain: 2)
         mockWebService.stub(method: WebServiceMethods.postMultiPartFormData, toReturn: expectedResponse)
         
         // Act

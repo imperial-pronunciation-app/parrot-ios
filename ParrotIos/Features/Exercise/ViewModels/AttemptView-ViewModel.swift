@@ -18,13 +18,14 @@ extension AttemptView {
         private(set) var isRecording: Bool = false
         private(set) var isPlaying: Bool = false
         private(set) var isLoading: Bool = false
+        private(set) var disableRecording: Bool = false
         private(set) var errorMessage: String?
         
         private(set) var exerciseId: Int
         private(set) var exercise: Exercise?
         private(set) var score: Int?
-        private(set) var recording_phonemes: [Phoneme]?
-        private(set) var xp_gain: Int?
+        private(set) var feedbackPhonemes: [(Phoneme?, Phoneme?)]?
+        private(set) var xpGain: Int?
         
         init(exerciseId: Int, audioRecoder: AudioRecorderProtocol = AudioRecorder(), audioPlayer: AudioPlayerProtocol = AudioPlayer(), parrotApi: ParrotApiServiceProtocol = ParrotApiService(webService: WebService(), authService: AuthService())) {
             self.audioRecorder = audioRecoder
@@ -49,8 +50,8 @@ extension AttemptView {
             isLoading = true
             errorMessage = nil
             score = nil
-            recording_phonemes = nil
-            xp_gain = nil
+            feedbackPhonemes = nil
+            xpGain = nil
             do {
                 self.exercise = try await parrotApi.getExercise(exerciseId: id)
                 self.exerciseId = id
@@ -64,6 +65,10 @@ extension AttemptView {
         func startRecording() {
             isRecording = true
             audioRecorder.startRecording()
+            disableRecording = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.disableRecording = false  // Re-enable after 1 second
+            }
         }
         
         func stopRecording() async {
@@ -80,8 +85,8 @@ extension AttemptView {
             do {
                 let attemptResponse = try await parrotApi.postExerciseAttempt(recordingURL: recordingURL, exercise: exercise)
                 self.score = attemptResponse.score
-                self.recording_phonemes = attemptResponse.recording_phonemes
-                self.xp_gain = attemptResponse.xp_gain
+                self.feedbackPhonemes = attemptResponse.phonemes
+                self.xpGain = attemptResponse.xpGain
             } catch {
                 errorMessage = error.localizedDescription
             }

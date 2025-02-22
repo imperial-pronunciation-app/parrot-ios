@@ -10,28 +10,13 @@ import SwiftUI
 struct CurriculumView: View {
     let viewModel = ViewModel()
     
-    private func errorView(errorMessage: String) -> some View {
-        VStack {
-            Text(errorMessage)
-                .foregroundColor(.red)
-                .multilineTextAlignment(.center)
-                .padding()
-        }
-    }
-    
-    private var loadingView: some View {
-        ProgressView("Loading...")
-            .scaleEffect(1.5, anchor: .center)
-            .padding()
-    }
-    
     var body: some View {
         ScrollView {
             VStack {
                 if viewModel.isLoading {
-                    loadingView
+                    UtilComponents.loadingView
                 } else if let error = viewModel.errorMessage {
-                    errorView(errorMessage: error)
+                    UtilComponents.errorView(errorMessage: error)
                 } else {
                     ForEach(viewModel.curriculum!.units) { unit in
                         VStack {
@@ -43,14 +28,10 @@ struct CurriculumView: View {
                 }
             }
             .padding()
-        }.onAppear{
+        }.onAppear {
             Task {
                 await viewModel.loadCurriculum()
             }
         }
     }
-}
-
-#Preview {
-    CurriculumView()
 }
