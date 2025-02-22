@@ -29,4 +29,4 @@ jobs:
           xcodebuild test \
             -scheme 'ParrotIos' \
             -destination "platform=iOS Simulator,name=$name,OS=18.1" \
-            -enablePackagePluginValidation YES
+            -skipPackagePluginValidation
