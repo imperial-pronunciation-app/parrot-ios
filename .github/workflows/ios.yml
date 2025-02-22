@@ -18,10 +18,11 @@ jobs:
         uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: '16.1'
+      
+      - name: Resolve Swift Package Dependencies
+        run: swift package resolve
 
       - name: Run Tests
-        env:
-          DISABLE_PACKAGE_PLUGIN_VALIDATION: YES
         run: |
           if xcodebuild -scheme ParrotIos -showdestinations | grep -q 'OS:18.1, name:iPhone 15'; then
             name='iPhone 15'
