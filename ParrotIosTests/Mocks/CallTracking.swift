@@ -12,7 +12,6 @@ protocol CallTracking: AnyObject {
 
 }
 
-
 extension CallTracking {
     func incrementCallCount(for method: String) {
         callCounts[method, default: 0] += 1
@@ -25,13 +24,13 @@ extension CallTracking {
     func callCounts(for method: String) -> Int {
         return callCounts[method, default: 0]
     }
-    
+
     func assertCallArguments(for method: String, matches expectedArguments: [Any?]) {
         guard let actualArguments = callArguments[method]?.first else {
             assertionFailure("No more call(s) recorded for \(method)")
             return
         }
-        
+
         callArguments[method]?.removeFirst()
 
         assert(
@@ -46,7 +45,7 @@ extension CallTracking {
         }
         returnValues[method]?.append(.success(value))
     }
-    
+
     func stub<T>(method: String, toReturnInOrder values: [T]) {
         let results = values.map { Result<Any?, Error>.success($0) }
         if returnValues[method] == nil {
@@ -54,7 +53,7 @@ extension CallTracking {
         }
         returnValues[method]?.append(contentsOf: results)
     }
-    
+
     func stub(method: String, toThrow error: Error) {
         let result = Result<Any?, Error>.failure(error)
         if returnValues[method] == nil {
@@ -62,7 +61,7 @@ extension CallTracking {
         }
         returnValues[method]?.append(result)
     }
-    
+
     func getReturnValue<T>(for method: String, callIndex: Int) throws -> T {
         guard let values = returnValues[method] else {
             throw MockError.noReturnValueStubbed(method: method.description)
@@ -84,18 +83,18 @@ extension CallTracking {
             throw error
         }
     }
-    
+
     func clear() {
         callCounts.removeAll()
         callArguments.removeAll()
         returnValues.removeAll()
     }
-    
+
     func recordCall(for method: String, with arguments: [Any?]) {
         incrementCallCount(for: method)
         addCallArguments(for: method, with: arguments)
     }
-    
+
     func recordCall(for method: String) {
         recordCall(for: method, with: [])
     }
@@ -106,7 +105,7 @@ enum MockError: Error, CustomStringConvertible {
     case noReturnValueStubbed(method: String)
     case noMoreReturnValues(method: String)
     case incorrectReturnType(method: String, expected: String)
-    
+
     var description: String {
         switch self {
         case .noReturnValueStubbed(let method):

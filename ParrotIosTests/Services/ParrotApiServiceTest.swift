@@ -15,26 +15,26 @@ struct ParrotApiServiceTests {
     var mockWebService: (WebServiceProtocol & CallTracking) = MockWebService() as (WebServiceProtocol & CallTracking)
     var mockAuthService: (AuthServiceProtocol & CallTracking) = MockAuthService() as (AuthServiceProtocol & CallTracking)
     var parrotApiService: ParrotApiService!
-    
+
     let testAccessToken = "test_access_token"
     let expectedAuthHeader = HeaderElement(key: "Authorization", value: "Bearer test_access_token")
-    
+
     init() {
         mockWebService.clear()
         mockAuthService.clear()
         parrotApiService = ParrotApiService(webService: mockWebService, authService: mockAuthService)
     }
-    
+
     @Test("Get leaderboard returns success with valid response")
     func testGetLeaderboardSuccess() async throws {
         // Arrange
         let expectedResponse = LeaderboardResponse(league: "test", daysUntilEnd: 2, leaders: [User(rank: 1, username: "a", xp: 1)], userPosition: [User(rank: 1, username: "a", xp: 1)])
         mockAuthService.stub(method: AuthServiceMethods.getAccessToken, toReturn: testAccessToken)
         mockWebService.stub(method: WebServiceMethods.get, toReturn: expectedResponse)
-        
+
         // Act
         let result = try await parrotApiService.getLeaderboard()
-        
+
         #expect(result == expectedResponse)
         #expect(mockWebService.callCounts(for: WebServiceMethods.get) == 1)
         mockWebService.assertCallArguments(for: WebServiceMethods.get, matches: [
@@ -42,12 +42,12 @@ struct ParrotApiServiceTests {
             [expectedAuthHeader]
         ])
     }
-    
+
     @Test("Get leaderboard fails when not authenticated")
     func testGetLeaderboardNotAuthenticated() async throws {
         // Arrange
         mockAuthService.stub(method: AuthServiceMethods.getAccessToken, toReturn: nil as String?)
-        
+
         // Assert
         await #expect(throws: ParrotApiError.notLoggedIn) {
             // Act
@@ -61,13 +61,13 @@ struct ParrotApiServiceTests {
         mockAuthService.stub(method: AuthServiceMethods.getAccessToken, toReturn: testAccessToken)
         let expectedWord = Word(id: 1, text: "a", phonemes: [Phoneme(id: 1, ipa: "a", respelling: "a")])
         mockWebService.stub(method: WebServiceMethods.get, toReturn: expectedWord)
-        
+
         // Act
         let result = try await parrotApiService.getWordOfTheDay()
-        
+
         // Assert
         #expect(result == expectedWord)
-        
+
         #expect(mockWebService.callCounts(for: WebServiceMethods.get) == 1)
         mockWebService.assertCallArguments(for: WebServiceMethods.get, matches: [
             "\(parrotApiService.baseURL)/word_of_day",
@@ -85,10 +85,10 @@ struct ParrotApiServiceTests {
             ], recapLesson: nil)
         ])
         mockWebService.stub(method: WebServiceMethods.get, toReturn: expectedCurriculum)
-        
+
         // Act
         let result = try await parrotApiService.getCurriculum()
-        
+
         // Assert
         #expect(result == expectedCurriculum)
         #expect(mockWebService.callCounts(for: WebServiceMethods.get) == 1)
@@ -97,26 +97,29 @@ struct ParrotApiServiceTests {
             [expectedAuthHeader]
         ])
     }
-    
+
     @Test("Post exercise attempt returns success with valid response")
     func testPostExerciseAttemptSuccess() async throws {
         // Arrange
         mockAuthService.stub(method: AuthServiceMethods.getAccessToken, toReturn: testAccessToken)
         let exercise = Exercise(id: 1, word: Word(id: 1, text: "a", phonemes: [Phoneme(id: 1, ipa: "a", respelling: "a")]), previousExerciseID: nil, nextExerciseID: nil)
         let recordingURL = FileManager.default.temporaryDirectory.appendingPathComponent("test_recording.wav")
-        let testAudioData = "test audio data".data(using: .utf8)!
+        let testAudioData = Data("test audio data".utf8)
         try testAudioData.write(to: recordingURL)
-        
-        let expectedResponse = AttemptResponse(recordingId: 1, score: 1, phonemes: [(Phoneme(id: 5, ipa: "m'", respelling: "m"), Phoneme(id: 5, ipa: "m'", respelling: "m")), (Phoneme(id: 6, ipa: "aʊ", respelling: "ow"), nil), (nil, Phoneme(id: 7, ipa: "s", respelling:"s"))], xpGain: 2)
+
+        let expectedResponse = AttemptResponse(recordingId: 1, score: 1, phonemes: [
+            (Phoneme(id: 5, ipa: "m'", respelling: "m"), Phoneme(id: 5, ipa: "m'", respelling: "m")),
+            (Phoneme(id: 6, ipa: "aʊ", respelling: "ow"), nil),
+            (nil, Phoneme(id: 7, ipa: "s", respelling: "s"))], xpGain: 2)
         mockWebService.stub(method: WebServiceMethods.postMultiPartFormData, toReturn: expectedResponse)
-        
+
         // Act
         let result = try await parrotApiService.postExerciseAttempt(recordingURL: recordingURL, exercise: exercise)
-        
+
         // Assert
         #expect(result == expectedResponse)
         #expect(mockWebService.callCounts(for: WebServiceMethods.postMultiPartFormData) == 1)
-        
+
         // Clean up
         try FileManager.default.removeItem(at: recordingURL)
     }

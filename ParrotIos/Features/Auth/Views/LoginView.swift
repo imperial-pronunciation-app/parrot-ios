@@ -13,7 +13,7 @@ struct LoginView: View {
     @State private var usernameField = ""
     @State private var passwordField = ""
     @State private var succeed = false
-    
+
     internal var didAppear: ((Self) -> Void)?
 
     init(viewModel: ViewModelProtocol = ViewModel()) {
@@ -30,20 +30,20 @@ struct LoginView: View {
                 SecureField("Password", text: $passwordField)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding(.bottom, 16)
-                
+
                 Button("Login") {
                     Task {
                         await viewModel.login(username: usernameField, password: passwordField, succeed: $succeed)
                     }
                 }
                 .buttonStyle(.borderedProminent)
-                
+
                 NavigationLink(destination: SignupView()) {
                     Text("Don't have an account?")
                         .foregroundColor(.gray)
                         .underline()
                 }
-                
+
                 if let errorMessage = viewModel.errorMessage {
                     Text(errorMessage)
                         .foregroundColor(.red)

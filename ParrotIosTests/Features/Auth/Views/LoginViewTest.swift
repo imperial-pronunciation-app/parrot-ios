@@ -15,11 +15,11 @@ final class LoginViewTest: XCTestCase {
 
     static let viewModel = MockViewModel()
     var sut = LoginView(viewModel: viewModel)
-    
+
     override func setUpWithError() throws {
         continueAfterFailure = false
     }
-    
+
     override func tearDownWithError() throws {
         LoginViewTest.viewModel.clear()
     }
@@ -52,9 +52,9 @@ final class LoginViewTest: XCTestCase {
 
     class MockViewModel: LoginView.ViewModelProtocol, CallTracking {
 
-        var callCounts: [String : Int] = [:]
-        var callArguments: [String : [[Any?]]] = [:]
-        var returnValues: [String : [Result<Any?, Error>]] = [:]
+        var callCounts: [String: Int] = [:]
+        var callArguments: [String: [[Any?]]] = [:]
+        var returnValues: [String: [Result<Any?, Error>]] = [:]
         var errorMessage: String?
 
         func login(username: String, password: String, succeed: Binding<Bool>) async {

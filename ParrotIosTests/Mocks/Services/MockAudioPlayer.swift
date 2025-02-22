@@ -15,14 +15,14 @@ struct AudioPlayerMethods {
 }
 
 class MockAudioPlayer: AudioPlayerProtocol, CallTracking {
-    var callCounts: [String : Int] = [:]
-    var callArguments: [String : [[Any?]]] = [:]
-    var returnValues: [String : [Result<Any?, Error>]] = [:]
-    
+    var callCounts: [String: Int] = [:]
+    var callArguments: [String: [[Any?]]] = [:]
+    var returnValues: [String: [Result<Any?, Error>]] = [:]
+
     func play(word: String, rate: Float, language: String) {
         recordCall(for: AudioPlayerMethods.play, with: [word, rate, language])
     }
-    
+
     func stop() {
         recordCall(for: AudioPlayerMethods.stop)
     }

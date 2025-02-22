@@ -8,7 +8,6 @@
 import Foundation
 import Combine
 
-
 extension LeaderboardView {
     @Observable
     class ViewModel {
@@ -16,15 +15,15 @@ extension LeaderboardView {
         private(set) var topUsers: [User] = []
         private(set) var league: String = "Unk"
         private(set) var daysProgress: (current: Int, total: Int) = (0, 7)
-        
+
         private let parrotApi = ParrotApiService()
-        
+
         init() {
             Task {
                 await loadLeaderboard()
             }
         }
-        
+
         func loadLeaderboard() async {
             do {
                 let leaderboardResponse = try await parrotApi.getLeaderboard()
@@ -36,7 +35,7 @@ extension LeaderboardView {
                 print("Error fetching leaderboard: \(error)")
             }
         }
-        
+
         func envigoratingMessage() -> String {
             if daysProgress.current <= 3 {
                 "You've got this! 💪"
