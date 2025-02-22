@@ -18,9 +18,6 @@ jobs:
         uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: '16.1'
-      
-      - name: Resolve Swift Package Dependencies
-        run: swift package resolve
 
       - name: Run Tests
         run: |
@@ -29,6 +26,7 @@ jobs:
           else
             name='iPhone 16'
           fi
+          xcodebuild -resolvePackageDependencies
           xcodebuild test \
             -scheme 'ParrotIos' \
             -destination "platform=iOS Simulator,name=$name,OS=18.1"
