@@ -8,17 +8,17 @@
 import AVFoundation
 
 class AudioRecorder: NSObject, ObservableObject, AVAudioRecorderDelegate, AudioRecorderProtocol {
-    
+
     var audioRecorder: AVAudioRecorder!
     private(set) var isRecording = false
-    
+
     func startRecording() {
         let session = AVAudioSession.sharedInstance()
         do {
             try session.setCategory(.playAndRecord, mode: .default, options: [])
             try session.setActive(true)
             let url = getDocumentsDirectory().appendingPathComponent("recording.wav")
-            
+
             // TODO: move deletion to audioRecorderDidFinishRecording after upload is completed
             if FileManager.default.fileExists(atPath: url.path) {
                 do {
@@ -27,7 +27,7 @@ class AudioRecorder: NSObject, ObservableObject, AVAudioRecorderDelegate, AudioR
                     print("Failed to remove existing file: \(error.localizedDescription)")
                 }
             }
-            
+
             let settings: [String: Any] = [
                 AVFormatIDKey: Int(kAudioFormatLinearPCM),
                 AVSampleRateKey: 44100,
@@ -59,7 +59,7 @@ class AudioRecorder: NSObject, ObservableObject, AVAudioRecorderDelegate, AudioR
         let documentsDirectory = paths[0]
         return documentsDirectory
     }
-    
+
     func getRecordingURL() -> URL {
         return audioRecorder.url
     }

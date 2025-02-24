@@ -41,12 +41,12 @@ final class LoginViewTest: XCTestCase {
     func testNavigationToSignup() throws {
         let signupLink = app.buttons["Don't have an account?"]
         signupLink.tap()
-        
+
         // Verify that we have navigated to signup screen
         let registerButton = app.buttons["Register"]
         XCTAssertTrue(registerButton.waitForExistence(timeout: 5))
     }
-    
+
     func testNavigationToHome() throws {
         // Mock a login attempt with MockWebService
     }

@@ -14,15 +14,15 @@ extension SignupView {
     class ViewModel {
         private(set) var isAuthenticated = false
         private(set) var errorMessage: String?
-        
+
         private let authService = AuthService()
-        
+
         func register(email: String, password: String, confirmPassword: String, succeed: Binding<Bool>) async {
             if password != confirmPassword {
                 self.errorMessage = "Password and confirmation do not match."
                 return
             }
-            
+
             do {
                 try await authService.register(email: email, password: password)
                 try await authService.login(username: email, password: password)

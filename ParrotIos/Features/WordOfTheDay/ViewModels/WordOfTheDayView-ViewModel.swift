@@ -25,7 +25,11 @@ extension WordOfTheDayView {
         private(set) var feedbackPhonemes: [(Phoneme?, Phoneme?)]?
         private(set) var xpGain: Int?
 
-        init(audioRecoder: AudioRecorderProtocol = AudioRecorder(), parrotApi: ParrotApiServiceProtocol = ParrotApiService(webService: WebService(), authService: AuthService())) {
+        init(
+            audioRecoder: AudioRecorderProtocol = AudioRecorder(),
+            parrotApi: ParrotApiServiceProtocol = ParrotApiService(
+                webService: WebService(), authService: AuthService())
+        ) {
             self.audioRecorder = audioRecoder
             self.parrotApi = parrotApi
         }

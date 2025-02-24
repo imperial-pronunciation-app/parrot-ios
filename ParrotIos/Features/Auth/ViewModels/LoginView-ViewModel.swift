@@ -20,7 +20,7 @@ extension LoginView {
     @Observable
     class ViewModel: ViewModelProtocol {
         private(set) var errorMessage: String?
-        
+
         func login(username: String, password: String, succeed: Binding<Bool>) async {
             do {
                 try await AuthService.instance.login(username: username, password: password)
@@ -35,7 +35,7 @@ extension LoginView {
                 self.errorMessage = "Unknown error occurred: \(error.localizedDescription)"
             }
         }
-        
+
         func logout() async {
             do {
                 try await AuthService.instance.logout()

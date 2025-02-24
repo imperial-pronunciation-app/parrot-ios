@@ -14,30 +14,36 @@ extension AttemptView {
         private let audioRecorder: AudioRecorderProtocol
         private let audioPlayer: AudioPlayerProtocol
         private let parrotApi: ParrotApiServiceProtocol
-        
+
         private(set) var isRecording: Bool = false
         private(set) var isPlaying: Bool = false
         private(set) var isLoading: Bool = false
         private(set) var disableRecording: Bool = false
         private(set) var errorMessage: String?
-        
+
         private(set) var exerciseId: Int
         private(set) var exercise: Exercise?
         private(set) var score: Int?
         private(set) var feedbackPhonemes: [(Phoneme?, Phoneme?)]?
         private(set) var xpGain: Int?
-        
-        init(exerciseId: Int, audioRecoder: AudioRecorderProtocol = AudioRecorder(), audioPlayer: AudioPlayerProtocol = AudioPlayer(), parrotApi: ParrotApiServiceProtocol = ParrotApiService(webService: WebService(), authService: AuthService())) {
+
+        init(
+            exerciseId: Int,
+            audioRecoder: AudioRecorderProtocol = AudioRecorder(),
+            audioPlayer: AudioPlayerProtocol = AudioPlayer(),
+            parrotApi: ParrotApiServiceProtocol = ParrotApiService(
+                webService: WebService(), authService: AuthService())
+        ) {
             self.audioRecorder = audioRecoder
             self.audioPlayer = audioPlayer
             self.parrotApi = parrotApi
             self.exerciseId = exerciseId
         }
-        
+
         func loadExercise() async {
             await fetchExercise(withID: self.exerciseId)
         }
-        
+
         func fetchNextExercise(finish: Binding<Bool>) async {
             if let nextExerciseID = self.exercise!.nextExerciseID {
                 await fetchExercise(withID: nextExerciseID)
@@ -45,7 +51,7 @@ extension AttemptView {
                 finish.wrappedValue = true
             }
         }
-        
+
         func fetchExercise(withID id: Int) async {
             isLoading = true
             errorMessage = nil
@@ -58,10 +64,10 @@ extension AttemptView {
             } catch {
                 errorMessage = error.localizedDescription
             }
-            
+
             isLoading = false
         }
-        
+
         func startRecording() {
             isRecording = true
             audioRecorder.startRecording()
@@ -70,20 +76,22 @@ extension AttemptView {
                 self.disableRecording = false  // Re-enable after 1 second
             }
         }
-        
+
         func stopRecording() async {
             isRecording = false
             audioRecorder.stopRecording()
             await uploadRecording(recordingURL: audioRecorder.getRecordingURL())
         }
-        
+
         func uploadRecording(recordingURL: URL) async {
             isLoading = true
             errorMessage = nil
-            
+
             let exercise: Exercise = self.exercise!
             do {
-                let attemptResponse = try await parrotApi.postExerciseAttempt(recordingURL: recordingURL, exercise: exercise)
+                let attemptResponse = try await parrotApi.postExerciseAttempt(
+                    recordingURL: recordingURL,
+                    exercise: exercise)
                 self.score = attemptResponse.score
                 self.feedbackPhonemes = attemptResponse.phonemes
                 self.xpGain = attemptResponse.xpGain
@@ -92,7 +100,7 @@ extension AttemptView {
             }
             isLoading = false
         }
-        
+
         func toggleRecording() async {
             if isRecording {
                 await stopRecording()

@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct AttemptComponents {
-    
+
     public static func wordView(word: Word) -> some View {
         VStack {
             Text(word.text).font(.largeTitle)
@@ -20,7 +20,7 @@ struct AttemptComponents {
             .foregroundColor(Color.gray)
         }
     }
-    
+
     public static func formatFeedbackPhoneme(_ feedbackPhoneme: (Phoneme?, Phoneme?)) -> Text {
         // expected nil, pronounced not -> said extra phoneme
         // pronounced nil, expected not -> missed phoneme/incorrect
@@ -39,7 +39,7 @@ struct AttemptComponents {
         }
         return Text("")
     }
-    
+
     public static func feedbackView(word: Word, feedbackPhonemes: [(Phoneme?, Phoneme?)], xpGain: Int) -> some View {
         VStack {
             Text(word.text).font(.largeTitle)
@@ -60,14 +60,14 @@ struct AttemptComponents {
             }
         }
     }
-    
+
     public static func scoreView(score: Int) -> some View {
         VStack {
             Text("\(score)%")
                 .font(.headline)
                 .multilineTextAlignment(.center)
                 .padding(.bottom, 8)
-            
+
             ProgressView(value: Float(score) / 100.0)
                 .padding(.horizontal, 128)
         }
