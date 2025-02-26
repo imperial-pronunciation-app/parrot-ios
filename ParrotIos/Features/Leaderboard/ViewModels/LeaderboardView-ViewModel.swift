@@ -17,6 +17,7 @@ extension LeaderboardView {
         private(set) var daysProgress: (current: Int, total: Int) = (0, 7)
 
         private let parrotApi = ParrotApiService()
+        private let auth = AuthService.instance
 
         init() {
             Task {
@@ -44,6 +45,10 @@ extension LeaderboardView {
             } else {
                 "The week's almost up - keep pushing!"
             }
+        }
+
+        func currentUserId() -> Int {
+            return auth.userDetails!.id
         }
     }
 }
