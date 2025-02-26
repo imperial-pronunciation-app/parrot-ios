@@ -14,6 +14,7 @@ struct User: Codable, Equatable, Identifiable {
     let xp: Int
 
     enum CodingKeys: String, CodingKey {
+        case id
         case rank
         case displayName = "display_name"
         case xp
