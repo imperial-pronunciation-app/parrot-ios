@@ -12,6 +12,7 @@ extension CurriculumView {
         private(set) var curriculum: Curriculum?
         private(set) var errorMessage: String?
         private(set) var isLoading: Bool = true
+        private let authService = AuthService.instance
 
         private let parrotApi = ParrotApiService()
 
@@ -24,6 +25,10 @@ extension CurriculumView {
                 self.errorMessage = error.localizedDescription
             }
             self.isLoading = false
+        }
+        
+        func streaks() -> Int {
+            return authService.userDetails!.loginStreak
         }
     }
 }
