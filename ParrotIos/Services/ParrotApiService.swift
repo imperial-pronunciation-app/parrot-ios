@@ -81,7 +81,7 @@ class ParrotApiService: ParrotApiServiceProtocol {
 
         let response: AttemptResponse = try await webService.postMultiPartFormData(
             data: formData,
-            toURL: baseURL + "/word_of_day",
+            toURL: baseURL + "/word_of_day/attempts",
             headers: [generateAuthHeader(accessToken: accessToken)])
 
         return response
