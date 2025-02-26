@@ -1,5 +1,5 @@
 //
-//  NewLeaderboardView.swift
+//  LeaderboardView.swift
 //  ParrotIos
 //
 //  Created by James Watling on 25/02/2025.
