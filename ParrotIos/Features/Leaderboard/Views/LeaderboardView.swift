@@ -132,7 +132,7 @@ struct UserCard: View {
                 .font(.system(size: 35))
                 .frame(width: 40, height: 40)
             Text("\(user.username)")
-                .font(isCurrentUser ? .headline.bold() : .headline)
+                .fontWeight(isCurrentUser ? .bold : nil)
             Spacer()
             Text("\(user.xp)")
         }
