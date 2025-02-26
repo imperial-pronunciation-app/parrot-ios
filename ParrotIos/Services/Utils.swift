@@ -13,3 +13,7 @@ func getBaseUrl() -> String {
     }
     return "https://" + urlString
 }
+
+func generateAuthHeader(accessToken: String) -> HeaderElement {
+    return HeaderElement(key: "Authorization", value: "Bearer " + accessToken)
+}

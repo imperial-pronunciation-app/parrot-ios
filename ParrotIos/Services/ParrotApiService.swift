@@ -86,10 +86,6 @@ class ParrotApiService: ParrotApiServiceProtocol {
 
         return response
     }
-
-    private func generateAuthHeader(accessToken: String) -> HeaderElement {
-        return HeaderElement(key: "Authorization", value: "Bearer " + accessToken)
-    }
 }
 
 enum ParrotApiError: Error, LocalizedError, Equatable {

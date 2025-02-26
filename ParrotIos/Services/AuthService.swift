@@ -13,6 +13,7 @@ final class AuthService: AuthServiceProtocol {
     private let webService: WebServiceProtocol
     internal let baseURL = getBaseUrl()
     internal var isAuthenticated = false
+    private(set) var userDetails: UserDetails?
 
     init(webService: WebServiceProtocol = WebService()) {
         self.webService = webService
@@ -29,6 +30,10 @@ final class AuthService: AuthServiceProtocol {
                 parameters: parameters, toURL: "\(baseURL)/auth/jwt/login")
             try saveTokens(accessToken: response.accessToken)
             self.isAuthenticated = true
+            self.userDetails = try await webService.get(
+                fromURL: "\(baseURL)/users/me",
+                headers: [generateAuthHeader(accessToken: response.accessToken)]
+            )
             return
         } catch NetworkError.badStatus(let code, let data) {
             if code != 400 {
@@ -154,4 +159,14 @@ struct RegisterAPIErrorResponse: Codable {
 enum RegisterError: Error, Equatable {
     case userAlreadyExists
     case customError(String)
+}
+
+struct UserDetails: Codable {
+    let id: Int
+    let loginStreak: Int
+
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case loginStreak = "login_streak"
+    }
 }
