@@ -116,6 +116,7 @@ struct AuthServiceTests {
     func testRegisterSuccess() async throws {
         // Arrange
         let email = "new@example.com"
+        let displayName = "New User"
         let password = "newpass123"
 
         mockWebService.stub(method: WebServiceMethods.postData, toReturn: RegisterAPIResponse(
@@ -124,13 +125,13 @@ struct AuthServiceTests {
         ))
 
         // Act
-        try await authService.register(email: email, password: password)
+        try await authService.register(email: email, displayName: displayName, password: password)
 
         // Assert
         #expect(mockWebService.callCounts(for: WebServiceMethods.postData) == 1)
 
         // Verify the correct data was sent
-        let expectedBody: [String: Any] = ["email": email, "password": password]
+        let expectedBody: [String: Any] = ["email": email, "display_name": displayName, "password": password]
         let expectedData = try JSONSerialization.data(withJSONObject: expectedBody)
         mockWebService.assertCallArguments(for: WebServiceMethods.postData, matches: [expectedData, "\(authService.baseURL)/users/register", []])
     }
@@ -139,6 +140,7 @@ struct AuthServiceTests {
     func testRegisterFailureUserExists() async throws {
         // Arrange
         let email = "existing@example.com"
+        let displayName = "New User"
         let password = "pass123"
 
         mockWebService.stub(method: WebServiceMethods.postData, toThrow: NetworkError.badStatus(
@@ -149,7 +151,7 @@ struct AuthServiceTests {
 
         // Act & Assert
         async #expect(throws: RegisterError.userAlreadyExists) {
-            try await authService.register(email: email, password: password)
+            try await authService.register(email: email, displayName: displayName, password: password)
         }
     }
 }

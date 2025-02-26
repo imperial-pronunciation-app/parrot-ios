@@ -9,6 +9,12 @@ import Foundation
 
 struct User: Codable, Equatable {
     let rank: Int
-    let username: String
+    let displayName: String
     let xp: Int
+
+    enum CodingKeys: String, CodingKey {
+        case rank
+        case displayName = "display_name"
+        case xp
+    }
 }
