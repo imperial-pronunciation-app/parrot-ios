@@ -24,8 +24,8 @@ struct LeaderboardView: View {
                 .padding(.horizontal)
                 ScrollView {
                     VStack {
-                        ForEach(viewModel.currentUsers.indices, id: \.self) { index in
-                            UserCard(user: viewModel.currentUsers[index], isCurrentUser: false)
+                        ForEach(viewModel.currentUsers) { user in
+                            UserCard(user: user, isCurrentUser: user.id == viewModel.currentUserId())
                         }
                     }
                     .padding(.horizontal)
@@ -128,7 +128,7 @@ struct UserCard: View {
                 .foregroundStyle(.gray)
                 .frame(width: 20)
             Image(systemName: "person.circle.fill")
-                .foregroundStyle(Color(UIColor.systemGray4))
+                .foregroundStyle(.white, Color(UIColor.systemGray3))
                 .font(.system(size: 35))
                 .frame(width: 40, height: 40)
             Text("\(user.username)")
