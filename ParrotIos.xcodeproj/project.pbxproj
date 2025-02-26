@@ -63,7 +63,7 @@
 		D13443362D5D0F7000F9B0A7 /* Unit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unit.swift; sourceTree = "<group>"; };
 		D13443382D5D0F7000F9B0A7 /* CurriculumView-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CurriculumView-ViewModel.swift"; sourceTree = "<group>"; };
 		D134433A2D5D0F7000F9B0A7 /* CurriculumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurriculumView.swift; sourceTree = "<group>"; };
-		D134433B2D5D0F7000F9B0A7 /* LessonDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonDetailView.swift; sourceTree = "<group>"; };
+		D134433B2D5D0F7000F9B0A7 /* LessonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonView.swift; sourceTree = "<group>"; };
 		D134433C2D5D0F7000F9B0A7 /* UnitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitView.swift; sourceTree = "<group>"; };
 		D13443402D5D0F7000F9B0A7 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		D13443422D5D0F7000F9B0A7 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
@@ -337,7 +337,7 @@
 			isa = PBXGroup;
 			children = (
 				D134433A2D5D0F7000F9B0A7 /* CurriculumView.swift */,
-				D134433B2D5D0F7000F9B0A7 /* LessonDetailView.swift */,
+				D134433B2D5D0F7000F9B0A7 /* LessonView.swift */,
 				D134433C2D5D0F7000F9B0A7 /* UnitView.swift */,
 			);
 			path = Views;
