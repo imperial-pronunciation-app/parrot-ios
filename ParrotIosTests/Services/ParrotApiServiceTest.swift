@@ -81,8 +81,8 @@ struct ParrotApiServiceTests {
         mockAuthService.stub(method: AuthServiceMethods.getAccessToken, toReturn: testAccessToken)
         let expectedCurriculum = Curriculum(units: [
             Unit(id: 1, name: "test", description: "desc", lessons: [
-                Lesson(id: 1, title: "lesson", firstExerciseID: 1, isCompleted: false)
-            ], recapLesson: nil)
+                Lesson(id: 1, title: "lesson", firstExerciseID: 1, isCompleted: false, isLocked: false)
+            ], recapLesson: nil, isCompleted: false, isLocked: false)
         ])
         mockWebService.stub(method: WebServiceMethods.get, toReturn: expectedCurriculum)
 

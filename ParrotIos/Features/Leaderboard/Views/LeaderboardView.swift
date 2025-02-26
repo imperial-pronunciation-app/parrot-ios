@@ -18,7 +18,7 @@ struct LeaderboardView: View {
                         .bold()
                     Text("\(viewModel.league.capitalized) League")
                         .foregroundStyle(.gray)
-                    PodiumView(users: viewModel.topUsers)
+                    PodiumView(users: viewModel.topUsers, currentUserId: viewModel.currentUserId())
                         .padding(.vertical, 16)
                 }
                 .padding(.horizontal)
@@ -44,14 +44,15 @@ struct LeaderboardView: View {
 
 struct PodiumView: View {
     let users: [User]
+    let currentUserId: Int
     var body: some View {
         if users.count < 3 {
             Text("Not enough users for a podium ☹️")
         } else {
             HStack(alignment: .bottom, spacing: 8) {
-                PodiumColView(user: users[1], rank: 2)
-                PodiumColView(user: users[0], rank: 1)
-                PodiumColView(user: users[2], rank: 3)
+                PodiumColView(user: users[1], rank: 2, isCurrentUser: users[1].id == currentUserId)
+                PodiumColView(user: users[0], rank: 1, isCurrentUser: users[0].id == currentUserId)
+                PodiumColView(user: users[2], rank: 3, isCurrentUser: users[2].id == currentUserId)
             }
         }
     }
@@ -60,6 +61,7 @@ struct PodiumView: View {
 struct PodiumColView: View {
     let user: User
     let rank: Int
+    let isCurrentUser: Bool
 
     func colourFor(rank: Int) -> Color {
         return switch rank {
@@ -100,7 +102,8 @@ struct PodiumColView: View {
                 .foregroundStyle(.gray)
             ZStack(alignment: .top) {
                 RoundedRectangle(cornerRadius: 10)
-                    .fill(Color(UIColor.systemGray6))
+                    .fill(isCurrentUser ? Color.accentColor.opacity(0.15) : Color(UIColor.systemGray6))
+                    .stroke(isCurrentUser ? Color.accentColor : .clear, lineWidth: 1)
                     .frame(width: 110, height: heightFor(rank: user.rank))
                 ZStack {
                     Circle()
@@ -127,6 +130,7 @@ struct UserCard: View {
             Text("\(user.rank)")
                 .foregroundStyle(.gray)
                 .frame(width: 20)
+                .fontWeight(isCurrentUser ? .bold : nil)
             Image(systemName: "person.circle.fill")
                 .foregroundStyle(.white, Color(UIColor.systemGray3))
                 .font(.system(size: 35))
@@ -135,6 +139,7 @@ struct UserCard: View {
                 .fontWeight(isCurrentUser ? .bold : nil)
             Spacer()
             Text("\(user.xp)")
+                .fontWeight(isCurrentUser ? .bold : nil)
         }
         .padding(12)
         .frame(maxWidth: .infinity)

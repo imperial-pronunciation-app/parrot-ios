@@ -11,25 +11,25 @@ struct Lesson: Identifiable, Codable, Equatable {
     let title: String
     let firstExerciseID: Int
     let isCompleted: Bool
+    let isLocked: Bool
+    let stars: Int?
 
     private enum CodingKeys: String, CodingKey {
-        case id, title, firstExerciseID = "first_exercise_id", isCompleted = "is_completed"
-    }
-
-    // For JSON
-    init(from decoder: any Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.id = try container.decode(Int.self, forKey: .id)
-        self.title = try container.decode(String.self, forKey: .title)
-        self.firstExerciseID = try container.decode(Int.self, forKey: .firstExerciseID)
-        self.isCompleted = try container.decode(Bool.self, forKey: .isCompleted)
+        case id
+        case title
+        case firstExerciseID = "first_exercise_id"
+        case isCompleted = "is_completed"
+        case isLocked = "is_locked"
+        case stars
     }
 
     // Default
-    init(id: Int, title: String, firstExerciseID: Int, isCompleted: Bool) {
+    init(id: Int, title: String, firstExerciseID: Int, isCompleted: Bool, isLocked: Bool, stars: Int? = nil) {
         self.id = id
         self.title = title
         self.firstExerciseID = firstExerciseID
         self.isCompleted = isCompleted
+        self.isLocked = isLocked
+        self.stars = stars
     }
 }
