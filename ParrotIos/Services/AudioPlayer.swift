@@ -15,6 +15,7 @@ class AudioPlayer: AudioPlayerProtocol {
     }
 
     func play(word: String, rate: Float, language: String = "en-US") {
+        try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .voicePrompt, options: [])
         let utterance = AVSpeechUtterance(string: word)
         if let maleVoice = AVSpeechSynthesisVoice(identifier: AVSpeechSynthesisVoice.speechVoices().first(
             where: { $0.gender == .male && $0.language == "en-US" })?.identifier ?? "") {
