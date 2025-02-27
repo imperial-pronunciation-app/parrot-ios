@@ -51,10 +51,9 @@ struct UnitView: View {
                 }
                 if viewModel.isExpanded && !unit.isLocked {
                     ForEach(unit.lessons!) { lesson in
-                        LessonView(
+                        ListedLessonView(
                             id: lesson.id,
                             title: lesson.title,
-                            firstExerciseID: lesson.firstExerciseID,
                             isCompleted: lesson.isCompleted,
                             isLocked: lesson.isLocked,
                             stars: lesson.stars
@@ -62,10 +61,9 @@ struct UnitView: View {
                             .padding(.top, 8)
                     }
                     if let lesson = unit.recapLesson {
-                        LessonView(
+                        ListedLessonView(
                             id: lesson.id,
                             title: lesson.title,
-                            firstExerciseID: lesson.firstExerciseID,
                             isCompleted: lesson.isCompleted,
                             isLocked: lesson.isLocked,
                             stars: lesson.stars,
@@ -73,7 +71,7 @@ struct UnitView: View {
                         )
                             .padding(.top, 8)
                     } else {
-                        LessonView(title: "Recap", isCompleted: false, isLocked: true, isRecap: true)
+                        ListedLessonView(title: "Recap", isCompleted: false, isLocked: true, isRecap: true)
                             .padding(.top, 8)
                     }
                 }

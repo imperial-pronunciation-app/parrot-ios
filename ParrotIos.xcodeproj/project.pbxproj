@@ -63,7 +63,7 @@
 		D13443362D5D0F7000F9B0A7 /* Unit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unit.swift; sourceTree = "<group>"; };
 		D13443382D5D0F7000F9B0A7 /* CurriculumView-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CurriculumView-ViewModel.swift"; sourceTree = "<group>"; };
 		D134433A2D5D0F7000F9B0A7 /* CurriculumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurriculumView.swift; sourceTree = "<group>"; };
-		D134433B2D5D0F7000F9B0A7 /* LessonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonView.swift; sourceTree = "<group>"; };
+		D134433B2D5D0F7000F9B0A7 /* ListedLessonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListedLessonView.swift; sourceTree = "<group>"; };
 		D134433C2D5D0F7000F9B0A7 /* UnitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitView.swift; sourceTree = "<group>"; };
 		D13443402D5D0F7000F9B0A7 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		D13443422D5D0F7000F9B0A7 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
@@ -94,7 +94,7 @@
 		D1B300812D5D170700C3F090 /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardView.swift; sourceTree = "<group>"; };
 		D1B300842D5D170700C3F090 /* NavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationView.swift; sourceTree = "<group>"; };
 		D1B300872D5D170700C3F090 /* Curriculum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Curriculum.swift; sourceTree = "<group>"; };
-		D1B300882D5D170700C3F090 /* Lesson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lesson.swift; sourceTree = "<group>"; };
+		D1B300882D5D170700C3F090 /* ListedLesson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListedLesson.swift; sourceTree = "<group>"; };
 		D1B300892D5D170700C3F090 /* Unit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unit.swift; sourceTree = "<group>"; };
 		D1B3008B2D5D170700C3F090 /* CurriculumView-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CurriculumView-ViewModel.swift"; sourceTree = "<group>"; };
 		D1B3008D2D5D170700C3F090 /* CurriculumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurriculumView.swift; sourceTree = "<group>"; };
@@ -337,7 +337,7 @@
 			isa = PBXGroup;
 			children = (
 				D134433A2D5D0F7000F9B0A7 /* CurriculumView.swift */,
-				D134433B2D5D0F7000F9B0A7 /* LessonView.swift */,
+				D134433B2D5D0F7000F9B0A7 /* ListedLessonView.swift */,
 				D134433C2D5D0F7000F9B0A7 /* UnitView.swift */,
 			);
 			path = Views;
@@ -521,7 +521,7 @@
 			isa = PBXGroup;
 			children = (
 				D1B300872D5D170700C3F090 /* Curriculum.swift */,
-				D1B300882D5D170700C3F090 /* Lesson.swift */,
+				D1B300882D5D170700C3F090 /* ListedLesson.swift */,
 				D1B300892D5D170700C3F090 /* Unit.swift */,
 			);
 			path = Models;

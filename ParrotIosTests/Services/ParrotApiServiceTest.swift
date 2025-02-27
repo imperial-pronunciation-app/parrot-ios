@@ -81,7 +81,7 @@ struct ParrotApiServiceTests {
         mockAuthService.stub(method: AuthServiceMethods.getAccessToken, toReturn: testAccessToken)
         let expectedCurriculum = Curriculum(units: [
             Unit(id: 1, name: "test", description: "desc", lessons: [
-                Lesson(id: 1, title: "lesson", firstExerciseID: 1, isCompleted: false, isLocked: false)
+                ListedLesson(id: 1, title: "lesson", isCompleted: false, isLocked: false)
             ], recapLesson: nil, isCompleted: false, isLocked: false)
         ])
         mockWebService.stub(method: WebServiceMethods.get, toReturn: expectedCurriculum)
@@ -102,7 +102,7 @@ struct ParrotApiServiceTests {
     func testPostExerciseAttemptSuccess() async throws {
         // Arrange
         mockAuthService.stub(method: AuthServiceMethods.getAccessToken, toReturn: testAccessToken)
-        let exercise = Exercise(id: 1, word: Word(id: 1, text: "a", phonemes: [Phoneme(id: 1, ipa: "a", respelling: "a")]), previousExerciseID: nil, nextExerciseID: nil)
+        let exercise = Exercise(id: 1, word: Word(id: 1, text: "a", phonemes: [Phoneme(id: 1, ipa: "a", respelling: "a")]))
         let recordingURL = FileManager.default.temporaryDirectory.appendingPathComponent("test_recording.wav")
         let testAudioData = Data("test audio data".utf8)
         try testAudioData.write(to: recordingURL)
