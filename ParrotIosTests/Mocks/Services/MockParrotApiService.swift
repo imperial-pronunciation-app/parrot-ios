@@ -12,7 +12,7 @@ import Foundation
 struct ParrotApiServiceMethods {
     static let getLeaderboard = "getLeaderboard"
     static let getCurriculum = "getCurriculum"
-    static let getExercise = "getExercise"
+    static let getLesson = "getLesson"
     static let postExerciseAttempt = "postExerciseAttempt"
     static let getWordOfTheDay = "getWordOfTheDay"
     static let postWordOfTheDayAttempt = "postWordOfTheDayAttempt"
@@ -35,9 +35,9 @@ class MockParrotApiService: ParrotApiServiceProtocol, CallTracking {
         return try getReturnValue(for: method, callIndex: callCounts[method]! - 1)
     }
 
-    func getExercise(exerciseId: Int) async throws -> ParrotIos.Exercise {
-        let method = ParrotApiServiceMethods.getExercise
-        recordCall(for: method, with: [exerciseId])
+    func getLesson(lessonId: Int) async throws -> ParrotIos.Lesson {
+        let method = ParrotApiServiceMethods.getLesson
+        recordCall(for: method, with: [lessonId])
         return try getReturnValue(for: method, callIndex: callCounts[method]! - 1)
     }
 
