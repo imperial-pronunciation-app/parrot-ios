@@ -51,7 +51,7 @@
 		D13443202D5D0F7000F9B0A7 /* Phoneme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Phoneme.swift; sourceTree = "<group>"; };
 		D13443212D5D0F7000F9B0A7 /* Word.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Word.swift; sourceTree = "<group>"; };
 		D13443232D5D0F7000F9B0A7 /* AttemptView-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AttemptView-ViewModel.swift"; sourceTree = "<group>"; };
-		D13443252D5D0F7000F9B0A7 /* AttemptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttemptView.swift; sourceTree = "<group>"; };
+		D13443252D5D0F7000F9B0A7 /* ExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseView.swift; sourceTree = "<group>"; };
 		D13443282D5D0F7000F9B0A7 /* Leaderboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Leaderboard.swift; sourceTree = "<group>"; };
 		D13443292D5D0F7000F9B0A7 /* LeaderboardResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardResponse.swift; sourceTree = "<group>"; };
 		D134432A2D5D0F7000F9B0A7 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -248,7 +248,7 @@
 		D13443262D5D0F7000F9B0A7 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				D13443252D5D0F7000F9B0A7 /* AttemptView.swift */,
+				D13443252D5D0F7000F9B0A7 /* ExerciseView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
