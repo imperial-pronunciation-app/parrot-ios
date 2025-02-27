@@ -26,7 +26,7 @@ extension CurriculumView {
             }
             self.isLoading = false
         }
-        
+
         func streaks() -> Int {
             return authService.userDetails!.loginStreak
         }
