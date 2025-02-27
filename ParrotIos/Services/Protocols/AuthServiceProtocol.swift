@@ -13,7 +13,7 @@ protocol AuthServiceProtocol {
 
     func logout() async throws
 
-    func register(email: String, password: String) async throws
+    func register(email: String, displayName: String, password: String) async throws
 
     func saveTokens(accessToken: String) throws
 

@@ -70,9 +70,10 @@ final class AuthService: AuthServiceProtocol {
         }
     }
 
-    func register(email: String, password: String) async throws {
+    func register(email: String, displayName: String, password: String) async throws {
         let body: [String: Any] = [
             "email": email,
+            "display_name": displayName,
             "password": password
             // TODO: include the optional fields such as super_user?
         ]

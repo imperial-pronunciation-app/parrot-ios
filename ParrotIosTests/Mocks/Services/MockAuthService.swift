@@ -30,8 +30,8 @@ class MockAuthService: AuthServiceProtocol, CallTracking {
         recordCall(for: AuthServiceMethods.logout)
     }
 
-    func register(email: String, password: String) async throws {
-        recordCall(for: AuthServiceMethods.register, with: [email, password])
+    func register(email: String, displayName: String, password: String) async throws {
+        recordCall(for: AuthServiceMethods.register, with: [email, displayName, password])
     }
 
     func saveTokens(accessToken: String) throws {

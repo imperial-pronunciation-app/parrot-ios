@@ -11,6 +11,7 @@ struct SignupView: View {
 
     @State private var viewModel = ViewModel()
     @State private var emailField = ""
+    @State private var displayNameField = ""
     @State private var passwordField = ""
     @State private var confirmPasswordField = ""
     @State private var succeed = false
@@ -21,6 +22,9 @@ struct SignupView: View {
                 TextField("Email", text: $emailField)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .autocapitalization(.none)
+                    .padding(.bottom, 10)
+                TextField("Display Name", text: $displayNameField)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding(.bottom, 10)
                 SecureField("Password", text: $passwordField)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -33,6 +37,7 @@ struct SignupView: View {
                     Task {
                         await viewModel.register(
                             email: emailField,
+                            displayName: displayNameField,
                             password: passwordField,
                             confirmPassword: confirmPasswordField,
                             succeed: $succeed)

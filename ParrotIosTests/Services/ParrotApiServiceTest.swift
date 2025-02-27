@@ -28,7 +28,7 @@ struct ParrotApiServiceTests {
     @Test("Get leaderboard returns success with valid response")
     func testGetLeaderboardSuccess() async throws {
         // Arrange
-        let expectedResponse = LeaderboardResponse(league: "test", daysUntilEnd: 2, leaders: [User(id: 1, rank: 1, username: "a", xp: 1)], userPosition: [User(id: 1, rank: 1, username: "a", xp: 1)])
+        let expectedResponse = LeaderboardResponse(league: "test", daysUntilEnd: 2, leaders: [User(id: 1, rank: 1, displayName: "a", xp: 1)], userPosition: [User(id: 1, rank: 1, displayName: "a", xp: 1)])
         mockAuthService.stub(method: AuthServiceMethods.getAccessToken, toReturn: testAccessToken)
         mockWebService.stub(method: WebServiceMethods.get, toReturn: expectedResponse)
 
