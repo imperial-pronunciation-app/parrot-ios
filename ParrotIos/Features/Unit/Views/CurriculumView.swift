@@ -11,39 +11,41 @@ struct CurriculumView: View {
     let viewModel = ViewModel()
 
     var body: some View {
-        ScrollView {
-            VStack {
-                if viewModel.isLoading {
-                    UtilComponents.loadingView
-                } else if let error = viewModel.errorMessage {
-                    UtilComponents.errorView(errorMessage: error)
-                } else {
-                    HStack {
-                        Image("en-US")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 24, height: 24)
-                        Text("Curriculum")
-                            .font(.headline)
-                        Spacer()
+        NavigationStack {
+            ScrollView {
+                VStack {
+                    if viewModel.isLoading {
+                        UtilComponents.loadingView
+                    } else if let error = viewModel.errorMessage {
+                        UtilComponents.errorView(errorMessage: error)
+                    } else {
                         HStack {
-                            Image(systemName: "flame.fill")
-                                .foregroundColor(.orange)
-                            Text(String(viewModel.streaks()))
+                            Image("en-US")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 24, height: 24)
+                            Text("Curriculum")
                                 .font(.headline)
+                            Spacer()
+                            HStack {
+                                Image(systemName: "flame.fill")
+                                    .foregroundColor(.orange)
+                                Text(String(viewModel.streaks()))
+                                    .font(.headline)
+                            }
+                        }
+                        .padding(.bottom, 16)
+
+                        ForEach(Array(viewModel.curriculum!.units.enumerated()), id: \.element.id) { index, unit in
+                            let isLast = index == viewModel.curriculum!.units.count - 1
+                            let isNextCompleted = !isLast &&
+                                                  viewModel.curriculum!.units[index + 1].isCompleted
+                            UnitView(unit: unit, isLast: isLast, isNextCompleted: isNextCompleted)
                         }
                     }
-                    .padding(.bottom, 16)
-
-                    ForEach(Array(viewModel.curriculum!.units.enumerated()), id: \.element.id) { index, unit in
-                        let isLast = index == viewModel.curriculum!.units.count - 1
-                        let isNextCompleted = !isLast &&
-                                              viewModel.curriculum!.units[index + 1].isCompleted
-                        UnitView(unit: unit, isLast: isLast, isNextCompleted: isNextCompleted)
-                    }
                 }
+                .padding()
             }
-            .padding()
         }.onAppear {
             Task {
                 await viewModel.loadCurriculum()
