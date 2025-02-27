@@ -15,8 +15,16 @@ struct LessonView: View {
     let isLocked: Bool
     let isRecap: Bool
     let stars: Int?
-    
-    init(id: Int? = nil, title: String, firstExerciseID: Int? = nil, isCompleted: Bool, isLocked: Bool, stars: Int? = nil, isRecap: Bool = false) {
+
+    init(
+        id: Int? = nil,
+        title: String,
+        firstExerciseID: Int? = nil,
+        isCompleted: Bool,
+        isLocked: Bool,
+        stars: Int? = nil,
+        isRecap: Bool = false
+    ) {
         self.id = id
         self.title = title
         self.firstExerciseID = firstExerciseID

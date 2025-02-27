@@ -10,10 +10,9 @@ extension UnitView {
     @Observable
     class ViewModel {
         private(set) var isExpanded: Bool = false
-        
+
         func expandOrCollapse() {
             isExpanded.toggle()
         }
     }
 }
-
