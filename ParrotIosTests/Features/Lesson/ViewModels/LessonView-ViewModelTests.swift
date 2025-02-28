@@ -14,7 +14,6 @@ import Foundation
 struct LessonView_ViewModelTests {
     var mockParrotApiService: (ParrotApiServiceProtocol & CallTracking) = MockParrotApiService() as (ParrotApiServiceProtocol & CallTracking)
 
-    var viewModel: LessonView.ViewModel!
     let exercise1 = Exercise(id: 1, word: Word(id: 2, text: "a", phonemes: [Phoneme(id: 0, ipa: "a", respelling: "a")]))
     let exercise2 = Exercise(id: 2, word: Word(id: 3, text: "b", phonemes: [Phoneme(id: 1, ipa: "b", respelling: "b")]))
     var lesson: Lesson {
@@ -22,17 +21,13 @@ struct LessonView_ViewModelTests {
     }
 
     init() {
-        viewModel = LessonView.ViewModel(lessonId: 0, parrotApi: mockParrotApiService)
+        mockParrotApiService.stub(method: ParrotApiServiceMethods.getLesson, toReturn: lesson)
     }
 
-    @Test("Fetch exercise retrieves the correct exercise")
+    @Test("Fetch lesson retrieves the correct lesson")
     func testFetchLesson() async throws {
-        // Setup
-        mockParrotApiService.stub(method: ParrotApiServiceMethods.getLesson, toReturn: lesson)
-
-        // Act
+        let viewModel = LessonView.ViewModel(lessonId: 0, parrotApi: mockParrotApiService)
         await viewModel.fetchLesson(withID: lesson.id)
-
         // Assert
         #expect(viewModel.lesson! == lesson)
         #expect(viewModel.totalExercises == 2)

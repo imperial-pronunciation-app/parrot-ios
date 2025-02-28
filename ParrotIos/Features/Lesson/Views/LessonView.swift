@@ -36,6 +36,10 @@ struct LessonView: View {
                 }
                 .navigationTitle(viewModel.lesson!.title)
             }
+        }.onAppear {
+            Task {
+                await viewModel.loadLesson()
+            }
         }
     }
 }

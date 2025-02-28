@@ -9,6 +9,7 @@ import SwiftUI
 extension LessonView {
     @Observable
     class ViewModel {
+        private let lessonId: Int
         private(set) var lesson: Lesson?
         private(set) var exerciseIndex: Int?
         var totalExercises: Int? {
@@ -33,10 +34,12 @@ extension LessonView {
             parrotApi: ParrotApiServiceProtocol = ParrotApiService(
                 webService: WebService(), authService: AuthService())
         ) {
+            self.lessonId = lessonId
             self.parrotApi = parrotApi
-            Task {
-                await fetchLesson(withID: lessonId)
-            }
+        }
+        
+        func loadLesson() async {
+            await fetchLesson(withID: lessonId)
         }
 
         func fetchLesson(withID id: Int) async {
