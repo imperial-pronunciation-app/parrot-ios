@@ -12,7 +12,7 @@ class ParrotApiService: ParrotApiServiceProtocol {
     private let webService: WebServiceProtocol
     private let authService: AuthServiceProtocol
 
-    init(webService: WebServiceProtocol = WebService(), authService: AuthServiceProtocol = AuthService()) {
+    init(webService: WebServiceProtocol = WebService(), authService: AuthServiceProtocol = AuthService.instance) {
         self.webService = webService
         self.authService = authService
     }

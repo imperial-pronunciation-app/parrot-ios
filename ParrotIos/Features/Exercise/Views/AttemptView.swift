@@ -29,13 +29,15 @@ struct AttemptView: View {
                     if let score = viewModel.score,
                        let feedbackPhonemes = viewModel.feedbackPhonemes,
                        let xpGain = viewModel.xpGain {
-                        AttemptComponents.scoreView(score: score)
-                        AttemptComponents.feedbackView(
+                        ScoreView(score: score)
+                            .padding(.horizontal, 128)
+                        FeedbackView(
+                            score: score,
                             word: exercise.word,
                             feedbackPhonemes: feedbackPhonemes,
                             xpGain: xpGain)
                     } else {
-                        AttemptComponents.wordView(word: exercise.word)
+                        WordView(word: exercise.word)
                     }
                 }
                 Spacer()

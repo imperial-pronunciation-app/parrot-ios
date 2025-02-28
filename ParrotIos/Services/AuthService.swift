@@ -9,14 +9,18 @@ import Foundation
 
 final class AuthService: AuthServiceProtocol {
 
-    static let instance = AuthService()
+    static var instance = AuthService()
     private let webService: WebServiceProtocol
     internal let baseURL = getBaseUrl()
     internal var isAuthenticated = false
     private(set) var userDetails: UserDetails?
 
-    init(webService: WebServiceProtocol = WebService()) {
+    private init(webService: WebServiceProtocol = WebService()) {
         self.webService = webService
+    }
+
+    static func reinit(webService: WebServiceProtocol) {
+        self.instance = AuthService(webService: webService)
     }
 
     func login(username: String, password: String) async throws {

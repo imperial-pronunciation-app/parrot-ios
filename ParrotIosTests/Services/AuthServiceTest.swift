@@ -17,7 +17,8 @@ struct AuthServiceTests {
 
     init() {
         mockWebService.clear()
-        authService = AuthService(webService: mockWebService)
+        AuthService.reinit(webService: mockWebService)
+        authService = AuthService.instance
         KeychainManager.instance.deleteToken(forKey: "access_token")
     }
 

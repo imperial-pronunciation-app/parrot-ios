@@ -1,0 +1,113 @@
+//
+//  DetailedFeedbackView.swift
+//  ParrotIos
+//
+//  Created by James Watling on 27/02/2025.
+//
+
+import SwiftUI
+
+struct DetailedFeedbackView: View {
+    let score: Int
+    let phonemes: [(Phoneme?, Phoneme?)]
+
+    var body: some View {
+        VStack {
+            ScoreView(score: score)
+                .padding(.horizontal, 84)
+            PhonemeFeedbackView(feedbackPhonemes: phonemes, underline: false)
+            HStack {
+                VStack(alignment: .leading, spacing: 12) {
+                    ForEach(phonemes.indices) { phonemesIdx in
+                        PhonemeDetailView(phonemes: phonemes[phonemesIdx])
+                    }
+                }
+                Spacer()
+            }
+            .padding(.horizontal)
+            Spacer()
+        }
+    }
+}
+
+struct PhonemeDetailView: View {
+    let phonemes: (Phoneme?, Phoneme?)
+
+    var body: some View {
+        if let expected = phonemes.0 {
+            if let pronounced = phonemes.1 {
+                if expected == pronounced {
+                    PhonemeMiniCard(phoneme: expected, missing: false)
+                } else {
+                    HStack {
+                        PhonemeMiniCard(phoneme: expected, missing: false)
+                        Text("You said")
+                            .foregroundStyle(.red)
+                        PhonemeMiniCard(phoneme: pronounced, missing: false)
+                    }
+                }
+            } else {
+                HStack {
+                    PhonemeMiniCard(phoneme: expected, missing: false)
+                    Text("You missed this sound")
+                        .foregroundStyle(.red)
+                }
+            }
+        } else if let pronounced = phonemes.1 {
+            HStack {
+                PhonemeMiniCard(phoneme: pronounced, missing: true)
+                HStack(spacing: 4) {
+                    Image(systemName: "arrow.turn.left.down")
+                        .foregroundStyle(.orange)
+                    Text("You added this sound")
+                        .foregroundStyle(.orange)
+                }
+            }
+        } else {
+            Spacer()
+                .frame(width: 0, height: 0)
+        }
+    }
+}
+
+struct PhonemeMiniCard: View {
+    let audioPlayer = AudioPlayer()
+    let phoneme: Phoneme
+    let missing: Bool
+
+    var body: some View {
+        HStack(spacing: 2) {
+            Image(systemName: "speaker.wave.2")
+                .foregroundStyle(.gray)
+                .font(.footnote)
+            Text(phoneme.respelling)
+                .foregroundStyle(missing ? .gray : .primary)
+        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 6)
+        .frame(minWidth: 60)
+        .cornerRadius(8)
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .inset(by: 1) // inset value should be same as lineWidth in .stroke
+                .strokeBorder(
+                    Color(UIColor.systemGray4),
+                    style: missing ? StrokeStyle(lineWidth: 1, dash: [5]) : StrokeStyle(lineWidth: 1)
+                )
+        )
+        .onTapGesture {
+            audioPlayer.play(word: phoneme.respelling, rate: 0.5)
+        }
+    }
+}
+
+#Preview {
+    DetailedFeedbackView(
+        score: 80,
+        phonemes: [
+            (Phoneme(id: 9, ipa: "s", respelling: "s"), Phoneme(id: 3, ipa: "h", respelling: "h")),
+            (Phoneme(id: 30, ipa: "ɑː", respelling: "ah"), Phoneme(id: 30, ipa: "ɑː", respelling: "ah")),
+            (nil, Phoneme(id: 16, ipa: "d", respelling: "d")),
+            (Phoneme(id: 23, ipa: "t", respelling: "t"), nil)
+        ])
+}

@@ -15,7 +15,7 @@ extension SignupView {
         private(set) var isAuthenticated = false
         private(set) var errorMessage: String?
 
-        private let authService = AuthService()
+        private let authService = AuthService.instance
 
         func register(
             email: String,

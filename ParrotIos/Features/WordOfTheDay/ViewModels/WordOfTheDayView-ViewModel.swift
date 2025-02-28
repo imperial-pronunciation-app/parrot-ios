@@ -28,7 +28,7 @@ extension WordOfTheDayView {
         init(
             audioRecoder: AudioRecorderProtocol = AudioRecorder(),
             parrotApi: ParrotApiServiceProtocol = ParrotApiService(
-                webService: WebService(), authService: AuthService())
+                webService: WebService(), authService: AuthService.instance)
         ) {
             self.audioRecorder = audioRecoder
             self.parrotApi = parrotApi
