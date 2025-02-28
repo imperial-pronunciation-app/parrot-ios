@@ -21,22 +21,37 @@ extension ExerciseView {
         private(set) var disableRecording: Bool = false
         private(set) var errorMessage: String?
 
-        private(set) var exercise: Exercise
-        private(set) var score: Int?
-        private(set) var feedbackPhonemes: [(Phoneme?, Phoneme?)]?
-        private(set) var xpGain: Int?
+        private(set) var exerciseId: Int
+        private(set) var exercise: Exercise?
+        private(set) var lastAttempt: AttemptResponse?
+        var isCompleted: Bool {
+            return (exercise != nil && exercise!.isCompleted) ||
+                (lastAttempt != nil && lastAttempt!.exerciseIsCompleted)
+        }
 
         init(
-            exercise: Exercise,
+            exerciseId: Int,
             audioRecoder: AudioRecorderProtocol = AudioRecorder(),
             audioPlayer: AudioPlayerProtocol = AudioPlayer(),
             parrotApi: ParrotApiServiceProtocol = ParrotApiService(
                 webService: WebService(), authService: AuthService())
         ) {
-            self.exercise = exercise
+            self.exerciseId = exerciseId
             self.audioRecorder = audioRecoder
             self.audioPlayer = audioPlayer
             self.parrotApi = parrotApi
+        }
+
+        func loadExercise() async {
+            isLoading = true
+            errorMessage = nil
+            do {
+                self.exercise = try await parrotApi.getExercise(exerciseId: exerciseId)
+            } catch {
+                errorMessage = error.localizedDescription
+            }
+
+            isLoading = false
         }
 
         func startRecording() {
@@ -59,12 +74,9 @@ extension ExerciseView {
             errorMessage = nil
 
             do {
-                let attemptResponse = try await parrotApi.postExerciseAttempt(
+                self.lastAttempt = try await parrotApi.postExerciseAttempt(
                     recordingURL: recordingURL,
-                    exercise: exercise)
-                self.score = attemptResponse.score
-                self.feedbackPhonemes = attemptResponse.phonemes
-                self.xpGain = attemptResponse.xpGain
+                    exercise: exercise!)
             } catch {
                 errorMessage = error.localizedDescription
             }
@@ -80,7 +92,7 @@ extension ExerciseView {
         }
 
         func playWord() {
-            let word: String = self.exercise.word.text
+            let word: String = self.exercise!.word.text
             isPlaying = true
             // Rate currently set so that the automated voice speaks slowly
             audioPlayer.play(word: word, rate: 0.5)
