@@ -18,7 +18,7 @@ struct DetailedFeedbackView: View {
             PhonemeFeedbackView(feedbackPhonemes: phonemes, underline: false)
             HStack {
                 VStack(alignment: .leading, spacing: 12) {
-                    ForEach(phonemes.indices) { phonemesIdx in
+                    ForEach(phonemes.indices, id: \.self) { phonemesIdx in
                         PhonemeDetailView(phonemes: phonemes[phonemesIdx])
                     }
                 }

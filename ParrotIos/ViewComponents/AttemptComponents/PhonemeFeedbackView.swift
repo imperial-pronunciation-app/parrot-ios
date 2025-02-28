@@ -13,7 +13,7 @@ struct PhonemeFeedbackView: View {
 
     public var body: some View {
         HStack {
-            ForEach(feedbackPhonemes.indices) { feedbackPhonemeId in
+            ForEach(feedbackPhonemes.indices, id: \.self) { feedbackPhonemeId in
                 let feedbackPhoneme = feedbackPhonemes[feedbackPhonemeId]
                 if let expected = feedbackPhoneme.0 {
                     if let pronounced = feedbackPhoneme.1 {
