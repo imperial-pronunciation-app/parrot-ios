@@ -51,9 +51,6 @@ struct LoginView: View {
                 }
             }
             .padding(.horizontal, 32)
-            .navigationDestination(isPresented: $succeed) {
-                NavigationView().navigationBarBackButtonHidden(true)
-            }
         }
         .navigationBarBackButtonHidden()
         .onAppear { self.didAppear?(self) }

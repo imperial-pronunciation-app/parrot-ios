@@ -58,9 +58,6 @@ struct SignupView: View {
                 }
             }
             .padding()
-            .navigationDestination(isPresented: $succeed) {
-                NavigationView().navigationBarBackButtonHidden(true)
-            }
         }
         .navigationBarBackButtonHidden()
     }

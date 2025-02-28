@@ -10,9 +10,15 @@ import SwiftData
 
 @main
 struct ParrotIosApp: App {
+    @StateObject private var authService = AuthService.instance
+
     var body: some Scene {
         WindowGroup {
-            LoginView()
+            if authService.isAuthenticated {
+                NavigationView()
+            } else {
+                LoginView()
+            }
         }
     }
 }

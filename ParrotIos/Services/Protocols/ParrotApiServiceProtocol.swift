@@ -13,7 +13,7 @@ protocol ParrotApiServiceProtocol {
 
     func getCurriculum() async throws -> Curriculum
 
-    func getExercise(exerciseId: Int) async throws -> Exercise
+    func getLesson(lessonId: Int) async throws -> Lesson
 
     func postExerciseAttempt(recordingURL: URL, exercise: Exercise) async throws -> AttemptResponse
 

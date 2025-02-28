@@ -11,8 +11,8 @@ struct Unit: Identifiable, Codable, Equatable {
     let id: Int
     let name: String
     let description: String
-    let lessons: [Lesson]?
-    let recapLesson: Lesson?
+    let lessons: [ListedLesson]?
+    let recapLesson: ListedLesson?
     var isCompleted: Bool
     var isLocked: Bool
 

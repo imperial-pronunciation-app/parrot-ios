@@ -1,14 +1,14 @@
 //
-//  AttemptView-ViewModel.swift
+//  ExerciseView-ViewModel.swift
 //  ParrotIos
 //
-//  Created by Pedro Sá Fontes on 22/01/2025.
+//  Created by Pedro Sá Fontes on 26/02/2025.
 //
 
 import SwiftUI
 import Foundation
 
-extension AttemptView {
+extension ExerciseView {
     @Observable
     class ViewModel {
         private let audioRecorder: AudioRecorderProtocol
@@ -21,51 +21,22 @@ extension AttemptView {
         private(set) var disableRecording: Bool = false
         private(set) var errorMessage: String?
 
-        private(set) var exerciseId: Int
-        private(set) var exercise: Exercise?
+        private(set) var exercise: Exercise
         private(set) var score: Int?
         private(set) var feedbackPhonemes: [(Phoneme?, Phoneme?)]?
         private(set) var xpGain: Int?
 
         init(
-            exerciseId: Int,
+            exercise: Exercise,
             audioRecoder: AudioRecorderProtocol = AudioRecorder(),
             audioPlayer: AudioPlayerProtocol = AudioPlayer(),
             parrotApi: ParrotApiServiceProtocol = ParrotApiService(
                 webService: WebService(), authService: AuthService())
         ) {
+            self.exercise = exercise
             self.audioRecorder = audioRecoder
             self.audioPlayer = audioPlayer
             self.parrotApi = parrotApi
-            self.exerciseId = exerciseId
-        }
-
-        func loadExercise() async {
-            await fetchExercise(withID: self.exerciseId)
-        }
-
-        func fetchNextExercise(finish: Binding<Bool>) async {
-            if let nextExerciseID = self.exercise!.nextExerciseID {
-                await fetchExercise(withID: nextExerciseID)
-            } else {
-                finish.wrappedValue = true
-            }
-        }
-
-        func fetchExercise(withID id: Int) async {
-            isLoading = true
-            errorMessage = nil
-            score = nil
-            feedbackPhonemes = nil
-            xpGain = nil
-            do {
-                self.exercise = try await parrotApi.getExercise(exerciseId: id)
-                self.exerciseId = id
-            } catch {
-                errorMessage = error.localizedDescription
-            }
-
-            isLoading = false
         }
 
         func startRecording() {
@@ -87,7 +58,6 @@ extension AttemptView {
             isLoading = true
             errorMessage = nil
 
-            let exercise: Exercise = self.exercise!
             do {
                 let attemptResponse = try await parrotApi.postExerciseAttempt(
                     recordingURL: recordingURL,
@@ -110,7 +80,7 @@ extension AttemptView {
         }
 
         func playWord() {
-            let word: String = self.exercise?.word.text ?? ""
+            let word: String = self.exercise.word.text
             isPlaying = true
             // Rate currently set so that the automated voice speaks slowly
             audioPlayer.play(word: word, rate: 0.5)
