@@ -61,9 +61,6 @@ struct PhonemeDetailView: View {
                         .foregroundStyle(.orange)
                 }
             }
-        } else {
-            Spacer()
-                .frame(width: 0, height: 0)
         }
     }
 }
