@@ -16,15 +16,13 @@ struct DetailedFeedbackView: View {
             ScoreView(score: score)
                 .padding(.horizontal, 84)
             PhonemeFeedbackView(feedbackPhonemes: phonemes, underline: false)
-            HStack {
-                VStack(alignment: .leading, spacing: 12) {
-                    ForEach(phonemes.indices, id: \.self) { phonemesIdx in
-                        PhonemeDetailView(phonemes: phonemes[phonemesIdx])
-                    }
+            VStack(alignment: .leading, spacing: 12) {
+                ForEach(phonemes.indices, id: \.self) { phonemesIdx in
+                    PhonemeDetailView(phonemes: phonemes[phonemesIdx])
                 }
-                Spacer()
             }
-            .padding(.horizontal)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding()
             Spacer()
         }
     }
