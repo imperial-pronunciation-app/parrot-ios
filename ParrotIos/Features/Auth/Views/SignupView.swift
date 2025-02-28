@@ -18,50 +18,64 @@ struct SignupView: View {
 
     var body: some View {
         NavigationStack {
-            VStack {
+            VStack(spacing: 16) {
+                Text("Create account")
+                    .font(.title)
+                    .fontWeight(.semibold)
+                    .padding(.bottom)
+                
                 TextField("Email", text: $emailField)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .textFieldStyle(.roundedBorder)
+                    .keyboardType(.emailAddress)
                     .autocapitalization(.none)
-                    .padding(.bottom, 10)
+                
                 TextField("Display Name", text: $displayNameField)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding(.bottom, 10)
+                    .textFieldStyle(.roundedBorder)
+                
                 SecureField("Password", text: $passwordField)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding(.bottom, 10)
+                    .textFieldStyle(.roundedBorder)
+                
                 SecureField("Confirm Password", text: $confirmPasswordField)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding(.bottom, 20)
-
-                Button("Register") {
+                    .textFieldStyle(.roundedBorder)
+                
+                Button(action: {
                     Task {
                         await viewModel.register(
                             email: emailField,
                             displayName: displayNameField,
                             password: passwordField,
                             confirmPassword: confirmPasswordField,
-                            succeed: $succeed)
+                            succeed: $succeed
+                        )
                     }
+                }) {
+                    HStack {
+                        Image(systemName: "person.badge.plus")
+                        Text("Sign Up")
+                    }
+                    .frame(maxWidth: .infinity)
                 }
+                .padding(.vertical)
                 .buttonStyle(.borderedProminent)
 
                 NavigationLink(destination: LoginView()) {
                     Text("Already have an account?")
-                        .foregroundColor(.gray)
-                        .underline()
+                        .foregroundStyle(.gray)
+                    Text("Login")
                 }
 
                 if let errorMessage = viewModel.errorMessage {
                     Text(errorMessage)
                         .foregroundColor(.red)
-                        .padding(.top, 10)
+                        .padding()
                 }
             }
             .padding()
-            .navigationDestination(isPresented: $succeed) {
-                NavigationView().navigationBarBackButtonHidden(true)
-            }
         }
         .navigationBarBackButtonHidden()
     }
+}
+
+#Preview {
+    SignupView()
 }

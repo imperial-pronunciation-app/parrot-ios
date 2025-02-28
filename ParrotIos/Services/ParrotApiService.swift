@@ -37,8 +37,8 @@ class ParrotApiService: ParrotApiServiceProtocol {
         return try await getData(endpoint: "/units")
     }
 
-    func getExercise(exerciseId: Int) async throws -> Exercise {
-        return try await getData(endpoint: "/exercises/\(exerciseId)")
+    func getLesson(lessonId: Int) async throws -> Lesson {
+        return try await getData(endpoint: "/lessons/\(lessonId)")
     }
 
     func postExerciseAttempt(recordingURL: URL, exercise: Exercise) async throws -> AttemptResponse {

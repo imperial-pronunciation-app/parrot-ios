@@ -14,9 +14,7 @@ struct NavigationView: View {
 
     var body: some View {
         TabView(selection: $selection) {
-            NavigationStack {
-                CurriculumView()
-            }
+            CurriculumView()
                 .tabItem {
                     Label("Learn", systemImage: "text.book.closed")
                 }

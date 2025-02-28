@@ -7,12 +7,12 @@
 
 import Foundation
 
-final class AuthService: AuthServiceProtocol {
+final class AuthService: AuthServiceProtocol, ObservableObject {
 
     static var instance = AuthService()
     private let webService: WebServiceProtocol
     internal let baseURL = getBaseUrl()
-    internal var isAuthenticated = false
+    @Published var isAuthenticated = false
     private(set) var userDetails: UserDetails?
 
     private init(webService: WebServiceProtocol = WebService()) {
@@ -33,7 +33,9 @@ final class AuthService: AuthServiceProtocol {
             let response: LoginAPIResponse = try await webService.postURLEncodedFormData(
                 parameters: parameters, toURL: "\(baseURL)/auth/jwt/login")
             try saveTokens(accessToken: response.accessToken)
-            self.isAuthenticated = true
+            await MainActor.run {
+                self.isAuthenticated = true
+            }
             self.userDetails = try await webService.get(
                 fromURL: "\(baseURL)/users/me",
                 headers: [generateAuthHeader(accessToken: response.accessToken)]
