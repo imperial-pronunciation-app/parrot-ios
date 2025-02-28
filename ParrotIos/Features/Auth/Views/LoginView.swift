@@ -22,32 +22,40 @@ struct LoginView: View {
 
     var body: some View {
         NavigationStack {
-            VStack {
+            VStack(spacing: 16) {
+                Text("Welcome back!")
+                    .font(.title)
+                    .fontWeight(.semibold)
+                    .padding(.bottom)
+                
                 TextField("Username", text: $usernameField)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .autocapitalization(.none)
-                    .padding(.bottom, 8)
+
                 SecureField("Password", text: $passwordField)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding(.bottom, 16)
 
-                Button("Login") {
+                Button(action: {
                     Task {
                         await viewModel.login(username: usernameField, password: passwordField, succeed: $succeed)
                     }
+                }) {
+                    Text("Login")
+                        .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.borderedProminent)
+                .padding(.vertical)
 
                 NavigationLink(destination: SignupView()) {
                     Text("Don't have an account?")
                         .foregroundColor(.gray)
-                        .underline()
+                    Text("Sign up")
                 }
 
                 if let errorMessage = viewModel.errorMessage {
                     Text(errorMessage)
                         .foregroundColor(.red)
-                        .padding(.top, 10)
+                        .padding()
                 }
             }
             .padding(.horizontal, 32)
@@ -55,4 +63,8 @@ struct LoginView: View {
         .navigationBarBackButtonHidden()
         .onAppear { self.didAppear?(self) }
     }
+}
+
+#Preview {
+    LoginView()
 }
