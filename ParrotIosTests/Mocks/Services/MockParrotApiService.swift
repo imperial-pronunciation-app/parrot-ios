@@ -48,7 +48,7 @@ class MockParrotApiService: ParrotApiServiceProtocol, CallTracking {
         return try getReturnValue(for: method, callIndex: callCounts[method]! - 1)
     }
 
-    func postExerciseAttempt(recordingURL: URL, exercise: ParrotIos.Exercise) async throws -> ParrotIos.AttemptResponse {
+    func postExerciseAttempt(recordingURL: URL, exercise: ParrotIos.Exercise) async throws -> ParrotIos.ExerciseAttempt {
         let method = ParrotApiServiceMethods.postExerciseAttempt
         recordCall(for: method, with: [recordingURL, exercise])
         return try getReturnValue(for: method, callIndex: callCounts[method]! - 1)
@@ -60,8 +60,8 @@ class MockParrotApiService: ParrotApiServiceProtocol, CallTracking {
         return try getReturnValue(for: method, callIndex: callCounts[method]! - 1)
     }
 
-    func postWordOfTheDayAttempt(recordingURL: URL) async throws -> ParrotIos.AttemptResponse {
-        let method = ParrotApiServiceMethods.postExerciseAttempt
+    func postWordOfTheDayAttempt(recordingURL: URL) async throws -> ParrotIos.Attempt {
+        let method = ParrotApiServiceMethods.postWordOfTheDayAttempt
         recordCall(for: method, with: [recordingURL])
         return try getReturnValue(for: method, callIndex: callCounts[method]! - 1)
     }

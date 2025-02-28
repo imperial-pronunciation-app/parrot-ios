@@ -26,7 +26,7 @@ struct ExerciseView_ViewModelTests {
         ),
         isCompleted: false
     )
-    let attemptResponse: AttemptResponse = AttemptResponse(
+    let attemptResponse: ExerciseAttempt = ExerciseAttempt(
         recordingId: 1,
         score: 1,
         phonemes: [

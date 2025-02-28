@@ -107,7 +107,7 @@ struct ParrotApiServiceTests {
         let testAudioData = Data("test audio data".utf8)
         try testAudioData.write(to: recordingURL)
 
-        let expectedResponse = AttemptResponse(
+        let expectedResponse = ExerciseAttempt(
             recordingId: 1,
             score: 1,
             phonemes: [
