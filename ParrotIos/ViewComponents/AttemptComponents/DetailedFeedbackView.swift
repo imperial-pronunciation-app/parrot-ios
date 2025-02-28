@@ -69,34 +69,33 @@ struct PhonemeMiniCard: View {
     let audioPlayer = AudioPlayer()
     let phoneme: Phoneme
     let missing: Bool
-    
+
     init(phoneme: Phoneme, missing: Bool = false) {
         self.phoneme = phoneme
         self.missing = missing
     }
 
     var body: some View {
-        HStack(spacing: 2) {
-            Image(systemName: "speaker.wave.2")
-                .foregroundStyle(.gray)
-                .font(.footnote)
-            Text(phoneme.respelling)
-                .foregroundStyle(missing ? .gray : .primary)
-        }
-        .padding(.horizontal, 10)
-        .padding(.vertical, 6)
-        .frame(minWidth: 60)
-        .cornerRadius(8)
-        .overlay(
-            RoundedRectangle(cornerRadius: 8)
-                .inset(by: 1) // inset value should be same as lineWidth in .stroke
-                .strokeBorder(
-                    Color(UIColor.systemGray4),
-                    style: missing ? StrokeStyle(lineWidth: 1, dash: [5]) : StrokeStyle(lineWidth: 1)
-                )
-        )
-        .onTapGesture {
+        Button(action: {
             audioPlayer.play(word: phoneme.respelling, rate: 0.5)
+        }) {
+            HStack(spacing: 2) {
+                Image(systemName: "speaker.wave.2")
+                    .foregroundStyle(.gray)
+                    .font(.footnote)
+                Text(phoneme.respelling)
+                    .foregroundStyle(missing ? .gray : .primary)
+            }
+            .padding(.horizontal, 10)
+            .padding(.vertical, 6)
+            .frame(minWidth: 60)
+            .overlay(
+                RoundedRectangle(cornerRadius: 8)
+                    .strokeBorder(
+                        Color(UIColor.systemGray4),
+                        style: missing ? StrokeStyle(lineWidth: 1, dash: [5]) : StrokeStyle(lineWidth: 1)
+                    )
+            )
         }
     }
 }

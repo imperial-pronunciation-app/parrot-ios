@@ -39,7 +39,6 @@ struct PhonemeFeedbackView: View {
                         .offset(y: -5)
                         .font(.title3)
                 }
-                Spacer().frame(width: 0, height: 0)
             }
         }
     }
