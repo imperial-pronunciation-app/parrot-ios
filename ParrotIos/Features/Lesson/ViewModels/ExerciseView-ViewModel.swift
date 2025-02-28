@@ -18,6 +18,7 @@ extension ExerciseView {
         private(set) var isRecording: Bool = false
         private(set) var isPlaying: Bool = false
         private(set) var isLoading: Bool = false
+        var isSuccess: Bool = true
         private(set) var disableRecording: Bool = false
         private(set) var errorMessage: String?
 
@@ -62,9 +63,14 @@ extension ExerciseView {
                 let attemptResponse = try await parrotApi.postExerciseAttempt(
                     recordingURL: recordingURL,
                     exercise: exercise)
-                self.score = attemptResponse.score
-                self.feedbackPhonemes = attemptResponse.phonemes
-                self.xpGain = attemptResponse.xpGain
+                if attemptResponse.success {
+                    self.score = attemptResponse.score
+                    self.feedbackPhonemes = attemptResponse.phonemes
+                    self.xpGain = attemptResponse.xpGain
+                } else {
+                    
+                }
+                
             } catch {
                 errorMessage = error.localizedDescription
             }

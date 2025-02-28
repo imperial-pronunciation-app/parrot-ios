@@ -6,19 +6,22 @@
 //
 
 struct AttemptResponse: Codable, Equatable {
+    let success: Bool
     let recordingId: Int
     let score: Int
     let phonemes: [(Phoneme?, Phoneme?)]
     let xpGain: Int
 
     enum CodingKeys: String, CodingKey {
+        case success
         case recordingId = "recording_id"
         case score
         case phonemes
         case xpGain = "xp_gain"
     }
 
-    init(recordingId: Int, score: Int, phonemes: [(Phoneme?, Phoneme?)], xpGain: Int) {
+    init(recordingId: Int, score: Int, phonemes: [(Phoneme?, Phoneme?)], xpGain: Int, success: Bool) {
+        self.success = success
         self.recordingId = recordingId
         self.score = score
         self.phonemes = phonemes
@@ -27,7 +30,8 @@ struct AttemptResponse: Codable, Equatable {
 
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-
+        
+        self.success = try container.decode(Bool.self, forKey: .success)
         self.recordingId = try container.decode(Int.self, forKey: .recordingId)
         self.score = try container.decode(Int.self, forKey: .score)
         self.xpGain = try container.decode(Int.self, forKey: .xpGain)
@@ -51,7 +55,8 @@ struct AttemptResponse: Codable, Equatable {
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-
+        
+        try container.encode(success, forKey: .success)
         try container.encode(recordingId, forKey: .recordingId)
         try container.encode(score, forKey: .score)
         try container.encode(xpGain, forKey: .xpGain)

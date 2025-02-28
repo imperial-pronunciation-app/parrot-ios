@@ -42,6 +42,17 @@ struct ExerciseView: View {
         } else {
             VStack {
                 Spacer()
+                    .alert("Bad Audio", isPresented: $viewModel.isSuccess) {
+                        Button(role: .destructive) {
+                            viewModel.isSuccess = false
+                        } label: {
+                            Text("Retry")
+                        }
+                       
+                    } message: {
+                        Text("Hello")
+                    }
+
 
                 VStack(spacing: 32) {
                     if let score = viewModel.score,
