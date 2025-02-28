@@ -35,18 +35,18 @@ struct PhonemeDetailView: View {
         if let expected = phonemes.0 {
             if let pronounced = phonemes.1 {
                 if expected == pronounced {
-                    PhonemeMiniCard(phoneme: expected, missing: false)
+                    PhonemeMiniCard(phoneme: expected)
                 } else {
                     HStack {
-                        PhonemeMiniCard(phoneme: expected, missing: false)
+                        PhonemeMiniCard(phoneme: expected)
                         Text("You said")
                             .foregroundStyle(.red)
-                        PhonemeMiniCard(phoneme: pronounced, missing: false)
+                        PhonemeMiniCard(phoneme: pronounced)
                     }
                 }
             } else {
                 HStack {
-                    PhonemeMiniCard(phoneme: expected, missing: false)
+                    PhonemeMiniCard(phoneme: expected)
                     Text("You missed this sound")
                         .foregroundStyle(.red)
                 }
@@ -69,6 +69,11 @@ struct PhonemeMiniCard: View {
     let audioPlayer = AudioPlayer()
     let phoneme: Phoneme
     let missing: Bool
+    
+    init(phoneme: Phoneme, missing: Bool = false) {
+        self.phoneme = phoneme
+        self.missing = missing
+    }
 
     var body: some View {
         HStack(spacing: 2) {
