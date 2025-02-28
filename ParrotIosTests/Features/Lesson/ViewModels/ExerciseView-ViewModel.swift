@@ -42,7 +42,6 @@ struct ExerciseView_ViewModelTests {
     func testStopRecording() async throws {
         // Setup
         mockAudioRecorder.stub(method: AudioRecorderMethods.getRecordingURL, toReturn: url)
-        mockParrotApiService.stub(method: ParrotApiServiceMethods.getLesson, toReturn: exercise)
         mockParrotApiService.stub(method: ParrotApiServiceMethods.postExerciseAttempt, toReturn: AttemptResponse(recordingId: 1, score: 1, phonemes: [
             (Phoneme(id: 5, ipa: "m'", respelling: "m"), Phoneme(id: 5, ipa: "m'", respelling: "m")),
             (Phoneme(id: 6, ipa: "aʊ", respelling: "ow"), nil),
@@ -62,7 +61,6 @@ struct ExerciseView_ViewModelTests {
     @Test("Upload recording posts an exercise attempt and updates internal state")
     func testUploadRecordingSuccess() async throws {
         // Setup
-        mockParrotApiService.stub(method: ParrotApiServiceMethods.getLesson, toReturn: exercise)
         let attemptResponse = AttemptResponse(recordingId: 1, score: 1, phonemes: [
             (Phoneme(id: 5, ipa: "m'", respelling: "m"), Phoneme(id: 5, ipa: "m'", respelling: "m")),
             (Phoneme(id: 6, ipa: "aʊ", respelling: "ow"), nil),
@@ -86,8 +84,6 @@ struct ExerciseView_ViewModelTests {
     @Test("Play word sends the right word to the audio player")
     func testPlayWord() async throws {
         // Setup
-        mockParrotApiService.stub(method: ParrotApiServiceMethods.getLesson, toReturn: exercise)
-
         let rate = 0.5
         let lang = "en-US"
 
