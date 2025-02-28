@@ -27,7 +27,7 @@ struct LoginView: View {
                     .font(.title)
                     .fontWeight(.semibold)
                     .padding(.bottom)
-                
+
                 TextField("Username", text: $usernameField)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .autocapitalization(.none)

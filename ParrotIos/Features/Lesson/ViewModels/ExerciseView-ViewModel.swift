@@ -31,7 +31,7 @@ extension ExerciseView {
             audioRecoder: AudioRecorderProtocol = AudioRecorder(),
             audioPlayer: AudioPlayerProtocol = AudioPlayer(),
             parrotApi: ParrotApiServiceProtocol = ParrotApiService(
-                webService: WebService(), authService: AuthService())
+                webService: WebService(), authService: AuthService.instance)
         ) {
             self.exercise = exercise
             self.audioRecorder = audioRecoder

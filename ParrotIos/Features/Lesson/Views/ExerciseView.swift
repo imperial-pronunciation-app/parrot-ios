@@ -16,7 +16,13 @@ struct ExerciseView: View {
 
     @Environment(\.dismiss) private var dismiss
 
-    init(exercise: Exercise, prevExercise: @escaping () -> Void, nextExercise: @escaping () -> Void, isFirst: Bool, isLast: Bool) {
+    init(
+        exercise: Exercise,
+        prevExercise: @escaping () -> Void,
+        nextExercise: @escaping () -> Void,
+        isFirst: Bool,
+        isLast: Bool
+    ) {
         self.viewModel = ViewModel(exercise: exercise)
         self.prevExercise = prevExercise
         self.nextExercise = nextExercise
@@ -26,30 +32,35 @@ struct ExerciseView: View {
 
     var body: some View {
         if viewModel.isLoading {
-            UtilComponents.loadingView
+            VStack {
+                Spacer()
+                UtilComponents.loadingView
+                Spacer()
+            }
         } else if let errorMessage = viewModel.errorMessage {
             UtilComponents.errorView(errorMessage: errorMessage)
         } else {
             VStack {
                 Spacer()
-                
+
                 VStack(spacing: 32) {
                     if let score = viewModel.score,
                        let feedbackPhonemes = viewModel.feedbackPhonemes,
                        let xpGain = viewModel.xpGain {
-                        AttemptComponents.scoreView(score: score)
-                        AttemptComponents.feedbackView(
+                        ScoreView(score: score)
+                            .padding(.horizontal, 128)
+                        FeedbackView(
+                            score: score,
                             word: viewModel.exercise.word,
                             feedbackPhonemes: feedbackPhonemes,
                             xpGain: xpGain)
                     } else {
-                        AttemptComponents.wordView(word: viewModel.exercise.word)
+                        WordView(word: viewModel.exercise.word)
                     }
                 }
 
                 Spacer()
 
-                
                 Button(action: { viewModel.playWord() }) {
                     Image(systemName: "speaker.wave.3")
                         .font(.title3)
