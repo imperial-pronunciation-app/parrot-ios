@@ -10,7 +10,7 @@ struct Lesson: Identifiable, Codable, Equatable {
     let title: String
     let exercises: [Exercise]
     let currentExerciseIndex: Int
-    
+
     private enum CodingKeys: String, CodingKey {
         case id, title, exercises, currentExerciseIndex = "current_exercise_index"
     }
