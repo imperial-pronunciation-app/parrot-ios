@@ -10,19 +10,22 @@ struct AttemptResponse: Codable, Equatable {
     let score: Int
     let phonemes: [(Phoneme?, Phoneme?)]
     let xpGain: Int
+    let exerciseIsCompleted: Bool
 
     enum CodingKeys: String, CodingKey {
         case recordingId = "recording_id"
         case score
         case phonemes
         case xpGain = "xp_gain"
+        case exerciseIsCompleted = "exercise_is_completed"
     }
 
-    init(recordingId: Int, score: Int, phonemes: [(Phoneme?, Phoneme?)], xpGain: Int) {
+    init(recordingId: Int, score: Int, phonemes: [(Phoneme?, Phoneme?)], xpGain: Int, exerciseIsCompleted: Bool) {
         self.recordingId = recordingId
         self.score = score
         self.phonemes = phonemes
         self.xpGain = xpGain
+        self.exerciseIsCompleted = exerciseIsCompleted
     }
 
     init(from decoder: any Decoder) throws {
@@ -42,6 +45,8 @@ struct AttemptResponse: Codable, Equatable {
             }
             return (array[0], array[1])
         }
+
+        self.exerciseIsCompleted = try container.decode(Bool.self, forKey: .exerciseIsCompleted)
     }
 
     static func == (lhs: AttemptResponse, rhs: AttemptResponse) -> Bool {
@@ -60,5 +65,6 @@ struct AttemptResponse: Codable, Equatable {
             [pair.0, pair.1]
         }
         try container.encode(phonemeArrays, forKey: .phonemes)
+        try container.encode(exerciseIsCompleted, forKey: .exerciseIsCompleted)
     }
 }
