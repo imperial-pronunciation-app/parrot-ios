@@ -41,12 +41,12 @@ extension LessonView {
         init(
             lessonId: Int,
             parrotApi: ParrotApiServiceProtocol = ParrotApiService(
-                webService: WebService(), authService: AuthService())
+                webService: WebService(), authService: AuthService.instance)
         ) {
             self.lessonId = lessonId
             self.parrotApi = parrotApi
         }
-        
+
         func loadLesson() async {
             await fetchLesson(withID: lessonId)
         }

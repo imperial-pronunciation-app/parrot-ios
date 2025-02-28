@@ -23,21 +23,21 @@ struct SignupView: View {
                     .font(.title)
                     .fontWeight(.semibold)
                     .padding(.bottom)
-                
+
                 TextField("Email", text: $emailField)
                     .textFieldStyle(.roundedBorder)
                     .keyboardType(.emailAddress)
                     .autocapitalization(.none)
-                
+
                 TextField("Display Name", text: $displayNameField)
                     .textFieldStyle(.roundedBorder)
-                
+
                 SecureField("Password", text: $passwordField)
                     .textFieldStyle(.roundedBorder)
-                
+
                 SecureField("Confirm Password", text: $confirmPasswordField)
                     .textFieldStyle(.roundedBorder)
-                
+
                 Button(action: {
                     Task {
                         await viewModel.register(

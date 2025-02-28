@@ -33,7 +33,11 @@ struct ExerciseView: View {
     var body: some View {
         Group {
             if viewModel.isLoading {
-                UtilComponents.loadingView
+              VStack {
+                  Spacer()
+                  UtilComponents.loadingView
+                  Spacer()
+              }
             } else if let errorMessage = viewModel.errorMessage {
                 UtilComponents.errorView(errorMessage: errorMessage)
             } else {
@@ -43,13 +47,15 @@ struct ExerciseView: View {
                     VStack(spacing: 32) {
                         if let exercise = viewModel.exercise {
                             if let feedback = viewModel.lastAttempt {
-                                AttemptComponents.scoreView(score: feedback.score)
-                                AttemptComponents.feedbackView(
+                                ScoreView(score: feedback.score)
+                                    .padding(.horizontal, 128)
+                                FeedbackView(
+                                    score: feedback.score,
                                     word: exercise.word,
                                     feedbackPhonemes: feedback.phonemes,
                                     xpGain: feedback.xpGain)
                             } else {
-                                AttemptComponents.wordView(word: exercise.word)
+                                WordView(word: exercise.word)
                             }
                         }
                     }

@@ -40,13 +40,14 @@ struct WordOfTheDayView: View {
                     if let score = viewModel.score,
                        let feedbackPhonemes = viewModel.feedbackPhonemes,
                        let xpGain = viewModel.xpGain {
-                        AttemptComponents.scoreView(score: score)
-                        AttemptComponents.feedbackView(
+                        ScoreView(score: score)
+                        FeedbackView(
+                            score: score,
                             word: word,
                             feedbackPhonemes: feedbackPhonemes,
                             xpGain: xpGain)
                     } else {
-                        AttemptComponents.wordView(word: word)
+                        WordView(word: word)
                     }
                 }
 
