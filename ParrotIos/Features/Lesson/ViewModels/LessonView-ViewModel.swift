@@ -13,16 +13,25 @@ extension LessonView {
         private(set) var lesson: Lesson?
         private(set) var exerciseIndex: Int?
         var totalExercises: Int? {
-            lesson?.exercises.count
+            lesson?.exerciseIds.count
         }
-        var exercise: Exercise? {
-            lesson?.exercises[exerciseIndex!]
+        var exercise: Int? {
+            lesson?.exerciseIds[exerciseIndex!]
         }
-        var isFirst: Bool {
-            return exerciseIndex == 0
+        var isFirst: Bool? {
+            if let exerciseIndex = exerciseIndex {
+                return exerciseIndex == 0
+            }
+            return nil
         }
-        var isLast: Bool {
-            return exerciseIndex == lesson!.exercises.count - 1
+        var isLast: Bool? {
+            if let totalExercises = totalExercises {
+                return exerciseIndex == totalExercises - 1
+            }
+            return nil
+        }
+        var exerciseId: Int? {
+            return lesson?.exerciseIds[exerciseIndex!]
         }
         private(set) var isLoading: Bool = false
         private(set) var errorMessage: String?
@@ -56,12 +65,12 @@ extension LessonView {
         }
 
         func nextExercise() {
-            guard let lesson = lesson, let index = exerciseIndex, index < lesson.exercises.count - 1 else { return }
+            guard let lesson = lesson, let index = exerciseIndex, let isLast = isLast, !isLast else { return }
             exerciseIndex = index + 1
         }
 
         func prevExercise() {
-            guard let index = exerciseIndex, index > 0 else { return }
+            guard let index = exerciseIndex, let isFirst = isFirst, !isFirst else { return }
             exerciseIndex = index - 1
         }
     }
