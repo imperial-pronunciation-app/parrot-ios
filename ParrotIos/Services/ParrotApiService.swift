@@ -41,6 +41,10 @@ class ParrotApiService: ParrotApiServiceProtocol {
         return try await getData(endpoint: "/lessons/\(lessonId)")
     }
 
+    func getExercise(exerciseId: Int) async throws -> Exercise {
+        return try await getData(endpoint: "/exercises/\(exerciseId)")
+    }
+
     func postExerciseAttempt(recordingURL: URL, exercise: Exercise) async throws -> AttemptResponse {
         guard let accessToken = authService.getAccessToken() else { throw LogoutError.notLoggedIn }
 
