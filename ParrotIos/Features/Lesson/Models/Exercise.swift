@@ -9,4 +9,9 @@ import SwiftUI
 struct Exercise: Identifiable, Codable, Equatable {
     let id: Int
     let word: Word
+    let isCompleted: Bool
+
+    private enum CodingKeys: String, CodingKey {
+        case id, word, isCompleted = "is_completed"
+    }
 }
