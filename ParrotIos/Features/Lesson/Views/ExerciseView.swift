@@ -54,7 +54,7 @@ struct ExerciseView: View {
                         Text("Please try again")
                             .font(.subheadline)
                             .foregroundStyle(.gray)
-                        
+
                         Spacer()
                     }
 
