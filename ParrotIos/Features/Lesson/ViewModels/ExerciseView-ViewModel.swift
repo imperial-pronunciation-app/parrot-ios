@@ -18,6 +18,7 @@ extension ExerciseView {
         private(set) var isRecording: Bool = false
         private(set) var isPlaying: Bool = false
         private(set) var isLoading: Bool = false
+        private(set) var isSuccess: Bool = true
         private(set) var disableRecording: Bool = false
         private(set) var errorMessage: String?
 
@@ -26,7 +27,7 @@ extension ExerciseView {
         private(set) var lastAttempt: ExerciseAttempt?
         var isCompleted: Bool {
             return (exercise != nil && exercise!.isCompleted) ||
-                (lastAttempt != nil && lastAttempt!.exerciseIsCompleted)
+                (lastAttempt != nil && lastAttempt!.exerciseIsCompleted ?? false)
         }
 
         init(
