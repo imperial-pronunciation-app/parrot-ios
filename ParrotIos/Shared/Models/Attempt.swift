@@ -2,10 +2,10 @@
 //  Attempt.swift
 //  ParrotIos
 //
-//  Created by Tom Smail on 04/02/2025.
+//  Created by Pedro Sá Fontes on 28/02/2025.
 //
 
-struct AttemptResponse: Codable, Equatable {
+struct Attempt: Codable, Equatable {
     let recordingId: Int
     let score: Int
     let phonemes: [(Phoneme?, Phoneme?)]
@@ -27,44 +27,32 @@ struct AttemptResponse: Codable, Equatable {
         self.xpGain = xpGain
         self.exerciseIsCompleted = exerciseIsCompleted
     }
-
-    init(from decoder: any Decoder) throws {
+    
+    init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-
         self.recordingId = try container.decode(Int.self, forKey: .recordingId)
         self.score = try container.decode(Int.self, forKey: .score)
         self.xpGain = try container.decode(Int.self, forKey: .xpGain)
-
-        let phonemeArrays = try container.decode([[Phoneme?]].self, forKey: .phonemes)
-        self.phonemes = try phonemeArrays.map { array in
-            guard array.count == 2 else {
-                throw DecodingError.dataCorruptedError(
-                    forKey: .phonemes,
-                    in: container,
-                    debugDescription: "Expected a phoneme pair, got \(array)")
-            }
-            return (array[0], array[1])
-        }
-
+        self.phonemes = try AttemptDecoding.decodePhonemePairs(from: container, forKey: .phonemes)
         self.exerciseIsCompleted = try container.decode(Bool.self, forKey: .exerciseIsCompleted)
     }
-
-    static func == (lhs: AttemptResponse, rhs: AttemptResponse) -> Bool {
-        let phonemesEqual = zip(lhs.phonemes, rhs.phonemes).allSatisfy({ $0 == $1 })
-        return phonemesEqual && lhs.recordingId == rhs.recordingId && lhs.score == rhs.score && lhs.xpGain == rhs.xpGain
-    }
-
+    
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-
         try container.encode(recordingId, forKey: .recordingId)
         try container.encode(score, forKey: .score)
         try container.encode(xpGain, forKey: .xpGain)
-
-        let phonemeArrays = phonemes.map { pair in
-            [pair.0, pair.1]
-        }
+        
+        let phonemeArrays = phonemes.map { pair in [pair.0, pair.1] }
         try container.encode(phonemeArrays, forKey: .phonemes)
         try container.encode(exerciseIsCompleted, forKey: .exerciseIsCompleted)
+    }
+    
+    static func == (lhs: Attempt, rhs: Attempt) -> Bool {
+        let phonemesEqual = zip(lhs.phonemes, rhs.phonemes).allSatisfy({ $0 == $1 })
+        return phonemesEqual &&
+               lhs.recordingId == rhs.recordingId &&
+               lhs.score == rhs.score &&
+               lhs.xpGain == rhs.xpGain
     }
 }

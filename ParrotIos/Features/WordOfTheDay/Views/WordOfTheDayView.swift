@@ -9,11 +9,7 @@ import SwiftUI
 
 struct WordOfTheDayView: View {
 
-    @State private var viewModel: ViewModel
-
-    init(viewModel: ViewModel = ViewModel()) {
-        self.viewModel = viewModel
-    }
+    @State private var viewModel: ViewModel = ViewModel()
 
     var body: some View {
         VStack {
@@ -22,50 +18,38 @@ struct WordOfTheDayView: View {
             } else if let errorMessage = viewModel.errorMessage {
                 UtilComponents.errorView(errorMessage: errorMessage)
             } else if let word = viewModel.word {
-                Text("🗓️ Word of the Day")
-                    .font(.title)
-                    .bold()
-                    .padding(.top, 20)
+                Text("Word of the Day")
+                    .font(.headline)
+                    .padding(.vertical, 4)
                 Text(Date.now.formatted(date: .long, time: .omitted))
                     .font(.subheadline)
                     .foregroundColor(.gray)
-                    .padding(.bottom, 20)
-                Text("No audio demo for you, challenge yourself!")
-                    .font(.caption)
+
+                Spacer()
+                
+                WordView(
+                    word: word,
+                    score: viewModel.score,
+                    feedbackPhonemes: viewModel.feedbackPhonemes,
+                    xpGain: viewModel.xpGain
+                )
+
+                Spacer()
+
+                AudioButton(isDisabled: true, action: {})
+
+                Text("Challenge: Say it without hearing it!")
+                    .font(.subheadline)
                     .foregroundColor(.gray)
+                    .padding(.top, 8)
 
                 Spacer()
 
-                VStack(spacing: 32) {
-                    if let score = viewModel.score,
-                       let feedbackPhonemes = viewModel.feedbackPhonemes,
-                       let xpGain = viewModel.xpGain {
-                        ScoreView(score: score)
-                        FeedbackView(
-                            score: score,
-                            word: word,
-                            feedbackPhonemes: feedbackPhonemes,
-                            xpGain: xpGain)
-                    } else {
-                        WordView(word: word)
-                    }
-                }
-
-                Spacer()
-
-                Button(action: {
-                    Task {
-                        await viewModel.toggleRecording()
-                    }
-                }) {
-                    Image(systemName: "mic")
-                        .font(.largeTitle)
-                        .foregroundColor(.white)
-                        .frame(width: 80, height: 80)
-                        .background(viewModel.isRecording ? Color.red.opacity(0.8) : Color.blue)
-                        .clipShape(Circle())
-                }
-                .padding(.bottom, 20)
+                RecordingButton(
+                    isRecording: viewModel.isRecording,
+                    isDisabled: false,
+                    action: viewModel.toggleRecording
+                ).padding()
             }
         }
         .task {

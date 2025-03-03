@@ -23,7 +23,7 @@ extension ExerciseView {
 
         private(set) var exerciseId: Int
         private(set) var exercise: Exercise?
-        private(set) var lastAttempt: AttemptResponse?
+        private(set) var lastAttempt: ExerciseAttempt?
         var isCompleted: Bool {
             return (exercise != nil && exercise!.isCompleted) ||
                 (lastAttempt != nil && lastAttempt!.exerciseIsCompleted)

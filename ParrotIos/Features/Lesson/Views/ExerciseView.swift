@@ -31,7 +31,7 @@ struct ExerciseView: View {
     }
 
     var body: some View {
-        Group {
+        VStack {
             if viewModel.isLoading {
               VStack {
                   Spacer()
@@ -43,34 +43,19 @@ struct ExerciseView: View {
             } else {
                 VStack {
                     Spacer()
-                    
-                    VStack(spacing: 32) {
-                        if let exercise = viewModel.exercise {
-                            if let feedback = viewModel.lastAttempt {
-                                ScoreView(score: feedback.score)
-                                    .padding(.horizontal, 128)
-                                FeedbackView(
-                                    score: feedback.score,
-                                    word: exercise.word,
-                                    feedbackPhonemes: feedback.phonemes,
-                                    xpGain: feedback.xpGain)
-                            } else {
-                                WordView(word: exercise.word)
-                            }
-                        }
+
+                    if let exercise = viewModel.exercise {
+                        WordView(
+                            word: exercise.word,
+                            score: viewModel.lastAttempt?.score,
+                            feedbackPhonemes: viewModel.lastAttempt?.phonemes,
+                            xpGain: viewModel.lastAttempt?.xpGain
+                        )
                     }
 
                     Spacer()
 
-                    
-                    Button(action: { viewModel.playWord() }) {
-                        Image(systemName: "speaker.wave.3")
-                            .font(.title3)
-                            .frame(width: 50, height: 50)
-                    }
-                    .buttonStyle(.bordered)
-                    .tint(.accentColor)
-                    .clipShape(Circle())
+                    AudioButton(action: { viewModel.playWord() })
 
                     Spacer()
 
@@ -91,19 +76,11 @@ struct ExerciseView: View {
 
                         Spacer()
 
-                        Button(action: {
-                            Task {
-                                await viewModel.toggleRecording()
-                            }
-                        }) {
-                            Image(systemName: "mic")
-                                .font(.largeTitle)
-                                .foregroundColor(.white)
-                                .frame(width: 80, height: 80)
-                                .background(viewModel.isRecording ? Color.red.opacity(0.8) : Color.accentColor)
-                                .clipShape(Circle())
-                        }
-                        .disabled(viewModel.disableRecording)
+                        RecordingButton(
+                            isRecording: viewModel.isRecording,
+                            isDisabled: viewModel.disableRecording,
+                            action: viewModel.toggleRecording
+                        )
 
                         Spacer()
 
