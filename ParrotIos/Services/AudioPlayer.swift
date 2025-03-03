@@ -2,35 +2,80 @@
 //  AudioPlayer.swift
 //  ParrotIos
 //
-//  Created by jn1122 on 07/02/2025.
+//  Created by jn1122 on 03/03/2025.
 //
 
 import AVFoundation
 
 class AudioPlayer: AudioPlayerProtocol {
-    private let synthesizer: AVSpeechSynthesizer
-
-    init() {
-        self.synthesizer = AVSpeechSynthesizer()
-    }
-
-    func play(word: String, rate: Float, language: String = "en-US") {
-        try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .voicePrompt, options: [])
-        let utterance = AVSpeechUtterance(string: word)
-        if let maleVoice = AVSpeechSynthesisVoice(identifier: AVSpeechSynthesisVoice.speechVoices().first(
-            where: { $0.gender == .male && $0.language == "en-US" })?.identifier ?? "") {
-            utterance.voice = maleVoice
-            utterance.pitchMultiplier = 1.5
-        } else {
-            utterance.voice = AVSpeechSynthesisVoice(language: "en-US") // Default fallback
+    private var audioCache = [Int: URL]()
+    
+    func play(phoneme: Phoneme, rate: Float) {
+        if let cachedURL = audioCache[phoneme.id] {
+            playFromLocalURL(url: cachedURL, rate: rate)
+            return
         }
-        utterance.rate = rate
-
-        synthesizer.speak(utterance)
+        
+        do {
+            let remoteURL = try generateUrl(phoneme: phoneme)
+            downloadAndPlay(remoteURL: remoteURL, phonemeId: phoneme.id, rate: rate)
+        } catch {
+            print("Error generating URL: \(error)")
+        }
     }
-
-    func stop() {
-        // This function does not have to be called, it is optional if early stopping
-        synthesizer.stopSpeaking(at: .immediate)
+    
+    private func downloadAndPlay(remoteURL: URL, phonemeId: Int, rate: Float) {
+        let downloadTask = URLSession.shared.downloadTask(with: remoteURL) { [weak self] (localURL, response, error) in
+            guard let self = self, let localURL = localURL, error == nil else {
+                print("Download error: \(error?.localizedDescription ?? "Unknown error")")
+                return
+            }
+            
+            let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            let permanentURL = documentsDirectory.appendingPathComponent("\(phonemeId).wav")
+            
+            do {
+                if FileManager.default.fileExists(atPath: permanentURL.path) {
+                    try FileManager.default.removeItem(at: permanentURL)
+                }
+                
+                try FileManager.default.moveItem(at: localURL, to: permanentURL)
+                
+                self.audioCache[phonemeId] = permanentURL
+                
+                DispatchQueue.main.async {
+                    self.playFromLocalURL(url: permanentURL, rate: rate)
+                }
+            } catch {
+                print("Error saving file: \(error)")
+            }
+        }
+        
+        downloadTask.resume()
+    }
+    
+    private func playFromLocalURL(url: URL, rate: Float) {
+        do {
+            let audioPlayer = try AVAudioPlayer(contentsOf: url)
+            audioPlayer.rate = rate
+            audioPlayer.prepareToPlay()
+            audioPlayer.play()
+        } catch {
+            print("Error playing audio: \(error)")
+        }
+    }
+    
+    private func generateUrl(phoneme: Phoneme) throws -> URL {
+        let baseCDNUrl = "https://d2o94ssjf4etxx.cloudfront.net"
+        let phonemeFileName = phoneme.id
+        let fileExtension = "wav"
+        
+        let fullUrlString = "\(baseCDNUrl)/\(phonemeFileName).\(fileExtension)"
+        
+        guard let url = URL(string: fullUrlString) else {
+            throw NSError(domain: "AudioPlayerError", code: 1001, userInfo: [NSLocalizedDescriptionKey: "Invalid URL: \(fullUrlString)"])
+        }
+        
+        return url
     }
 }

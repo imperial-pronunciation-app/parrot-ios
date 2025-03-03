@@ -77,7 +77,7 @@ struct PhonemeMiniCard: View {
 
     var body: some View {
         Button(action: {
-            audioPlayer.play(word: phoneme.respelling, rate: 0.5)
+            audioPlayer.play(phoneme: phoneme, rate: 0.5)
         }) {
             HStack(spacing: 2) {
                 Image(systemName: "speaker.wave.2")
