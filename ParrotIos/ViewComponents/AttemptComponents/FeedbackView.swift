@@ -16,7 +16,6 @@ struct FeedbackView: View {
 
     public var body: some View {
         VStack {
-            Text(word.text).font(.largeTitle)
             PhonemeFeedbackView(feedbackPhonemes: feedbackPhonemes, underline: true)
                 .onTapGesture {
                     isShowingSheet.toggle()

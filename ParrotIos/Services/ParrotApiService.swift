@@ -41,7 +41,11 @@ class ParrotApiService: ParrotApiServiceProtocol {
         return try await getData(endpoint: "/lessons/\(lessonId)")
     }
 
-    func postExerciseAttempt(recordingURL: URL, exercise: Exercise) async throws -> AttemptResponse {
+    func getExercise(exerciseId: Int) async throws -> Exercise {
+        return try await getData(endpoint: "/exercises/\(exerciseId)")
+    }
+
+    func postExerciseAttempt(recordingURL: URL, exercise: Exercise) async throws -> ExerciseAttempt {
         guard let accessToken = authService.getAccessToken() else { throw LogoutError.notLoggedIn }
 
         let audioFile = try Data(contentsOf: recordingURL)
@@ -54,7 +58,7 @@ class ParrotApiService: ParrotApiServiceProtocol {
                 data: audioFile)
         ]
 
-        let response: AttemptResponse = try await webService.postMultiPartFormData(
+        let response: ExerciseAttempt = try await webService.postMultiPartFormData(
             data: formData,
             toURL: baseURL + "/exercises/\(exercise.id)/attempts",
             headers: [generateAuthHeader(accessToken: accessToken)])
@@ -66,7 +70,7 @@ class ParrotApiService: ParrotApiServiceProtocol {
         return try await getData(endpoint: "/word_of_day")
     }
 
-    func postWordOfTheDayAttempt(recordingURL: URL) async throws -> AttemptResponse {
+    func postWordOfTheDayAttempt(recordingURL: URL) async throws -> Attempt {
         guard let accessToken = authService.getAccessToken() else { throw LogoutError.notLoggedIn }
 
         let audioFile = try Data(contentsOf: recordingURL)
@@ -79,7 +83,7 @@ class ParrotApiService: ParrotApiServiceProtocol {
                 data: audioFile)
         ]
 
-        let response: AttemptResponse = try await webService.postMultiPartFormData(
+        let response: Attempt = try await webService.postMultiPartFormData(
             data: formData,
             toURL: baseURL + "/word_of_day/attempts",
             headers: [generateAuthHeader(accessToken: accessToken)])

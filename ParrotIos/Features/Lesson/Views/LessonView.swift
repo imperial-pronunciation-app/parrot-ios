@@ -19,16 +19,16 @@ struct LessonView: View {
                 UtilComponents.loadingView
             } else if let errorMessage = viewModel.errorMessage {
                 UtilComponents.errorView(errorMessage: errorMessage)
-            } else if let exercise = viewModel.exercise {
+            } else if let exerciseId = viewModel.exerciseId, let isFirst = viewModel.isFirst, let isLast = viewModel.isLast {
                 VStack {
                     ExerciseView(
-                        exercise: exercise,
+                        exerciseId: exerciseId,
                         prevExercise: { viewModel.prevExercise() },
                         nextExercise: { viewModel.nextExercise() },
-                        isFirst: viewModel.isFirst,
-                        isLast: viewModel.isLast
+                        isFirst: isFirst,
+                        isLast: isLast
                     )
-                    .id(exercise.id)
+                    .id(exerciseId)
                     .padding(.bottom)
                     ProgressView(value: Double(viewModel.exerciseIndex!), total: Double(viewModel.totalExercises!))
                         .progressViewStyle(LinearProgressViewStyle(tint: .accentColor))

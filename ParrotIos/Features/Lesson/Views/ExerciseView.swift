@@ -17,13 +17,13 @@ struct ExerciseView: View {
     @Environment(\.dismiss) private var dismiss
 
     init(
-        exercise: Exercise,
+        exerciseId: Int,
         prevExercise: @escaping () -> Void,
         nextExercise: @escaping () -> Void,
         isFirst: Bool,
         isLast: Bool
     ) {
-        self.viewModel = ViewModel(exercise: exercise)
+        self.viewModel = ViewModel(exerciseId: exerciseId)
         self.prevExercise = prevExercise
         self.nextExercise = nextExercise
         self.isFirst = isFirst
@@ -31,17 +31,18 @@ struct ExerciseView: View {
     }
 
     var body: some View {
-        if viewModel.isLoading {
-            VStack {
-                Spacer()
-                UtilComponents.loadingView
-                Spacer()
-            }
-        } else if let errorMessage = viewModel.errorMessage {
-            UtilComponents.errorView(errorMessage: errorMessage)
-        } else {
-            VStack {
-                Spacer()
+        VStack {
+            if viewModel.isLoading {
+              VStack {
+                  Spacer()
+                  UtilComponents.loadingView
+                  Spacer()
+              }
+            } else if let errorMessage = viewModel.errorMessage {
+                UtilComponents.errorView(errorMessage: errorMessage)
+            } else {
+                VStack {
+                    Spacer()
                     .alert("Bad Audio", isPresented: $viewModel.isSuccess) {
                         Button(role: .destructive) {
                             viewModel.isSuccess = false
@@ -54,108 +55,71 @@ struct ExerciseView: View {
                     }
 
 
-                VStack(spacing: 32) {
-                    if let score = viewModel.score,
-                       let feedbackPhonemes = viewModel.feedbackPhonemes,
-                       let xpGain = viewModel.xpGain {
-                        ScoreView(score: score)
-                            .padding(.horizontal, 128)
-                        FeedbackView(
-                            score: score,
-                            word: viewModel.exercise.word,
-                            feedbackPhonemes: feedbackPhonemes,
-                            xpGain: xpGain)
-                    } else {
-                        WordView(word: viewModel.exercise.word)
+                    if let exercise = viewModel.exercise {
+                        WordView(
+                            word: exercise.word,
+                            score: viewModel.lastAttempt?.score,
+                            feedbackPhonemes: viewModel.lastAttempt?.phonemes,
+                            xpGain: viewModel.lastAttempt?.xpGain
+                        )
                     }
-                }
 
-                Spacer()
+                    Spacer()
 
-                Button(action: { viewModel.playWord() }) {
-                    Image(systemName: "speaker.wave.3")
-                        .font(.title3)
-                        .frame(width: 50, height: 50)
-                }
-                .buttonStyle(.bordered)
-                .tint(.accentColor)
-                .clipShape(Circle())
+                    AudioButton(action: { viewModel.playWord() })
 
-                Spacer()
+                    Spacer()
 
-                HStack {
-                    ZStack(alignment: .leading) {
-                        if !isFirst {
+                    HStack {
+                        ZStack(alignment: .leading) {
+                            if !isFirst {
+                                Button(action: {
+                                    prevExercise()
+                                }) {
+                                    Image(systemName: "arrow.left")
+                                        .font(.title)
+                                }
+                                .buttonStyle(.bordered)
+                                .buttonBorderShape(.capsule)
+                            }
+                        }
+                        .frame(width: 80, alignment: .leading)
+
+                        Spacer()
+
+                        RecordingButton(
+                            isRecording: viewModel.isRecording,
+                            isDisabled: viewModel.disableRecording,
+                            action: viewModel.toggleRecording
+                        )
+
+                        Spacer()
+
+                        ZStack(alignment: .trailing) {
                             Button(action: {
-                                prevExercise()
+                                isLast ? dismiss() : nextExercise()
                             }) {
-                                Image(systemName: "arrow.left")
-                                    .font(.title)
+                                if isLast {
+                                    Text("Finish")
+                                } else {
+                                    Image(systemName: "arrow.right")
+                                        .font(.title)
+                                }
                             }
                             .buttonStyle(.bordered)
+                            .tint(viewModel.isCompleted ? Color.accentColor : .gray)
                             .buttonBorderShape(.capsule)
+                            .disabled(!viewModel.isCompleted)
                         }
+                        .frame(width: 80, alignment: .trailing)
                     }
-                    .frame(width: 80, alignment: .leading)
-
-                    Spacer()
-
-                    Button(action: {
-                        Task {
-                            await viewModel.toggleRecording()
-                        }
-                    }) {
-                        Image(systemName: "mic")
-                            .font(.largeTitle)
-                            .foregroundColor(.white)
-                            .frame(width: 80, height: 80)
-                            .background(viewModel.isRecording ? Color.red.opacity(0.8) : Color.accentColor)
-                            .clipShape(Circle())
-                    }
-                    .disabled(viewModel.disableRecording)
-
-                    Spacer()
-
-                    ZStack(alignment: .trailing) {
-                        Button(action: {
-                            isLast ? dismiss() : nextExercise()
-                        }) {
-                            if isLast {
-                                Text("Finish")
-                            } else {
-                                Image(systemName: "arrow.right")
-                                    .font(.title)
-                            }
-                        }
-                        .buttonStyle(.bordered)
-                        .tint(Color.accentColor)
-                        .buttonBorderShape(.capsule)
-                    }
-                    .frame(width: 80, alignment: .trailing)
+                    .padding(.horizontal, 32)
                 }
-                .padding(.horizontal, 32)
+            }
+        }.onAppear {
+            Task {
+                await viewModel.loadExercise()
             }
         }
     }
-}
-
-#Preview {
-    ExerciseView(
-        exercise: .init(
-            id: 0,
-            word: .init(
-                id: 0,
-                text: "pen",
-                phonemes: [
-                    .init(id: 0, ipa: "p", respelling: "p"),
-                    .init(id: 1, ipa: "e", respelling: "e"),
-                    .init(id: 2, ipa: "n", respelling: "n")
-                ]
-            )
-        ),
-        prevExercise: {},
-        nextExercise: {},
-        isFirst: false,
-        isLast: false
-    )
 }

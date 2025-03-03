@@ -102,15 +102,22 @@ struct ParrotApiServiceTests {
     func testPostExerciseAttemptSuccess() async throws {
         // Arrange
         mockAuthService.stub(method: AuthServiceMethods.getAccessToken, toReturn: testAccessToken)
-        let exercise = Exercise(id: 1, word: Word(id: 1, text: "a", phonemes: [Phoneme(id: 1, ipa: "a", respelling: "a")]))
+        let exercise = Exercise(id: 1, word: Word(id: 1, text: "a", phonemes: [Phoneme(id: 1, ipa: "a", respelling: "a")]), isCompleted: false)
         let recordingURL = FileManager.default.temporaryDirectory.appendingPathComponent("test_recording.wav")
         let testAudioData = Data("test audio data".utf8)
         try testAudioData.write(to: recordingURL)
 
-        let expectedResponse = AttemptResponse(recordingId: 1, score: 1, phonemes: [
-            (Phoneme(id: 5, ipa: "m'", respelling: "m"), Phoneme(id: 5, ipa: "m'", respelling: "m")),
-            (Phoneme(id: 6, ipa: "aʊ", respelling: "ow"), nil),
-            (nil, Phoneme(id: 7, ipa: "s", respelling: "s"))], xpGain: 2)
+        let expectedResponse = ExerciseAttempt(
+            recordingId: 1,
+            score: 1,
+            phonemes: [
+                (Phoneme(id: 5, ipa: "m'", respelling: "m"), Phoneme(id: 5, ipa: "m'", respelling: "m")),
+                (Phoneme(id: 6, ipa: "aʊ", respelling: "ow"), nil),
+                (nil, Phoneme(id: 7, ipa: "s", respelling: "s"))
+            ],
+            xpGain: 2,
+            exerciseIsCompleted: false
+        )
         mockWebService.stub(method: WebServiceMethods.postMultiPartFormData, toReturn: expectedResponse)
 
         // Act
