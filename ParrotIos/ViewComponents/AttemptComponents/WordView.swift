@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-import SwiftUI
-
 struct WordView: View {
     let word: Word
     let score: Int?

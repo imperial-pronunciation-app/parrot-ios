@@ -43,17 +43,20 @@ struct ExerciseView: View {
             } else {
                 VStack {
                     Spacer()
-                    .alert("Bad Audio", isPresented: $viewModel.isSuccess) {
-                        Button(role: .destructive) {
-                            viewModel.isSuccess = false
-                        } label: {
-                            Text("Retry")
-                        }
-                       
-                    } message: {
-                        Text("Hello")
-                    }
 
+                    if viewModel.lastAttempt != nil && !viewModel.lastAttempt!.success {
+                        Text(
+                            "\(Image(systemName: "exclamationmark.arrow.trianglehead.counterclockwise.rotate.90")) Sorry, I didn't get that..."
+                        )
+                            .foregroundStyle(.red)
+                            .padding(.bottom, 4)
+
+                        Text("Please try again")
+                            .font(.subheadline)
+                            .foregroundStyle(.gray)
+                        
+                        Spacer()
+                    }
 
                     if let exercise = viewModel.exercise {
                         WordView(

@@ -26,7 +26,7 @@ struct WordOfTheDayView: View {
                     .foregroundColor(.gray)
 
                 Spacer()
-                
+
                 WordView(
                     word: word,
                     score: viewModel.score,

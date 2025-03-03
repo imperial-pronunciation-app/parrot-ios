@@ -27,7 +27,7 @@ extension ExerciseView {
         private(set) var lastAttempt: ExerciseAttempt?
         var isCompleted: Bool {
             return (exercise != nil && exercise!.isCompleted) ||
-                (lastAttempt != nil && lastAttempt!.exerciseIsCompleted)
+                (lastAttempt != nil && lastAttempt!.exerciseIsCompleted ?? false)
         }
 
         init(
@@ -78,14 +78,7 @@ extension ExerciseView {
                 self.lastAttempt = try await parrotApi.postExerciseAttempt(
                     recordingURL: recordingURL,
                     exercise: exercise!)
-                if attemptResponse.success {
-                    self.score = attemptResponse.score
-                    self.feedbackPhonemes = attemptResponse.phonemes
-                    self.xpGain = attemptResponse.xpGain
-                } else {
-                    
-                }
-                
+                print(self.lastAttempt)
             } catch {
                 errorMessage = error.localizedDescription
             }
