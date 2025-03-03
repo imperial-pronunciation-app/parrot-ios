@@ -12,9 +12,23 @@ struct WordView: View {
     let score: Int?
     let feedbackPhonemes: [(Phoneme?, Phoneme?)]?
     let xpGain: Int?
+    let success: Bool?
 
     var body: some View {
         VStack {
+            if !(success ?? true) {
+                Text(
+                    "\(Image(systemName: "exclamationmark.arrow.trianglehead.counterclockwise.rotate.90")) Sorry, I didn't get that..."
+                )
+                    .foregroundStyle(.red)
+                    .padding(.bottom, 4)
+
+                Text("Please try again")
+                    .font(.subheadline)
+                    .foregroundStyle(.gray)
+                    .padding(.bottom, 32)
+            }
+            
             if let score = score {
                 ScoreView(score: score)
                     .padding(.horizontal, 128)
@@ -38,4 +52,8 @@ struct WordView: View {
             }
         }
     }
+}
+
+#Preview {
+    WordView(word: .init(id: 1, text: "foo", phonemes: []), score: 0, feedbackPhonemes: [], xpGain: 10, success: false)
 }

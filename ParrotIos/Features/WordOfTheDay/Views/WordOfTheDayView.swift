@@ -31,7 +31,8 @@ struct WordOfTheDayView: View {
                     word: word,
                     score: viewModel.score,
                     feedbackPhonemes: viewModel.feedbackPhonemes,
-                    xpGain: viewModel.xpGain
+                    xpGain: viewModel.xpGain,
+                    success: viewModel.success
                 )
 
                 Spacer()

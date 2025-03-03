@@ -44,26 +44,13 @@ struct ExerciseView: View {
                 VStack {
                     Spacer()
 
-                    if viewModel.lastAttempt != nil && !viewModel.lastAttempt!.success {
-                        Text(
-                            "\(Image(systemName: "exclamationmark.arrow.trianglehead.counterclockwise.rotate.90")) Sorry, I didn't get that..."
-                        )
-                            .foregroundStyle(.red)
-                            .padding(.bottom, 4)
-
-                        Text("Please try again")
-                            .font(.subheadline)
-                            .foregroundStyle(.gray)
-
-                        Spacer()
-                    }
-
                     if let exercise = viewModel.exercise {
                         WordView(
                             word: exercise.word,
                             score: viewModel.lastAttempt?.score,
                             feedbackPhonemes: viewModel.lastAttempt?.phonemes,
-                            xpGain: viewModel.lastAttempt?.xpGain
+                            xpGain: viewModel.lastAttempt?.xpGain,
+                            success: viewModel.lastAttempt?.success
                         )
                     }
 
