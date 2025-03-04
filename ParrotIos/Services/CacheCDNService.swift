@@ -28,7 +28,6 @@ class CacheCDNService: CDNServiceProtocol {
         
         let fullCDNURL = "https://" + cdnURL + "/\(fromPath)"
         
-        // TODO: Catch different errors from download?
         let localURL = try await self.webService.download(fromURL: fullCDNURL, headers: [])
 
         let documentsDirectory = getDocumentsDirectory()
