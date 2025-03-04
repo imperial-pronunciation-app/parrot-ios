@@ -8,5 +8,4 @@
 protocol AudioPlayerProtocol {
     
     func play(phoneme: Phoneme, rate: Float)
-    
 }

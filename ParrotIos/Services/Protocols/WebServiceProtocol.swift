@@ -8,14 +8,20 @@
 import Foundation
 
 protocol WebServiceProtocol {
+    
     func get<T: Codable>(fromURL: String, headers: [HeaderElement]) async throws -> T
+    
     func post<T: Codable>(toURL: String, headers: [HeaderElement]) async throws -> T
+    
     func postNoResponse(toURL: String, headers: [HeaderElement]) async throws
+    
     func postData<T: Codable>(data: Data, toURL: String, headers: [HeaderElement]) async throws -> T
+    
     func postMultiPartFormData<T: Codable>(
         data: [MultiPartFormDataElement],
         toURL: String,
         headers: [HeaderElement]) async throws -> T
+    
     func postURLEncodedFormData<T: Codable>(
         parameters: [FormDataURLEncodedElement],
         toURL: String,

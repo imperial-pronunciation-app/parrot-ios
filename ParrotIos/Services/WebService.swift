@@ -37,6 +37,16 @@ class WebService: WebServiceProtocol {
         return decodedResponse
     }
 
+    func download(fromUrl: String, headers: [HeaderElement] = []) async throws -> URL {
+        let request = try formRequest(url: fromUrl, method: "GET", headers: headers)
+        let (localUrl, response) = try await URLSession.shared.download(for: request)
+        guard let response = response as? HTTPURLResponse else { throw NetworkError.badResponse }
+        guard response.statusCode >= 200 && response.statusCode < 300 else {
+            throw NetworkError.badStatus(code: response.statusCode, data: localUrl.dataRepresentation)
+        }
+        return localUrl
+    }
+    
     func get<T: Codable>(fromURL: String, headers: [HeaderElement] = []) async throws -> T {
         let request = try formRequest(url: fromURL, method: "GET", headers: headers)
         let data = try await sendAndCheckStatus(request: request)
