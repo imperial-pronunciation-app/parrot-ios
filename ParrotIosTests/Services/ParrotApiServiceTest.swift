@@ -59,7 +59,7 @@ struct ParrotApiServiceTests {
     func testGetWordOfTheDaySuccess() async throws {
         // Arrange
         mockAuthService.stub(method: AuthServiceMethods.getAccessToken, toReturn: testAccessToken)
-        let expectedWord = Word(id: 1, text: "a", phonemes: [Phoneme(id: 1, ipa: "a", respelling: "a")])
+        let expectedWord = Word(id: 1, text: "a", phonemes: [Phoneme(id: 1, ipa: "a", respelling: "a", cdnPath: "")])
         mockWebService.stub(method: WebServiceMethods.get, toReturn: expectedWord)
 
         // Act
@@ -102,7 +102,7 @@ struct ParrotApiServiceTests {
     func testPostExerciseAttemptSuccess() async throws {
         // Arrange
         mockAuthService.stub(method: AuthServiceMethods.getAccessToken, toReturn: testAccessToken)
-        let exercise = Exercise(id: 1, word: Word(id: 1, text: "a", phonemes: [Phoneme(id: 1, ipa: "a", respelling: "a")]), isCompleted: false)
+        let exercise = Exercise(id: 1, word: Word(id: 1, text: "a", phonemes: [Phoneme(id: 1, ipa: "a", respelling: "a", cdnPath: "")]), isCompleted: false)
         let recordingURL = FileManager.default.temporaryDirectory.appendingPathComponent("test_recording.wav")
         let testAudioData = Data("test audio data".utf8)
         try testAudioData.write(to: recordingURL)
@@ -111,9 +111,9 @@ struct ParrotApiServiceTests {
             recordingId: 1,
             score: 1,
             phonemes: [
-                (Phoneme(id: 5, ipa: "m'", respelling: "m"), Phoneme(id: 5, ipa: "m'", respelling: "m")),
-                (Phoneme(id: 6, ipa: "aʊ", respelling: "ow"), nil),
-                (nil, Phoneme(id: 7, ipa: "s", respelling: "s"))
+                (Phoneme(id: 5, ipa: "m'", respelling: "m", cdnPath: ""), Phoneme(id: 5, ipa: "m'", respelling: "m", cdnPath: "")),
+                (Phoneme(id: 6, ipa: "aʊ", respelling: "ow", cdnPath: ""), nil),
+                (nil, Phoneme(id: 7, ipa: "s", respelling: "s", cdnPath: ""))
             ],
             xpGain: 2,
             exerciseIsCompleted: false

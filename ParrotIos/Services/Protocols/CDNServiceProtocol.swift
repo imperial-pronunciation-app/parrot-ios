@@ -9,5 +9,5 @@ import Foundation
 
 protocol CDNServiceProtocol {
     
-    func download(fromUrl: String) async throws -> URL
+    func download(fromPath: String) async throws -> URL
 }

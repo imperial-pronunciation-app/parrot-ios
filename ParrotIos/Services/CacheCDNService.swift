@@ -10,25 +10,29 @@ import Foundation
 class CacheCDNService: CDNServiceProtocol {
     
     private let webService: WebServiceProtocol
+    private let cache = [String:URL]()
     
     init(webService: WebServiceProtocol = WebService()) {
         self.webService = webService
     }
     
-    
-    func download(fromUrl: String) async throws -> URL {
-    
+    func download(fromPath: String) async throws -> URL {
+        
+        if let url = cache[fromPath] {
+            return url
+        }
+        
         guard let cdnURL = Bundle.main.object(forInfoDictionaryKey: "CDN_URL") as? String else {
             fatalError("CDN_URL not found in Info.plist")
         }
         
-        let fullCDNURL = "https://\(cdnURL)/\(phoneme.cdnPath)"
-
-
-        let (localURL, _) = try await URLSession.shared.download(from: generateCDNUrl(phoneme: phoneme))
+        let fullCDNURL = "https://" + cdnURL + "\(fromPath)"
         
-        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        let permanentURL = documentsDirectory.appendingPathComponent("\(phoneme.cdnPath).wav")
+        // TODO: Catch different errors from download?
+        let localURL = try await self.webService.download(fromURL: fullCDNURL, headers: [])
+
+        let documentsDirectory = getDocumentsDirectory()
+        let permanentURL = documentsDirectory.appendingPathComponent("\(fromPath).wav")
         
         do {
             if FileManager.default.fileExists(atPath: permanentURL.path) {
@@ -41,16 +45,4 @@ class CacheCDNService: CDNServiceProtocol {
             throw error
         }
     }
-
-
-    private func generateCDNUrl(phoneme: Phoneme) throws -> URL {
-
-        
-        guard let url = URL(string: fullCDNURL) else {
-            throw NSError(domain: "CDNServiceError", code: 1001, userInfo: [NSLocalizedDescriptionKey: "Invalid URL: \(fullCDNURL)"])
-        }
-        
-        return url
-    }
-    
 }

@@ -22,7 +22,7 @@ struct ExerciseView_ViewModelTests {
         word: Word(
             id: 2,
             text: "a",
-            phonemes: [Phoneme(id: 0, ipa: "a", respelling: "a")]
+            phonemes: [Phoneme(id: 0, ipa: "a", respelling: "a", cdnPath: "")]
         ),
         isCompleted: false
     )
@@ -30,9 +30,9 @@ struct ExerciseView_ViewModelTests {
         recordingId: 1,
         score: 1,
         phonemes: [
-            (Phoneme(id: 5, ipa: "m'", respelling: "m"), Phoneme(id: 5, ipa: "m'", respelling: "m")),
-            (Phoneme(id: 6, ipa: "aʊ", respelling: "ow"), nil),
-            (nil, Phoneme(id: 7, ipa: "s", respelling: "s"))
+            (Phoneme(id: 5, ipa: "m'", respelling: "m", cdnPath: ""), Phoneme(id: 5, ipa: "m'", respelling: "m", cdnPath: "")),
+            (Phoneme(id: 6, ipa: "aʊ", respelling: "ow", cdnPath: ""), nil),
+            (nil, Phoneme(id: 7, ipa: "s", respelling: "s", cdnPath: ""))
         ],
         xpGain: 2,
         exerciseIsCompleted: false

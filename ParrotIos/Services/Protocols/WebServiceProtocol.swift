@@ -9,6 +9,8 @@ import Foundation
 
 protocol WebServiceProtocol {
     
+    func download(fromURL: String, headers: [HeaderElement]) async throws -> URL
+    
     func get<T: Codable>(fromURL: String, headers: [HeaderElement]) async throws -> T
     
     func post<T: Codable>(toURL: String, headers: [HeaderElement]) async throws -> T
