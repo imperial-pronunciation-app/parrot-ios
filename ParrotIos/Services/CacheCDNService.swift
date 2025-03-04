@@ -26,13 +26,13 @@ class CacheCDNService: CDNServiceProtocol {
             fatalError("CDN_URL not found in Info.plist")
         }
         
-        let fullCDNURL = "https://" + cdnURL + "\(fromPath)"
+        let fullCDNURL = "https://" + cdnURL + "/\(fromPath)"
         
         // TODO: Catch different errors from download?
         let localURL = try await self.webService.download(fromURL: fullCDNURL, headers: [])
 
         let documentsDirectory = getDocumentsDirectory()
-        let permanentURL = documentsDirectory.appendingPathComponent("\(fromPath).wav")
+        let permanentURL = documentsDirectory.appendingPathComponent("\(fromPath)")
         
         do {
             if FileManager.default.fileExists(atPath: permanentURL.path) {
