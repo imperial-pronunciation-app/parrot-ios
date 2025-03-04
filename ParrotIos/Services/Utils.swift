@@ -17,3 +17,9 @@ func getBaseUrl() -> String {
 func generateAuthHeader(accessToken: String) -> HeaderElement {
     return HeaderElement(key: "Authorization", value: "Bearer " + accessToken)
 }
+
+func getDocumentsDirectory() -> URL {
+    let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+    let documentsDirectory = paths[0]
+    return documentsDirectory
+}

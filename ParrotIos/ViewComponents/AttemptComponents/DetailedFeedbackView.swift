@@ -66,7 +66,7 @@ struct PhonemeDetailView: View {
 }
 
 struct PhonemeMiniCard: View {
-    let audioPlayer = AudioPlayer()
+    let phonemePlayer = PhonemePlayer()
     let phoneme: Phoneme
     let missing: Bool
 
@@ -77,7 +77,9 @@ struct PhonemeMiniCard: View {
 
     var body: some View {
         Button(action: {
-            audioPlayer.play(word: phoneme.respelling, rate: 0.5)
+            Task {
+                await phonemePlayer.play(phoneme: phoneme, rate: 0.5)
+            }
         }) {
             HStack(spacing: 2) {
                 Image(systemName: "speaker.wave.2")
@@ -104,9 +106,9 @@ struct PhonemeMiniCard: View {
     DetailedFeedbackView(
         score: 80,
         phonemes: [
-            (Phoneme(id: 9, ipa: "s", respelling: "s"), Phoneme(id: 3, ipa: "h", respelling: "h")),
-            (Phoneme(id: 30, ipa: "ɑː", respelling: "ah"), Phoneme(id: 30, ipa: "ɑː", respelling: "ah")),
-            (nil, Phoneme(id: 16, ipa: "d", respelling: "d")),
-            (Phoneme(id: 23, ipa: "t", respelling: "t"), nil)
+            (Phoneme(id: 9, ipa: "s", respelling: "s", cdnPath: ""), Phoneme(id: 3, ipa: "h", respelling: "h", cdnPath: "")),
+            (Phoneme(id: 30, ipa: "ɑː", respelling: "ah", cdnPath: ""), Phoneme(id: 30, ipa: "ɑː", respelling: "ah", cdnPath: "")),
+            (nil, Phoneme(id: 16, ipa: "d", respelling: "d", cdnPath: "")),
+            (Phoneme(id: 23, ipa: "t", respelling: "t", cdnPath: ""), nil)
         ])
 }

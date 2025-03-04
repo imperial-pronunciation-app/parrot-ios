@@ -11,3 +11,4 @@
 #include? "prod.xcconfig"
 
 API_BASE_URL = pronunciation-app-backend.doc.ic.ac.uk
+CDN_URL = d2o94ssjf4etxx.cloudfront.net

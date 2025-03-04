@@ -9,3 +9,4 @@
 // https://help.apple.com/xcode/#/dev745c5c974
 
 API_BASE_URL = pronunciation-app-backend.doc.ic.ac.uk
+CDN_URL = d2o94ssjf4etxx.cloudfront.net

@@ -14,7 +14,7 @@ import Foundation
 struct ExerciseView_ViewModelTests {
     var mockParrotApiService: (ParrotApiServiceProtocol & CallTracking) = MockParrotApiService() as (ParrotApiServiceProtocol & CallTracking)
     var mockAudioRecorder: (AudioRecorderProtocol & CallTracking) = MockAudioRecorder() as (AudioRecorderProtocol & CallTracking)
-    var mockAudioPlayer: (AudioPlayerProtocol & CallTracking) = MockAudioPlayer() as (AudioPlayerProtocol & CallTracking)
+    var mockAudioSynthesizer: (AudioSynthesizerProtocol & CallTracking) = MockAudioSynthesizer() as (AudioSynthesizerProtocol & CallTracking)
 
     var viewModel: ExerciseView.ViewModel!
     let exercise = Exercise(
@@ -22,7 +22,7 @@ struct ExerciseView_ViewModelTests {
         word: Word(
             id: 2,
             text: "a",
-            phonemes: [Phoneme(id: 0, ipa: "a", respelling: "a")]
+            phonemes: [Phoneme(id: 0, ipa: "a", respelling: "a", cdnPath: "")]
         ),
         isCompleted: false
     )
@@ -31,9 +31,9 @@ struct ExerciseView_ViewModelTests {
         recordingId: 1,
         score: 1,
         phonemes: [
-            (Phoneme(id: 5, ipa: "m'", respelling: "m"), Phoneme(id: 5, ipa: "m'", respelling: "m")),
-            (Phoneme(id: 6, ipa: "aʊ", respelling: "ow"), nil),
-            (nil, Phoneme(id: 7, ipa: "s", respelling: "s"))
+            (Phoneme(id: 5, ipa: "m'", respelling: "m", cdnPath: ""), Phoneme(id: 5, ipa: "m'", respelling: "m", cdnPath: "")),
+            (Phoneme(id: 6, ipa: "aʊ", respelling: "ow", cdnPath: ""), nil),
+            (nil, Phoneme(id: 7, ipa: "s", respelling: "s", cdnPath: ""))
         ],
         xpGain: 2,
         exerciseIsCompleted: false
@@ -42,7 +42,7 @@ struct ExerciseView_ViewModelTests {
     let url = URL(fileURLWithPath: "test.url")
 
     init() {
-        viewModel = ExerciseView.ViewModel(exerciseId: exercise.id, audioRecoder: mockAudioRecorder, audioPlayer: mockAudioPlayer, parrotApi: mockParrotApiService)
+        viewModel = ExerciseView.ViewModel(exerciseId: exercise.id, audioRecoder: mockAudioRecorder, audioSynthesizer: mockAudioSynthesizer, parrotApi: mockParrotApiService)
         mockParrotApiService.stub(method: ParrotApiServiceMethods.getExercise, toReturn: exercise)
     }
 
@@ -111,7 +111,7 @@ struct ExerciseView_ViewModelTests {
         #expect(!viewModel.isPlaying)
 
         // Verify Calls
-        #expect(mockAudioPlayer.callCounts(for: AudioPlayerMethods.play) == 1)
-        mockAudioPlayer.assertCallArguments(for: AudioPlayerMethods.play, matches: [exercise.word.text, rate, lang])
+        #expect(mockAudioSynthesizer.callCounts(for: AudioSynthesizerMethods.play) == 1)
+        mockAudioSynthesizer.assertCallArguments(for: AudioSynthesizerMethods.play, matches: [exercise.word.text, rate, lang])
     }
 }
