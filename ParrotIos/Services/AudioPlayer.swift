@@ -9,12 +9,14 @@ import AVFoundation
 
 class AudioPlayer: AudioPlayerProtocol {
 
+    private var audioPlayer: AVAudioPlayer?
+    
     func play(url: URL, rate: Float) {
         do {
-            let audioPlayer = try AVAudioPlayer(contentsOf: url)
-            audioPlayer.rate = rate
-            audioPlayer.prepareToPlay()
-            audioPlayer.play()
+            audioPlayer = try AVAudioPlayer(contentsOf: url)
+            audioPlayer?.rate = rate
+            audioPlayer?.prepareToPlay()
+            audioPlayer?.play()
         } catch let error {
             print("Error playing audio: \(error.localizedDescription)")
         }
