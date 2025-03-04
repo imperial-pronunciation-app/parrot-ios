@@ -24,6 +24,7 @@ extension WordOfTheDayView {
         private(set) var score: Int?
         private(set) var feedbackPhonemes: [(Phoneme?, Phoneme?)]?
         private(set) var xpGain: Int?
+        private(set) var success: Bool?
 
         init(
             audioRecoder: AudioRecorderProtocol = AudioRecorder(),
@@ -68,6 +69,7 @@ extension WordOfTheDayView {
                 self.score = attemptResponse.score
                 self.feedbackPhonemes = attemptResponse.phonemes
                 self.xpGain = attemptResponse.xpGain
+                self.success = attemptResponse.success
             } catch {
                 errorMessage = error.localizedDescription
             }

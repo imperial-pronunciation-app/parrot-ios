@@ -10,12 +10,12 @@ import SwiftUI
 struct AudioButton: View {
     var isDisabled: Bool
     var action: () -> Void
-    
+
     init(isDisabled: Bool = false, action: @escaping () -> Void) {
         self.isDisabled = isDisabled
         self.action = action
     }
-    
+
     var body: some View {
         Button(action: isDisabled ? {} : action) {
             Image(systemName: isDisabled ? "speaker.slash.fill" : "speaker.wave.3")

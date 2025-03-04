@@ -108,6 +108,7 @@ struct ParrotApiServiceTests {
         try testAudioData.write(to: recordingURL)
 
         let expectedResponse = ExerciseAttempt(
+            success: true,
             recordingId: 1,
             score: 1,
             phonemes: [

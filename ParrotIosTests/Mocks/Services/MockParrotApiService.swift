@@ -41,7 +41,7 @@ class MockParrotApiService: ParrotApiServiceProtocol, CallTracking {
         recordCall(for: method, with: [lessonId])
         return try getReturnValue(for: method, callIndex: callCounts[method]! - 1)
     }
-    
+
     func getExercise(exerciseId: Int) async throws -> ParrotIos.Exercise {
         let method = ParrotApiServiceMethods.getExercise
         recordCall(for: method, with: [exerciseId])

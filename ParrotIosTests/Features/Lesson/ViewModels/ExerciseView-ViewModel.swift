@@ -27,6 +27,7 @@ struct ExerciseView_ViewModelTests {
         isCompleted: false
     )
     let attemptResponse: ExerciseAttempt = ExerciseAttempt(
+        success: true,
         recordingId: 1,
         score: 1,
         phonemes: [
@@ -66,7 +67,7 @@ struct ExerciseView_ViewModelTests {
         await viewModel.loadExercise()
         mockAudioRecorder.stub(method: AudioRecorderMethods.getRecordingURL, toReturn: url)
         mockParrotApiService.stub(method: ParrotApiServiceMethods.postExerciseAttempt, toReturn: attemptResponse)
-        
+
         // Act
         await viewModel.stopRecording()
 
