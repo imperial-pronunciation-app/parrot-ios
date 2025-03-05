@@ -11,9 +11,11 @@ import SwiftUI
 struct UtilComponents {
 
     public static var loadingView: some View {
-        ProgressView("Loading...")
-            .scaleEffect(1.5, anchor: .center)
-            .padding()
+        VStack {
+            Spacer()
+            ProgressView()
+            Spacer()
+        }
     }
 
     public static func errorView(errorMessage: String) -> some View {
@@ -22,6 +24,13 @@ struct UtilComponents {
                 .foregroundColor(.red)
                 .multilineTextAlignment(.center)
                 .padding()
+        }
+    }
+    
+    public static func triggerHaptics(haptics: UINotificationFeedbackGenerator.FeedbackType?) {
+        let generator = UINotificationFeedbackGenerator()
+        if let haptics = haptics {
+            generator.notificationOccurred(haptics)
         }
     }
 }

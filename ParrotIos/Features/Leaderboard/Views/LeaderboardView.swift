@@ -14,8 +14,8 @@ struct LeaderboardView: View {
             VStack {
                 VStack {
                     Text("Leaderboard")
-                        .font(.headline)
-                        .bold()
+                        .font(.title3)
+                        .fontWeight(.semibold)
                         .padding(.vertical, 4)
                     Text("\(viewModel.league.capitalized) League")
                         .font(.subheadline)

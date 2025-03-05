@@ -8,59 +8,69 @@
 import SwiftUI
 
 struct UnitView: View {
-    let unit: Unit
     let isLast: Bool
     let isNextCompleted: Bool
-    let viewModel = ViewModel()
+    var viewModel: ViewModel
+    
+    init(unit: Unit, isLast: Bool, isNextCompleted: Bool) {
+        self.isLast = isLast
+        self.isNextCompleted = isNextCompleted
+        self.viewModel = .init(unit: unit)
+    }
 
     var body: some View {
         HStack(alignment: .top) {
             VStack {
-                Image(systemName: unit.isCompleted ? "checkmark.circle.fill" : "circle")
-                    .foregroundColor(unit.isCompleted ? .green : .gray)
+                Image(systemName: viewModel.unit.isCompleted ? "checkmark.circle.fill" : "circle")
+                    .foregroundColor(viewModel.unit.isCompleted ? .green : .gray)
                     .font(.system(size: 24))
                 if !isLast {
                     // Line to the next unit
                     Rectangle()
-                        .frame(width: unit.isCompleted && isNextCompleted ? 2 : 1)
-                        .foregroundColor(unit.isCompleted && isNextCompleted ? .green : .gray)
+                        .frame(width: viewModel.unit.isCompleted && isNextCompleted ? 2 : 1)
+                        .foregroundColor(viewModel.unit.isCompleted && isNextCompleted ? .green : .gray)
                         .frame(maxHeight: .infinity)
                 }
             }
             VStack {
                 HStack(alignment: .firstTextBaseline) {
                     VStack(alignment: .leading) {
-                        Text(unit.name)
-                            .font(.headline)
-                            .foregroundColor(unit.isLocked ? .secondary : .black)
-                        Text(unit.description)
+                        Text(viewModel.unit.name)
+                            .font(.title3)
+                            .fontWeight(.semibold)
+                            .foregroundColor(viewModel.unit.isLocked ? .secondary : .primary)
+                        Text(viewModel.unit.description)
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                     }
 
                     Spacer()
 
-                    if !unit.isLocked {
+                    if !viewModel.unit.isLocked {
                         Button(action: {
-                            viewModel.expandOrCollapse()
+                            withAnimation(.spring()) {
+                                viewModel.expandOrCollapse()
+                            }
                         }) {
-                            Image(systemName: viewModel.isExpanded ? "chevron.down" : "chevron.right")
+                            Image(systemName: "chevron.right")
                                 .foregroundStyle(.gray)
+                                .rotationEffect(.degrees(viewModel.isExpanded ? 90 : 0))
                         }
                     }
                 }
-                if viewModel.isExpanded && !unit.isLocked {
-                    ForEach(unit.lessons!) { lesson in
-                        ListedLessonView(
-                            id: lesson.id,
-                            title: lesson.title,
-                            isCompleted: lesson.isCompleted,
-                            isLocked: lesson.isLocked,
-                            stars: lesson.stars
-                        )
-                            .padding(.top, 8)
+                VStack(spacing: 4) {
+                    if let lessons = viewModel.unit.lessons {
+                        ForEach(lessons) { lesson in
+                            ListedLessonView(
+                                id: lesson.id,
+                                title: lesson.title,
+                                isCompleted: lesson.isCompleted,
+                                isLocked: lesson.isLocked,
+                                stars: lesson.stars
+                            )
+                        }
                     }
-                    if let lesson = unit.recapLesson {
+                    if let lesson = viewModel.unit.recapLesson {
                         ListedLessonView(
                             id: lesson.id,
                             title: lesson.title,
@@ -69,12 +79,17 @@ struct UnitView: View {
                             stars: lesson.stars,
                             isRecap: true
                         )
-                            .padding(.top, 8)
                     } else {
-                        ListedLessonView(title: "Recap", isCompleted: false, isLocked: true, isRecap: true)
-                            .padding(.top, 8)
+                        ListedLessonView(
+                            title: "Recap",
+                            isCompleted: false,
+                            isLocked: true,
+                            isRecap: true
+                        )
                     }
                 }
+                .frame(height: viewModel.showLessons ? nil : 0, alignment: .top)
+                .clipped()
             }
             .padding()
             .overlay(

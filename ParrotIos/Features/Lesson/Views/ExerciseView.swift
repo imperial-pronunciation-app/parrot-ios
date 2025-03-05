@@ -33,11 +33,7 @@ struct ExerciseView: View {
     var body: some View {
         VStack {
             if viewModel.isLoading {
-              VStack {
-                  Spacer()
-                  UtilComponents.loadingView
-                  Spacer()
-              }
+                UtilComponents.loadingView
             } else if let errorMessage = viewModel.errorMessage {
                 UtilComponents.errorView(errorMessage: errorMessage)
             } else {

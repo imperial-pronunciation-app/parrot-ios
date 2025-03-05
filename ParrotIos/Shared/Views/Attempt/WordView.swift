@@ -14,9 +14,17 @@ struct WordView: View {
     let xpGain: Int?
     let success: Bool?
 
+    func getHaptics() -> UINotificationFeedbackGenerator.FeedbackType? {
+        if let success = success, !success {
+            return .error
+        } else {
+            return nil
+        }
+    }
+
     var body: some View {
         VStack {
-            if !(success ?? true) {
+            if let success = success, !success {
                 Text(
                     "\(Image(systemName: "exclamationmark.arrow.trianglehead.counterclockwise.rotate.90")) Sorry, I didn't get that..."
                 )
@@ -28,7 +36,7 @@ struct WordView: View {
                     .foregroundStyle(.gray)
                     .padding(.bottom, 32)
             }
-            
+
             if let score = score {
                 ScoreView(score: score)
                     .padding(.horizontal, 128)
@@ -50,6 +58,8 @@ struct WordView: View {
                 .font(.title)
                 .foregroundColor(Color.gray)
             }
+        }.onAppear {
+            UtilComponents.triggerHaptics(haptics: getHaptics())
         }
     }
 }

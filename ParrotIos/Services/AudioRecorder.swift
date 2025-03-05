@@ -19,7 +19,6 @@ class AudioRecorder: NSObject, ObservableObject, AVAudioRecorderDelegate, AudioR
             try session.setActive(true)
             let url = getDocumentsDirectory().appendingPathComponent("recording.wav")
 
-            // TODO: move deletion to audioRecorderDidFinishRecording after upload is completed
             if FileManager.default.fileExists(atPath: url.path) {
                 do {
                     try FileManager.default.removeItem(at: url)
@@ -52,12 +51,6 @@ class AudioRecorder: NSObject, ObservableObject, AVAudioRecorderDelegate, AudioR
         if !flag {
             print("Recording failed")
         }
-    }
-
-    func getDocumentsDirectory() -> URL {
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        let documentsDirectory = paths[0]
-        return documentsDirectory
     }
 
     func getRecordingURL() -> URL {

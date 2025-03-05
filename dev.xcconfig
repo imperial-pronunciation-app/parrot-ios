@@ -12,3 +12,4 @@
 
 //API_BASE_URL = pronunciation-app-backend.doc.ic.ac.uk
 API_BASE_URL = localhost:8000
+CDN_URL = d2o94ssjf4etxx.cloudfront.net

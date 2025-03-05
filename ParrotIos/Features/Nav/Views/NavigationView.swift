@@ -37,6 +37,11 @@ struct NavigationView: View {
                     Label("Profile", systemImage: "person.fill")
                 }
                 .tag(3)
+        }.onAppear {
+            let appearance = UITabBarAppearance()
+            appearance.configureWithDefaultBackground()
+            UITabBar.appearance().standardAppearance = appearance
+            UITabBar.appearance().scrollEdgeAppearance = appearance
         }
     }
 }

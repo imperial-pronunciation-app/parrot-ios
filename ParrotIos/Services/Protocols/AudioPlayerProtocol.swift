@@ -2,18 +2,12 @@
 //  AudioPlayerProtocol.swift
 //  ParrotIos
 //
-//  Created by et422 on 14/02/2025.
+//  Created by jn1122 on 03/03/2025.
 //
 
+import AVFoundation
+
 protocol AudioPlayerProtocol {
-
-    func play(word: String, rate: Float, language: String)
-
-    func stop()
-}
-
-extension AudioPlayerProtocol {
-    func play(word: String, rate: Float) {
-        play(word: word, rate: rate, language: "en-US")
-    }
+    
+    func play(url: URL, rate: Float)
 }

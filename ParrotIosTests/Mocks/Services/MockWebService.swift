@@ -10,6 +10,7 @@ import Foundation
 @testable import ParrotIos
 
 struct WebServiceMethods {
+    static let download = "download"
     static let get = "get"
     static let post = "post"
     static let postNoResponse = "postNoRespones"
@@ -23,6 +24,13 @@ class MockWebService: WebServiceProtocol, CallTracking {
     var callArguments: [String: [[Any?]]] = [:]
     var returnValues: [String: [Result<Any?, Error>]] = [:]
 
+    func download(fromURL: String, headers: [HeaderElement]) async throws -> URL {
+        let method = WebServiceMethods.download
+        recordCall(for: method, with: [fromURL, headers])
+
+        return try getReturnValue(for: method, callIndex: callCounts[method]! - 1)
+    }
+    
     func get<T>(
         fromURL: String,
         headers: [HeaderElement]

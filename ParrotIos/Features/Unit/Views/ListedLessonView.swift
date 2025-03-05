@@ -34,17 +34,28 @@ struct ListedLessonView: View {
             }
 
             Text(title)
-                .font(.subheadline)
+                .font(.body)
                 .foregroundStyle(isLocked ? .secondary : .primary)
+                .lineLimit(1)
+                .truncationMode(.tail)
 
             Spacer()
 
-            if !isLocked {
+            if isLocked {
+                Color.clear.frame(width: 32, height: 32)
+            } else {
                 NavigationLink(destination: LessonView(lessonId: id!)) {
                     Image(systemName: isCompleted ? "arrow.clockwise.circle.fill" : "play.circle.fill")
                         .foregroundStyle(isCompleted ? .gray : .accentColor)
-                        .imageScale(.large)
+                        .font(.system(size: 32))
                 }
+                .simultaneousGesture(
+                    TapGesture().onEnded {
+                        let generator = UIImpactFeedbackGenerator(style: .medium)
+                        generator.impactOccurred()
+                    }
+                )
+
             }
         }
     }

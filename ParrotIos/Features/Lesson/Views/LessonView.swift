@@ -35,6 +35,7 @@ struct LessonView: View {
                         .padding([.horizontal, .bottom])
                 }
                 .navigationTitle(viewModel.lesson!.title)
+                .sensoryFeedback(.increase, trigger: viewModel.exerciseIndex)
             }
         }.onAppear {
             Task {
