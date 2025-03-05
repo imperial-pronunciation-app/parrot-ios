@@ -24,4 +24,11 @@ struct UtilComponents {
                 .padding()
         }
     }
+    
+    public static func triggerHaptics(haptics: UINotificationFeedbackGenerator.FeedbackType?) {
+        let generator = UINotificationFeedbackGenerator()
+        if let haptics = haptics {
+            generator.notificationOccurred(haptics)
+        }
+    }
 }
