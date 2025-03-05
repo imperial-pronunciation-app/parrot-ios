@@ -19,7 +19,8 @@ struct WordOfTheDayView: View {
                 UtilComponents.errorView(errorMessage: errorMessage)
             } else if let word = viewModel.word {
                 Text("Word of the Day")
-                    .font(.headline)
+                    .font(.title3)
+                    .fontWeight(.semibold)
                     .padding(.vertical, 4)
                 Text(Date.now.formatted(date: .long, time: .omitted))
                     .font(.subheadline)

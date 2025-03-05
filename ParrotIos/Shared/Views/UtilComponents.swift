@@ -11,9 +11,11 @@ import SwiftUI
 struct UtilComponents {
 
     public static var loadingView: some View {
-        ProgressView("Loading...")
-            .scaleEffect(1.5, anchor: .center)
-            .padding()
+        VStack {
+            Spacer()
+            ProgressView()
+            Spacer()
+        }
     }
 
     public static func errorView(errorMessage: String) -> some View {
