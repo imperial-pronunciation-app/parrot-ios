@@ -45,6 +45,13 @@ struct ListedLessonView: View {
                         .foregroundStyle(isCompleted ? .gray : .accentColor)
                         .imageScale(.large)
                 }
+                .simultaneousGesture(
+                    TapGesture().onEnded {
+                        let generator = UIImpactFeedbackGenerator(style: .medium)
+                        generator.impactOccurred()
+                    }
+                )
+
             }
         }
     }
