@@ -10,7 +10,7 @@ import AVFoundation
 class AudioPlayer: AudioPlayerProtocol {
 
     private var audioPlayer: AVAudioPlayer?
-    
+
     func play(url: URL, rate: Float) {
         do {
             audioPlayer = try AVAudioPlayer(contentsOf: url)

@@ -14,7 +14,7 @@ protocol AuthServiceProtocol {
     func logout() async throws
 
     func register(email: String, displayName: String, password: String) async throws
-    
+
     func updateDetails(name: String, email: String, language: Int) async throws
 
     func saveTokens(accessToken: String) throws

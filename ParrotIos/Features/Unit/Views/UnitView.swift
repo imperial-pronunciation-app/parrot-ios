@@ -11,7 +11,7 @@ struct UnitView: View {
     let isLast: Bool
     let isNextCompleted: Bool
     var viewModel: ViewModel
-    
+
     init(unit: Unit, isLast: Bool, isNextCompleted: Bool) {
         self.isLast = isLast
         self.isNextCompleted = isNextCompleted

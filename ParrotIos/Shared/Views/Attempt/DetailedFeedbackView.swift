@@ -82,7 +82,7 @@ struct PhonemeMiniCard: View {
             }
         }) {
             HStack(spacing: 2) {
-                Image(systemName: "speaker.wave.2")
+                Image(systemName: phoneme.cdnPath != nil ? "speaker.wave.2" : "speaker.slash.fill")
                     .foregroundStyle(.gray)
                     .font(.footnote)
                 Text(phoneme.respelling)
@@ -99,6 +99,7 @@ struct PhonemeMiniCard: View {
                     )
             )
         }
+        .disabled(phoneme.cdnPath == nil)
     }
 }
 

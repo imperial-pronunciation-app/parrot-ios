@@ -8,6 +8,6 @@
 import AVFoundation
 
 protocol AudioPlayerProtocol {
-    
+
     func play(url: URL, rate: Float)
 }

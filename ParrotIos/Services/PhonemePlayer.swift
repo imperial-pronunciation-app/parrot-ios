@@ -19,7 +19,7 @@ class PhonemePlayer {
     
     func play(phoneme: Phoneme, rate: Float) async {
         do {
-            let url = try await self.cdnService.download(fromPath: phoneme.cdnPath)
+            let url = try await self.cdnService.download(fromPath: phoneme.cdnPath!)
             self.audioPlayer.play(url: url, rate: rate)
         } catch {
             print(error.localizedDescription)
