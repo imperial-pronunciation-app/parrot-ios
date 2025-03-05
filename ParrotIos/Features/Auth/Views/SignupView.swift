@@ -19,6 +19,11 @@ struct SignupView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 16) {
+                Image("parrot")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 128, height: 128)
+                
                 Text("Create account")
                     .font(.title)
                     .fontWeight(.semibold)

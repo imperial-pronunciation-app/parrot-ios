@@ -23,6 +23,11 @@ struct LoginView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 16) {
+                Image("parrot")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 128, height: 128)
+                
                 Text("Welcome back!")
                     .font(.title)
                     .fontWeight(.semibold)
