@@ -20,6 +20,7 @@ protocol WebServiceProtocol {
         parameters: [FormDataURLEncodedElement],
         toURL: String,
         headers: [HeaderElement]) async throws -> T
+    func patchDataNoResponse(data: Data, toURL: String, headers: [HeaderElement]) async throws
 }
 
 extension WebServiceProtocol {
@@ -45,4 +46,7 @@ extension WebServiceProtocol {
         toURL: String) async throws -> T {
             try await postURLEncodedFormData(parameters: parameters, toURL: toURL, headers: [])
         }
+    func patchDataNoResponse(data: Data, toURL: String) async throws {
+        try await patchDataNoResponse(data: data, toURL: toURL, headers: [])
+    }
 }

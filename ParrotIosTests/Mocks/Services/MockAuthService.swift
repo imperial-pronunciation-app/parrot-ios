@@ -48,5 +48,7 @@ class MockAuthService: AuthServiceProtocol, CallTracking {
             fatalError("MockWebService failed with error: \(error)")
         }
     }
+    
+    var userDetails: UserDetails? = nil
 
 }

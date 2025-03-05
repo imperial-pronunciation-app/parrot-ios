@@ -48,7 +48,7 @@ extension LeaderboardView {
         }
 
         func currentUserId() -> Int {
-            return auth.userDetails?.id ?? 0
+            return auth.userDetails!.id
         }
     }
 }
