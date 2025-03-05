@@ -193,10 +193,6 @@ struct ResetTimerView: View {
                     .foregroundStyle(Color(UIColor.systemGray4))
                     .offset(y: 0)
                 Spacer()
-                Rectangle()
-                    .frame(height: 1)
-                    .foregroundStyle(Color(UIColor.systemGray4))
-                    .offset(y: 0)
             }
         )
     }

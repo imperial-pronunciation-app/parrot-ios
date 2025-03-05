@@ -36,6 +36,11 @@ struct WordView: View {
                     .foregroundStyle(.gray)
                     .padding(.bottom, 32)
             }
+            
+            if let xpGain = xpGain {
+                XpGainView(xpGain: xpGain)
+                    .padding(.bottom, 32)
+            }
 
             if let score = score {
                 ScoreView(score: score)

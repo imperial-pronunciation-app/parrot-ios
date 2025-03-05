@@ -16,8 +16,6 @@ struct FeedbackView: View {
 
     public var body: some View {
         VStack {
-            XpGainView(xpGain: xpGain)
-                .padding(.bottom, 32)
             PhonemeFeedbackView(feedbackPhonemes: feedbackPhonemes, underline: true)
                 .onTapGesture {
                     isShowingSheet.toggle()
