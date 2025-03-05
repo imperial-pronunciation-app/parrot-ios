@@ -31,6 +31,11 @@ struct NavigationView: View {
                     Label("Leaderboard", systemImage: "medal")
                 }
                 .tag(2)
+        }.onAppear {
+            let appearance = UITabBarAppearance()
+            appearance.configureWithDefaultBackground()
+            UITabBar.appearance().standardAppearance = appearance
+            UITabBar.appearance().scrollEdgeAppearance = appearance
         }
     }
 }
