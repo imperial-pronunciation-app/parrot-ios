@@ -33,7 +33,7 @@ final class AuthService: AuthServiceProtocol, ObservableObject {
             let response: LoginAPIResponse = try await webService.postURLEncodedFormData(
                 parameters: parameters, toURL: "\(baseURL)/auth/jwt/login")
             try saveTokens(accessToken: response.accessToken)
-            try await getUserDetails()
+            try await getUser()
             await MainActor.run {
                 self.isAuthenticated = true
             }
@@ -60,11 +60,24 @@ final class AuthService: AuthServiceProtocol, ObservableObject {
             throw LoginError.customError("Error during login: \(error.localizedDescription)")
         }
     }
-    
-    private func getUserDetails() async throws {
-        self.userDetails = try await webService.get(
+
+    private func getUser() async throws {
+        let res: UserResponse = try await webService.get(
             fromURL: "\(baseURL)/users/me",
             headers: [generateAuthHeader(accessToken: getAccessToken()!)]
+        )
+
+        let parrotApiService = ParrotApiService()
+        let languages = try await parrotApiService.getLanguages()
+        let userLanguage = languages.first(where: { (lang: Language) -> Bool in lang.id == res.languageId })
+
+        userDetails = UserDetails(
+            id: res.id,
+            loginStreak: res.loginStreak,
+            xpTotal: res.xpTotal,
+            email: res.email,
+            displayName: res.displayName,
+            language: userLanguage!
         )
     }
 
@@ -74,7 +87,9 @@ final class AuthService: AuthServiceProtocol, ObservableObject {
 
         do {
             try await webService.postNoResponse(toURL: "\(baseURL)/auth/jwt/logout", headers: authHeaders)
-            self.isAuthenticated = false
+            await MainActor.run {
+                self.isAuthenticated = false
+            }
         } catch {
             throw LogoutError.customError("Error during logout: \(error.localizedDescription)")
         }
@@ -115,10 +130,10 @@ final class AuthService: AuthServiceProtocol, ObservableObject {
     }
 
     func updateDetails(name: String, email: String, language: Int) async throws {
-        var body: [String: Any] = [
+        let body: [String: Any] = [
             "display_name": name,
             "email": email,
-            "language": language
+            "language_id": language
         ]
 
         guard let data = try? JSONSerialization.data(withJSONObject: body) else {
@@ -126,8 +141,8 @@ final class AuthService: AuthServiceProtocol, ObservableObject {
         }
 
         do {
-            try await webService.patchDataNoResponse(data: data, toURL: "\(baseURL)/users/me")
-            try await getUserDetails()
+            try await webService.patchDataNoResponse(data: data, toURL: "\(baseURL)/users/me", headers: [generateAuthHeader(accessToken: getAccessToken()!)])
+            try await getUser()
             return
         } catch NetworkError.badStatus(let code, let data) {
             if code != 400 {
@@ -205,13 +220,13 @@ enum UpdateDetailsError: Error, Equatable {
     case customError(String)
 }
 
-struct UserDetails: Codable {
+struct UserResponse: Codable {
     let id: Int
     let loginStreak: Int
     let xpTotal: Int
     let email: String
     let displayName: String
-    let language: Language
+    let languageId: Int
 
     private enum CodingKeys: String, CodingKey {
         case id
@@ -219,8 +234,17 @@ struct UserDetails: Codable {
         case xpTotal = "xp_total"
         case email
         case displayName = "display_name"
-        case language
+        case languageId = "language_id"
     }
+}
+
+struct UserDetails {
+    let id: Int
+    let loginStreak: Int
+    let xpTotal: Int
+    let email: String
+    let displayName: String
+    let language: Language
 }
 
 struct Language: Codable, Identifiable {

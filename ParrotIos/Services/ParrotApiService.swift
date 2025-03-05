@@ -32,7 +32,7 @@ class ParrotApiService: ParrotApiServiceProtocol {
     func getLeague() async throws -> String {
         return try await getData(endpoint: "/league")
     }
-    
+
     func getLanguages() async throws -> [Language] {
         return try await getData(endpoint: "/languages")
     }
