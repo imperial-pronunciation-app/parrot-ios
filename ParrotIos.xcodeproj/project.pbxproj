@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		27B0A0732D7A51A000A71B08 /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 27B0A0722D7A51A000A71B08 /* ConfettiSwiftUI */; };
 		B0A6E5482D54EF4100DB2DDE /* dev.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = B0A6E5472D54EF4100DB2DDE /* dev.xcconfig */; };
 		B0A6E54A2D54EF4A00DB2DDE /* prod.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = B0A6E5492D54EF4A00DB2DDE /* prod.xcconfig */; };
 		CCD8884C2D63F5CA00F5B109 /* ViewInspector in Frameworks */ = {isa = PBXBuildFile; productRef = CCD8884B2D63F5CA00F5B109 /* ViewInspector */; };
@@ -153,6 +154,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27B0A0732D7A51A000A71B08 /* ConfettiSwiftUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -622,6 +624,7 @@
 			);
 			name = ParrotIos;
 			packageProductDependencies = (
+				27B0A0722D7A51A000A71B08 /* ConfettiSwiftUI */,
 			);
 			productName = ParrotIos;
 			productReference = 276AD2552D4103D200001426 /* ParrotIos.app */;
@@ -683,6 +686,7 @@
 			packageReferences = (
 				CCD8884A2D63F5CA00F5B109 /* XCRemoteSwiftPackageReference "ViewInspector" */,
 				CC29B3772D6761B100597F98 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */,
+				27B0A0712D7A51A000A71B08 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 276AD2562D4103D200001426 /* Products */;
@@ -1004,6 +1008,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		27B0A0712D7A51A000A71B08 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/simibac/ConfettiSwiftUI.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.2;
+			};
+		};
 		CC29B3772D6761B100597F98 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SimplyDanny/SwiftLintPlugins";
@@ -1023,6 +1035,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		27B0A0722D7A51A000A71B08 /* ConfettiSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 27B0A0712D7A51A000A71B08 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */;
+			productName = ConfettiSwiftUI;
+		};
 		CCD8884B2D63F5CA00F5B109 /* ViewInspector */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CCD8884A2D63F5CA00F5B109 /* XCRemoteSwiftPackageReference "ViewInspector" */;

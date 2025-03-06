@@ -25,10 +25,16 @@ extension ExerciseView {
 
         private(set) var exerciseId: Int
         private(set) var exercise: Exercise?
+        private(set) var isLast: Bool?
         private(set) var lastAttempt: ExerciseAttempt?
+        var lastAttemptCompletedExercise: Bool {
+            return lastAttempt != nil && lastAttempt!.exerciseIsCompleted
+        }
         var isCompleted: Bool {
-            return (exercise != nil && exercise!.isCompleted) ||
-                (lastAttempt != nil && lastAttempt!.exerciseIsCompleted ?? false)
+            return (exercise != nil && exercise!.isCompleted) || lastAttemptCompletedExercise
+        }
+        var justCompletedLesson: Bool {
+            return isLast! && lastAttemptCompletedExercise
         }
 
         init(
@@ -37,13 +43,15 @@ extension ExerciseView {
             audioSynthesizer: AudioSynthesizerProtocol = AudioSynthesizer(),
             parrotApi: ParrotApiServiceProtocol = ParrotApiService(
                 webService: WebService(), authService: AuthService.instance),
-            authService: AuthServiceProtocol = AuthService.instance
+            authService: AuthServiceProtocol = AuthService.instance,
+            isLast: Bool
         ) {
             self.exerciseId = exerciseId
             self.audioRecorder = audioRecoder
             self.audioSynthesizer = audioSynthesizer
             self.parrotApi = parrotApi
             self.authService = authService
+            self.isLast = isLast
         }
 
         func loadExercise() async {
