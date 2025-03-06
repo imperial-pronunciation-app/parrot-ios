@@ -9,7 +9,7 @@ import Foundation
 
 protocol ParrotApiServiceProtocol {
 
-    func getLeague() async throws -> String
+    func getUserDetails() async throws -> UserDetails
 
     func getLanguages() async throws -> [Language]
 

@@ -60,10 +60,10 @@ struct ProfileView: View {
 
                 HStack(spacing: 4) {
                     Image(systemName: "trophy.fill")
-                        .foregroundStyle(colourFor(league: viewModel.league))
-                    Text(viewModel.league ?? "League")
-                        .bold(viewModel.league != nil)
-                        .foregroundStyle(viewModel.league == nil ? .gray : .primary)
+                        .foregroundStyle(colourFor(league: viewModel.userDetails?.league))
+                    Text(viewModel.userDetails?.league ?? "League")
+                        .bold(viewModel.userDetails?.league != nil)
+                        .foregroundStyle(viewModel.userDetails?.league == nil ? .gray : .primary)
 //                    Text("League")
 //                        .foregroundStyle(.gray)
                 }

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 func getBaseUrl() -> String {
     guard let urlString = Bundle.main.object(forInfoDictionaryKey: "API_BASE_URL") as? String else {
@@ -23,3 +24,7 @@ func getDocumentsDirectory() -> URL {
     let documentsDirectory = paths[0]
     return documentsDirectory
 }
+
+//func getAvatar(for name: String) -> Image {
+//    
+//}

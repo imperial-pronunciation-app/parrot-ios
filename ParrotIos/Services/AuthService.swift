@@ -33,7 +33,7 @@ final class AuthService: AuthServiceProtocol, ObservableObject {
             let response: LoginAPIResponse = try await webService.postURLEncodedFormData(
                 parameters: parameters, toURL: "\(baseURL)/auth/jwt/login")
             try saveTokens(accessToken: response.accessToken)
-            try await getUser()
+            try await getUserDetails()
             await MainActor.run {
                 self.isAuthenticated = true
             }
@@ -61,24 +61,9 @@ final class AuthService: AuthServiceProtocol, ObservableObject {
         }
     }
 
-    private func getUser() async throws {
-        let res: UserResponse = try await webService.get(
-            fromURL: "\(baseURL)/users/me",
-            headers: [generateAuthHeader(accessToken: getAccessToken()!)]
-        )
-
+    private func getUserDetails() async throws {
         let parrotApiService = ParrotApiService()
-        let languages = try await parrotApiService.getLanguages()
-        let userLanguage = languages.first(where: { (lang: Language) -> Bool in lang.id == res.languageId })
-
-        userDetails = UserDetails(
-            id: res.id,
-            loginStreak: res.loginStreak,
-            xpTotal: res.xpTotal,
-            email: res.email,
-            displayName: res.displayName,
-            language: userLanguage!
-        )
+        userDetails = try await parrotApiService.getUserDetails()
     }
 
     func logout() async throws {
@@ -142,7 +127,7 @@ final class AuthService: AuthServiceProtocol, ObservableObject {
 
         do {
             try await webService.patchDataNoResponse(data: data, toURL: "\(baseURL)/users/me", headers: [generateAuthHeader(accessToken: getAccessToken()!)])
-            try await getUser()
+            try await getUserDetails()
             return
         } catch NetworkError.badStatus(let code, let data) {
             if code != 400 {
@@ -220,13 +205,15 @@ enum UpdateDetailsError: Error, Equatable {
     case customError(String)
 }
 
-struct UserResponse: Codable {
+struct UserDetails: Codable {
     let id: Int
     let loginStreak: Int
     let xpTotal: Int
     let email: String
     let displayName: String
-    let languageId: Int
+    let language: Language
+    let league: String
+    let avatar: String
 
     private enum CodingKeys: String, CodingKey {
         case id
@@ -234,17 +221,10 @@ struct UserResponse: Codable {
         case xpTotal = "xp_total"
         case email
         case displayName = "display_name"
-        case languageId = "language_id"
+        case league
+        case language
+        case avatar
     }
-}
-
-struct UserDetails {
-    let id: Int
-    let loginStreak: Int
-    let xpTotal: Int
-    let email: String
-    let displayName: String
-    let language: Language
 }
 
 struct Language: Codable, Identifiable {

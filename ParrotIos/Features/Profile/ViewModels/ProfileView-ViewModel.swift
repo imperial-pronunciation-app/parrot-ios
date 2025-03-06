@@ -16,8 +16,7 @@ extension ProfileView {
         var userDetails: UserDetails? {
             authService.userDetails
         }
-
-        private(set) var league: String?
+        
         private(set) var languages: [Language] = []
 
         init(authService: AuthServiceProtocol = AuthService.instance, parrotApiService: ParrotApiServiceProtocol = ParrotApiService()) {
@@ -25,16 +24,11 @@ extension ProfileView {
             self.parrotApiService = parrotApiService
         }
 
-        private func getLeague() async throws {
-            league = try await parrotApiService.getLeague()
-        }
-
         private func getLanguages() async throws {
             languages = try await parrotApiService.getLanguages()
         }
 
         func onLoad() async throws {
-            try await getLeague()
             try await getLanguages()
         }
 
