@@ -35,6 +35,7 @@ struct LessonView: View {
                     ProgressView(value: Double(viewModel.exerciseIndex!), total: Double(viewModel.totalExercises!))
                         .progressViewStyle(LinearProgressViewStyle(tint: .accentColor))
                         .padding([.horizontal, .bottom])
+                        .animation(.easeOut(duration: 0.8), value: viewModel.exerciseIndex!)
                 }
                 .navigationTitle(viewModel.lesson!.title)
                 .sensoryFeedback(.increase, trigger: viewModel.exerciseIndex)
