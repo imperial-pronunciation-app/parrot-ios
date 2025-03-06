@@ -46,7 +46,7 @@ class MockAudioRecorder: AudioRecorderProtocol, CallTracking {
         }
     }
 
-    func getRecordingURL() -> URL {
+    func getRecordingURL() -> URL? {
         let method = AudioRecorderMethods.getRecordingURL
         recordCall(for: method)
 

@@ -79,7 +79,6 @@ struct ExerciseView: View {
 
                         RecordingButton(
                             isRecording: viewModel.isRecording,
-                            isDisabled: viewModel.disableRecording,
                             action: viewModel.toggleRecording
                         )
 
