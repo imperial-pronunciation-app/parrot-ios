@@ -58,6 +58,10 @@ struct CurriculumView: View {
             Task {
                 await viewModel.loadCurriculum()
             }
+        }.onReceive(NotificationCenter.default.publisher(for: .didDismissExerciseView)) { _ in
+            Task {
+                await viewModel.loadCurriculum()
+            }
         }
     }
 }
