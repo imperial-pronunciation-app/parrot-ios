@@ -13,13 +13,7 @@ struct RecordingButton: View {
     var action: () async -> Void
 
     var body: some View {
-        Button(action: {
-            if isRecording {
-                Task {
-                    await action()
-                }
-            }
-        }) {
+        Button(action: {}) {
             Image(systemName: "mic")
                 .font(.largeTitle)
                 .foregroundColor(.white)
@@ -28,11 +22,17 @@ struct RecordingButton: View {
                 .clipShape(Circle())
         }
         .simultaneousGesture(
-            LongPressGesture(minimumDuration: 0.1).onEnded { _ in
-                Task {
-                    await action()
+            DragGesture(minimumDistance: 0)
+                .onChanged { _ in
+                    Task {
+                        await action()
+                    }
                 }
-            }
+                .onEnded { _ in
+                    Task {
+                        await action()
+                    }
+                }
         )
         .disabled(isDisabled)
     }

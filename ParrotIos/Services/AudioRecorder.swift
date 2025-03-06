@@ -9,7 +9,7 @@ import AVFoundation
 
 class AudioRecorder: NSObject, ObservableObject, AVAudioRecorderDelegate, AudioRecorderProtocol {
 
-    var audioRecorder: AVAudioRecorder!
+    var audioRecorder: AVAudioRecorder?
     private(set) var isRecording = false
 
     func startRecording() {
@@ -34,8 +34,8 @@ class AudioRecorder: NSObject, ObservableObject, AVAudioRecorderDelegate, AudioR
                 AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
             ]
             audioRecorder = try AVAudioRecorder(url: url, settings: settings)
-            audioRecorder.delegate = self
-            audioRecorder.record()
+            audioRecorder?.delegate = self
+            audioRecorder?.record()
             isRecording = true
         } catch let error {
             print("Error recording audio: \(error.localizedDescription)")
@@ -43,7 +43,7 @@ class AudioRecorder: NSObject, ObservableObject, AVAudioRecorderDelegate, AudioR
     }
 
     func stopRecording() {
-        audioRecorder.stop()
+        audioRecorder?.stop()
         isRecording = false
     }
 
@@ -54,6 +54,6 @@ class AudioRecorder: NSObject, ObservableObject, AVAudioRecorderDelegate, AudioR
     }
 
     func getRecordingURL() -> URL {
-        return audioRecorder.url
+        return audioRecorder!.url
     }
 }
