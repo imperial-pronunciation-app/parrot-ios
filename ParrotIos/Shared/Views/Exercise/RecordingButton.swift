@@ -9,8 +9,8 @@ import SwiftUI
 
 struct RecordingButton: View {
     var isRecording: Bool
-    var isDisabled: Bool
     var action: () async -> Void
+    @State private var buttonSize: CGFloat = 1
 
     var body: some View {
         Button(action: {}) {
@@ -18,22 +18,27 @@ struct RecordingButton: View {
                 .font(.largeTitle)
                 .foregroundColor(.white)
                 .frame(width: 80, height: 80)
-                .background(isRecording ? Color.red.opacity(0.8) : Color.accentColor)
+                .background(Color.accentColor)
                 .clipShape(Circle())
+                .scaleEffect(buttonSize)
+                .animation(.easeInOut(duration: 0.2), value: buttonSize)
+                .frame(width: 100, height: 100)
         }
+        .buttonStyle(PlainButtonStyle())
         .simultaneousGesture(
             DragGesture(minimumDistance: 0)
                 .onChanged { _ in
                     Task {
                         await action()
+                        buttonSize = 1.2
                     }
                 }
                 .onEnded { _ in
                     Task {
                         await action()
+                        buttonSize = 1
                     }
                 }
         )
-        .disabled(isDisabled)
     }
 }
