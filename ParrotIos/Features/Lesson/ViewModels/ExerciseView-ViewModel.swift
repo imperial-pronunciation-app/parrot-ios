@@ -96,8 +96,11 @@ extension ExerciseView {
         func playWord() {
             let word: String = self.exercise!.word.text
             isPlaying = true
-            let userLanguage = authService.userDetails!.language.code
-            audioSynthesizer.play(word: word, rate: 0.25, language: userLanguage)
+            if let language = authService.userDetails?.language.code {
+                audioSynthesizer.play(word: word, rate: 0.25, language: language)
+            } else {
+                audioSynthesizer.play(word: word, rate: 0.25)
+            }
             isPlaying = false
         }
     }

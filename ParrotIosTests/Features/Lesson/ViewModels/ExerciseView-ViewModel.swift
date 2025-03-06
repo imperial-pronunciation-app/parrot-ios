@@ -101,7 +101,7 @@ struct ExerciseView_ViewModelTests {
     func testPlayWord() async throws {
         // Setup
         await viewModel.loadExercise()
-        let rate = 0.5
+        let rate = 0.25
         let lang = "en-US"
 
         // Act
