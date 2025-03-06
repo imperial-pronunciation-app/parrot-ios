@@ -11,7 +11,7 @@ struct ExerciseAttempt: Codable, Equatable {
     let phonemes: [(Phoneme?, Phoneme?)]?
     let xpGain: Int?
     let xpStreakBoost: Int?
-    let exerciseIsCompleted: Bool?
+    let exerciseIsCompleted: Bool
     let success: Bool
 
     enum CodingKeys: String, CodingKey {
@@ -31,7 +31,7 @@ struct ExerciseAttempt: Codable, Equatable {
         phonemes: [(Phoneme?, Phoneme?)]?,
         xpGain: Int?,
         xpStreakBoost: Int?,
-        exerciseIsCompleted: Bool?
+        exerciseIsCompleted: Bool
     ) {
         self.success = success
         self.recordingId = recordingId
@@ -50,7 +50,7 @@ struct ExerciseAttempt: Codable, Equatable {
         self.xpGain = try container.decodeIfPresent(Int.self, forKey: .xpGain)
         self.xpStreakBoost = try container.decodeIfPresent(Int.self, forKey: .xpStreakBoost)
         self.phonemes = try AttemptDecoding.decodePhonemePairsIfPresent(from: container, forKey: .phonemes)
-        self.exerciseIsCompleted = try container.decodeIfPresent(Bool.self, forKey: .exerciseIsCompleted)
+        self.exerciseIsCompleted = try container.decode(Bool.self, forKey: .exerciseIsCompleted)
     }
 
     func encode(to encoder: Encoder) throws {
