@@ -15,10 +15,12 @@ struct AuthServiceMethods {
     static let register = "register"
     static let saveTokens = "saveTokens"
     static let getAccessToken = "getAccessToken"
+    static let updateDetails = "updateDetails"
 }
 
 class MockAuthService: AuthServiceProtocol, CallTracking {
     func updateDetails(name: String, email: String, language: Int) async throws {
+        recordCall(for: AuthServiceMethods.updateDetails, with: [name, email, language])
     }
 
     var callCounts: [String: Int] = [:]

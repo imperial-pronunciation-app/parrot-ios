@@ -17,10 +17,13 @@ struct WebServiceMethods {
     static let postData = "postData"
     static let postMultiPartFormData = "postMultiPartFormData"
     static let postURLEncodedFormData = "postURLEncodedFormData"
+    static let patchDataNoResponse = "patchDataNoResponse"
 }
 
 class MockWebService: WebServiceProtocol, CallTracking {
     func patchDataNoResponse(data: Data, toURL: String, headers: [ParrotIos.HeaderElement]) async throws {
+        let method = WebServiceMethods.patchDataNoResponse
+        recordCall(for: method, with: [data, toURL, headers])
     }
 
     var callCounts: [String: Int] = [:]
