@@ -22,7 +22,14 @@ struct Attempt: Codable, Equatable {
         case exerciseIsCompleted = "exercise_is_completed"
     }
 
-    init(success: Bool, recordingId: Int?, score: Int?, phonemes: [(Phoneme?, Phoneme?)]?, xpGain: Int?, exerciseIsCompleted: Bool?) {
+    init(
+        success: Bool,
+        recordingId: Int?,
+        score: Int?,
+        phonemes: [(Phoneme?, Phoneme?)]?,
+        xpGain: Int?,
+        exerciseIsCompleted: Bool?
+    ) {
         self.success = success
         self.recordingId = recordingId
         self.score = score

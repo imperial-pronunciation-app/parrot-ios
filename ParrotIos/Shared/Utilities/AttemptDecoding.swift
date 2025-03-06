@@ -6,7 +6,10 @@
 //
 
 enum AttemptDecoding {
-    static func decodePhonemePairsIfPresent<K: CodingKey>(from container: KeyedDecodingContainer<K>, forKey key: K) throws -> [(Phoneme?, Phoneme?)]? {
+    static func decodePhonemePairsIfPresent<K: CodingKey>(
+        from container: KeyedDecodingContainer<K>,
+        forKey key: K
+    ) throws -> [(Phoneme?, Phoneme?)]? {
         let phonemeArrays = try container.decodeIfPresent([[Phoneme?]].self, forKey: key)
         return try phonemeArrays.map {
             try $0.map { array in

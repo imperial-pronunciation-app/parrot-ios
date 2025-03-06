@@ -95,9 +95,7 @@ struct PodiumColView: View {
 
     var body: some View {
         VStack {
-            Image(systemName: "person.circle.fill")
-                .foregroundStyle(Color(UIColor.systemGray4))
-                .font(.system(size: 50))
+            getAvatar(for: user.avatar, size: 50)
             Text(user.displayName)
                 .font(.subheadline)
                 .bold()
@@ -135,10 +133,7 @@ struct UserCard: View {
                 .foregroundStyle(.gray)
                 .frame(width: 20)
                 .fontWeight(isCurrentUser ? .bold : nil)
-            Image(systemName: "person.circle.fill")
-                .foregroundStyle(.white, Color(UIColor.systemGray3))
-                .font(.system(size: 35))
-                .frame(width: 40, height: 40)
+            getAvatar(for: user.avatar, size: 40)
             Text("\(user.displayName)")
                 .fontWeight(isCurrentUser ? .bold : nil)
             Spacer()

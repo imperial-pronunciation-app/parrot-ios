@@ -33,7 +33,7 @@ struct AuthServiceTests {
             tokenType: "bearer"
         ))
 
-        mockWebService.stub(method: WebServiceMethods.get, toReturn: UserDetails(id: 1, loginStreak: 1))
+        mockWebService.stub(method: WebServiceMethods.get, toReturn: UserDetails(id: 1, loginStreak: 1, xpTotal: 1, email: "", displayName: "", language: Language(id: 1, code: "", name: ""), league: "", avatar: ""))
 
         try #require(authService.getAccessToken() == nil)
         try #require(!authService.isAuthenticated)
@@ -89,7 +89,7 @@ struct AuthServiceTests {
             accessToken: expectedToken,
             tokenType: "bearer"
         ))
-        mockWebService.stub(method: WebServiceMethods.get, toReturn: UserDetails(id: 1, loginStreak: 1))
+        mockWebService.stub(method: WebServiceMethods.get, toReturn: UserDetails(id: 1, loginStreak: 1, xpTotal: 1, email: "", displayName: "", language: Language(id: 1, code: "", name: ""), league: "", avatar: ""))
         try await authService.login(username: username, password: password)
 
         mockWebService.stub(method: WebServiceMethods.postNoResponse, toReturn: ())

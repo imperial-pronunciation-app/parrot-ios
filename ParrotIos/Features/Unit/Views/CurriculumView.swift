@@ -32,17 +32,17 @@ struct CurriculumView: View {
             .safeAreaInset(edge: .top) {
                 // Pinned Header
                 HStack {
-                    Image("en-US")
+                    Image(viewModel.userDetails.language.code)
                         .resizable()
                         .scaledToFit()
                         .frame(width: 32, height: 32)
-                    
+
                     Text("Curriculum")
                         .font(.title3)
                         .fontWeight(.semibold)
-                    
+
                     Spacer()
-                    
+
                     HStack {
                         Image(systemName: "flame.fill")
                             .foregroundColor(.orange)
