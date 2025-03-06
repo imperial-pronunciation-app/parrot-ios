@@ -40,6 +40,8 @@ struct LeaderboardView: View {
                 Spacer()
                 ResetTimerView(currentDays: viewModel.daysProgress.current, totalDays: viewModel.daysProgress.total)
             }
+        }.task {
+            await viewModel.loadLeaderboard()
         }
     }
 }
