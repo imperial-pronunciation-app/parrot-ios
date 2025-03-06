@@ -14,7 +14,12 @@ class AudioSynthesizer: AudioSynthesizerProtocol {
         self.synthesizer = AVSpeechSynthesizer()
     }
 
-    func play(word: String, rate: Float, language: String = "en-US") {
+    func play(word: String, rate: Float, language: String) {
+        let languages = [
+            "eng": "eng-US",
+            "por": "pt-BR"
+        ]
+        let synthesizerLanguage = languages[language] ?? "en-US"
         try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .voicePrompt, options: [])
         let utterance = AVSpeechUtterance(string: word)
 
@@ -23,7 +28,7 @@ class AudioSynthesizer: AudioSynthesizerProtocol {
             voice.language.starts(with: language) && voice.quality == .enhanced
         }
 
-        utterance.voice = preferredVoice ?? AVSpeechSynthesisVoice(language: language)
+        utterance.voice = preferredVoice ?? AVSpeechSynthesisVoice(language: synthesizerLanguage)
 
         utterance.rate = rate
 
