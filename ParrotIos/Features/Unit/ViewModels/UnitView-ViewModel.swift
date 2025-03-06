@@ -11,13 +11,14 @@ extension UnitView {
     class ViewModel {
         let unit: Unit
 
-        private(set) var isExpanded: Bool = false
+        private(set) var isExpanded: Bool
         var showLessons: Bool {
             isExpanded && !unit.isLocked
         }
 
-        init(unit: Unit) {
+        init(unit: Unit, isFirst: Bool, isPrevCompleted: Bool) {
             self.unit = unit
+            self.isExpanded = (isPrevCompleted || isFirst) && !unit.isCompleted
         }
 
         func expandOrCollapse() {
