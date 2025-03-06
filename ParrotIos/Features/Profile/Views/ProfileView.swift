@@ -14,16 +14,12 @@ struct ProfileView: View {
     @State private var languageSelection: Int
 
     init() {
-        nameField = viewModel.userDetails?.displayName ?? ""
-        emailField = viewModel.userDetails?.email ?? ""
-        languageSelection = viewModel.userDetails?.language.id ?? 0
+        nameField = viewModel.userDetails!.displayName
+        emailField = viewModel.userDetails!.email
+        languageSelection = viewModel.userDetails!.language.id
     }
 
-    private func colourFor(league: String?) -> Color {
-        if league == nil {
-            return Color.gray
-        }
-
+    private func colourFor(league: String) -> Color {
         switch league {
         case "Bronze":
             return Color(red: 0.8, green: 0.5, blue: 0.2)
@@ -42,17 +38,13 @@ struct ProfileView: View {
                 .font(.headline)
                 .bold()
                 .padding(.bottom, 32)
-            Image("blue-bird")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 100, height: 100)
-                .clipShape(Circle())
+            getAvatar(for: viewModel.userDetails!.avatar, size: 100)
                 .padding(.bottom, 8)
             HStack(spacing: 30) {
                 HStack(spacing: 4) {
                     Image(systemName: "bolt.fill")
                         .foregroundStyle(.yellow)
-                    Text("\(viewModel.userDetails?.xpTotal ?? 0)")
+                    Text("\(viewModel.userDetails!.xpTotal)")
                         .bold()
                     Text("XP")
                         .foregroundStyle(.gray)
@@ -60,18 +52,16 @@ struct ProfileView: View {
 
                 HStack(spacing: 4) {
                     Image(systemName: "trophy.fill")
-                        .foregroundStyle(colourFor(league: viewModel.userDetails?.league))
-                    Text(viewModel.userDetails?.league ?? "League")
-                        .bold(viewModel.userDetails?.league != nil)
-                        .foregroundStyle(viewModel.userDetails?.league == nil ? .gray : .primary)
-//                    Text("League")
-//                        .foregroundStyle(.gray)
+                        .foregroundStyle(colourFor(league: viewModel.userDetails!.league))
+                    Text(viewModel.userDetails!.league)
+                        .bold()
+                        .foregroundStyle(.primary)
                 }
 
                 HStack(spacing: 4) {
                     Image(systemName: "flame.fill")
                         .foregroundStyle(.accent)
-                    Text("\(viewModel.userDetails?.loginStreak ?? 0)")
+                    Text("\(viewModel.userDetails!.loginStreak)")
                         .bold()
                     Text("Days")
                         .foregroundStyle(.gray)

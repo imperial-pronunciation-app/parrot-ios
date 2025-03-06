@@ -25,6 +25,10 @@ func getDocumentsDirectory() -> URL {
     return documentsDirectory
 }
 
-//func getAvatar(for name: String) -> Image {
-//    
-//}
+func getAvatar(for name: String, size: CGFloat) -> some View {
+    return Image("\(name.lowercased())-bird")
+        .resizable()
+        .scaledToFit()
+        .frame(width: size, height: size)
+        .clipShape(Circle())
+}
