@@ -9,10 +9,11 @@ import Foundation
 
 class CacheCDNService: CDNServiceProtocol {
 
+    static var instance = CacheCDNService()
     private let webService: WebServiceProtocol
-    private let cache = [String: URL]()
+    private var cache = [String: URL]()
 
-    init(webService: WebServiceProtocol = WebService()) {
+    private init(webService: WebServiceProtocol = WebService()) {
         self.webService = webService
     }
 
@@ -31,7 +32,8 @@ class CacheCDNService: CDNServiceProtocol {
         let localURL = try await self.webService.download(fromURL: fullCDNURL, headers: [])
 
         let documentsDirectory = getDocumentsDirectory()
-        let permanentURL = documentsDirectory.appendingPathComponent("\(fromPath)")
+        let fileName = (fromPath as NSString).lastPathComponent
+        let permanentURL = documentsDirectory.appendingPathComponent("\(fileName)")
 
         do {
             if FileManager.default.fileExists(atPath: permanentURL.path) {
@@ -39,6 +41,7 @@ class CacheCDNService: CDNServiceProtocol {
             }
 
             try FileManager.default.moveItem(at: localURL, to: permanentURL)
+            cache[fromPath] = permanentURL
             return permanentURL
         } catch {
             throw error
