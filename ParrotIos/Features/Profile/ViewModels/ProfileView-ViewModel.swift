@@ -13,8 +13,8 @@ extension ProfileView {
         private let authService: AuthServiceProtocol
         private let parrotApiService: ParrotApiServiceProtocol
 
-        var userDetails: UserDetails? {
-            authService.userDetails
+        var userDetails: UserDetails {
+            authService.userDetails!
         }
         
         private(set) var languages: [Language] = []
