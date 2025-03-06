@@ -13,6 +13,7 @@ class AudioPlayer: AudioPlayerProtocol {
 
     func play(url: URL, rate: Float) {
         do {
+            try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .voicePrompt, options: [])
             audioPlayer = try AVAudioPlayer(contentsOf: url)
             audioPlayer?.rate = rate
             audioPlayer?.prepareToPlay()
