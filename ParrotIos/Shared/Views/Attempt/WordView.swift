@@ -25,18 +25,19 @@ struct WordView: View {
     var body: some View {
         VStack {
             if let success = success, !success {
-                Text(
-                    "\(Image(systemName: "exclamationmark.arrow.trianglehead.counterclockwise.rotate.90")) Sorry, I didn't get that..."
-                )
-                    .foregroundStyle(.red)
-                    .padding(.bottom, 4)
+                HStack {
+                    Image(systemName: "exclamationmark.arrow.trianglehead.counterclockwise.rotate.90")
+                    Text("Sorry, I didn't get that...")
+                }
+                .foregroundStyle(.red)
+                .padding(.bottom, 4)
 
                 Text("Please try again")
                     .font(.subheadline)
                     .foregroundStyle(.gray)
                     .padding(.bottom, 32)
             }
-            
+
             if let xpGain = xpGain {
                 XpGainView(xpGain: xpGain)
                     .padding(.bottom, 32)

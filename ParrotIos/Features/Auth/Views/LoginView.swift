@@ -27,7 +27,7 @@ struct LoginView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 128, height: 128)
-                
+
                 Text("Welcome back!")
                     .font(.title)
                     .fontWeight(.semibold)

@@ -82,7 +82,7 @@ struct PhonemeMiniCard: View {
             }
         }) {
             HStack(spacing: 2) {
-                Image(systemName: "speaker.wave.2")
+                Image(systemName: phoneme.cdnPath != nil ? "speaker.wave.2" : "speaker.slash.fill")
                     .foregroundStyle(.gray)
                     .font(.footnote)
                 Text(phoneme.respelling)
@@ -99,6 +99,7 @@ struct PhonemeMiniCard: View {
                     )
             )
         }
+        .disabled(phoneme.cdnPath == nil)
     }
 }
 
@@ -106,8 +107,10 @@ struct PhonemeMiniCard: View {
     DetailedFeedbackView(
         score: 80,
         phonemes: [
-            (Phoneme(id: 9, ipa: "s", respelling: "s", cdnPath: ""), Phoneme(id: 3, ipa: "h", respelling: "h", cdnPath: "")),
-            (Phoneme(id: 30, ipa: "ɑː", respelling: "ah", cdnPath: ""), Phoneme(id: 30, ipa: "ɑː", respelling: "ah", cdnPath: "")),
+            (Phoneme(id: 9, ipa: "s", respelling: "s", cdnPath: ""),
+            Phoneme(id: 3, ipa: "h", respelling: "h", cdnPath: "")),
+            (Phoneme(id: 30, ipa: "ɑː", respelling: "ah", cdnPath: ""),
+             Phoneme(id: 30, ipa: "ɑː", respelling: "ah", cdnPath: "")),
             (nil, Phoneme(id: 16, ipa: "d", respelling: "d", cdnPath: "")),
             (Phoneme(id: 23, ipa: "t", respelling: "t", cdnPath: ""), nil)
         ])

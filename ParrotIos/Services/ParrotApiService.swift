@@ -29,6 +29,14 @@ class ParrotApiService: ParrotApiServiceProtocol {
         }
     }
 
+    func getUserDetails() async throws -> UserDetails {
+        return try await getData(endpoint: "/user_details")
+    }
+
+    func getLanguages() async throws -> [Language] {
+        return try await getData(endpoint: "/languages")
+    }
+
     func getLeaderboard() async throws -> LeaderboardResponse {
         return try await getData(endpoint: "/leaderboard/global")
     }

@@ -10,12 +10,12 @@ extension UnitView {
     @Observable
     class ViewModel {
         let unit: Unit
-        
+
         private(set) var isExpanded: Bool = false
         var showLessons: Bool {
             isExpanded && !unit.isLocked
         }
-        
+
         init(unit: Unit) {
             self.unit = unit
         }

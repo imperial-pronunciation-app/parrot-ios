@@ -46,7 +46,7 @@ class WebService: WebServiceProtocol {
         }
         return localUrl
     }
-    
+
     func get<T: Codable>(fromURL: String, headers: [HeaderElement] = []) async throws -> T {
         let request = try formRequest(url: fromURL, method: "GET", headers: headers)
         let data = try await sendAndCheckStatus(request: request)
@@ -132,6 +132,15 @@ class WebService: WebServiceProtocol {
 
         let data = try await sendAndCheckStatus(request: request)
         return try decodeResponse(data: data)
+    }
+
+    // MARK: - PATCH for application/json type
+    func patchDataNoResponse(data: Data, toURL: String, headers: [HeaderElement] = []) async throws {
+        var request = try formRequest(url: toURL, method: "PATCH", headers: headers)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = data
+
+        _ = try await sendAndCheckStatus(request: request)
     }
 }
 

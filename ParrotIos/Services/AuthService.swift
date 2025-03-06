@@ -33,13 +33,10 @@ final class AuthService: AuthServiceProtocol, ObservableObject {
             let response: LoginAPIResponse = try await webService.postURLEncodedFormData(
                 parameters: parameters, toURL: "\(baseURL)/auth/jwt/login")
             try saveTokens(accessToken: response.accessToken)
+            try await getUserDetails()
             await MainActor.run {
                 self.isAuthenticated = true
             }
-            self.userDetails = try await webService.get(
-                fromURL: "\(baseURL)/users/me",
-                headers: [generateAuthHeader(accessToken: response.accessToken)]
-            )
             return
         } catch NetworkError.badStatus(let code, let data) {
             if code != 400 {
@@ -64,13 +61,20 @@ final class AuthService: AuthServiceProtocol, ObservableObject {
         }
     }
 
+    private func getUserDetails() async throws {
+        let parrotApiService = ParrotApiService(webService: self.webService, authService: self)
+        userDetails = try await parrotApiService.getUserDetails()
+    }
+
     func logout() async throws {
         guard let accessToken = getAccessToken() else { throw LogoutError.notLoggedIn }
         let authHeaders = [HeaderElement(key: "Authorization", value: "Bearer " + accessToken)]
 
         do {
             try await webService.postNoResponse(toURL: "\(baseURL)/auth/jwt/logout", headers: authHeaders)
-            self.isAuthenticated = false
+            await MainActor.run {
+                self.isAuthenticated = false
+            }
         } catch {
             throw LogoutError.customError("Error during logout: \(error.localizedDescription)")
         }
@@ -107,6 +111,34 @@ final class AuthService: AuthServiceProtocol, ObservableObject {
             } else {
                 throw RegisterError.customError("Error during login: unknown.")
             }
+        }
+    }
+
+    func updateDetails(name: String, email: String, language: Int) async throws {
+        let body: [String: Any] = [
+            "display_name": name,
+            "email": email,
+            "language_id": language
+        ]
+
+        guard let data = try? JSONSerialization.data(withJSONObject: body) else {
+            throw UpdateDetailsError.customError("Error in JSON serialization")
+        }
+
+        do {
+            try await webService.patchDataNoResponse(
+                data: data,
+                toURL: "\(baseURL)/users/me",
+                headers: [generateAuthHeader(accessToken: getAccessToken()!)]
+            )
+            try await getUserDetails()
+            return
+        } catch NetworkError.badStatus(let code, _) {
+            if code != 400 {
+                throw UpdateDetailsError.customError("Error during update details: bad status.")
+            }
+
+            throw UpdateDetailsError.customError("Error during update details.")
         }
     }
 
@@ -167,12 +199,34 @@ enum RegisterError: Error, Equatable {
     case customError(String)
 }
 
+enum UpdateDetailsError: Error, Equatable {
+    case customError(String)
+}
+
 struct UserDetails: Codable {
     let id: Int
     let loginStreak: Int
+    let xpTotal: Int
+    let email: String
+    let displayName: String
+    let language: Language
+    let league: String
+    let avatar: String
 
     private enum CodingKeys: String, CodingKey {
         case id
         case loginStreak = "login_streak"
+        case xpTotal = "xp_total"
+        case email
+        case displayName = "display_name"
+        case league
+        case language
+        case avatar
     }
+}
+
+struct Language: Codable, Identifiable {
+    let id: Int
+    let code: String
+    let name: String
 }

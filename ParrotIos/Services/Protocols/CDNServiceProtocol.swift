@@ -8,6 +8,6 @@
 import Foundation
 
 protocol CDNServiceProtocol {
-    
+
     func download(fromPath: String) async throws -> URL
 }
