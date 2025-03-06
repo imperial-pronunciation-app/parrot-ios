@@ -14,8 +14,10 @@ struct RecordingButton: View {
 
     var body: some View {
         Button(action: {
-            Task {
-                await action()
+            if isRecording {
+                Task {
+                    await action()
+                }
             }
         }) {
             Image(systemName: "mic")
@@ -25,6 +27,13 @@ struct RecordingButton: View {
                 .background(isRecording ? Color.red.opacity(0.8) : Color.accentColor)
                 .clipShape(Circle())
         }
+        .simultaneousGesture(
+            LongPressGesture(minimumDuration: 0.1).onEnded { _ in
+                Task {
+                    await action()
+                }
+            }
+        )
         .disabled(isDisabled)
     }
 }
