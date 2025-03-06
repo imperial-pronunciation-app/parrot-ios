@@ -20,6 +20,7 @@ class PhonemePlayer {
     func play(phoneme: Phoneme, rate: Float) async {
         do {
             let url = try await self.cdnService.download(fromPath: phoneme.cdnPath!)
+            try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .voicePrompt, options: [])
             self.audioPlayer.play(url: url, rate: rate)
         } catch {
             print(error.localizedDescription)
