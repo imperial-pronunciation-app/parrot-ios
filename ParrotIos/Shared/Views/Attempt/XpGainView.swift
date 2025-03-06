@@ -27,13 +27,14 @@ struct XpGainView: View {
         .scaleEffect(scale)
         .opacity(opacity)
         .onAppear {
+            let initialDelay: Double = 0.5
             // Phase 1: Fade in and pop a bit above final size
-            withAnimation(.interpolatingSpring(stiffness: 150, damping: 10)) {
+            withAnimation(.interpolatingSpring(stiffness: 150, damping: 10).delay(initialDelay)) {
                 opacity = 1
-                scale = 1.15
+                scale = 1.25
             }
             // Phase 2: Slight delay, then settle back to scale = 1
-            withAnimation(.interpolatingSpring(stiffness: 150, damping: 12).delay(0.1)) {
+            withAnimation(.interpolatingSpring(stiffness: 150, damping: 12).delay(initialDelay + 0.1)) {
                 scale = 1
             }
         }
