@@ -35,12 +35,13 @@ struct ProfileView: View {
     var body: some View {
         VStack {
             Text("Your Profile")
-                .font(.headline)
-                .bold()
+                .font(.title3)
+                .fontWeight(.semibold)
                 .padding(.bottom, 32)
+                .padding(.top, 4)
             getAvatar(for: viewModel.userDetails.avatar, size: 100)
                 .padding(.bottom, 8)
-            HStack(spacing: 30) {
+            HStack(spacing: 32) {
                 HStack(spacing: 4) {
                     Image(systemName: "bolt.fill")
                         .foregroundStyle(.yellow)
@@ -71,10 +72,12 @@ struct ProfileView: View {
             Form {
                 Section {
                     LabeledContent("Name") {
-                        TextField("Name", text: $nameField)
+                        TextField("", text: $nameField)
+                            .multilineTextAlignment(.trailing)
                     }
                     LabeledContent("Email") {
-                        TextField("Email", text: $emailField)
+                        TextField("", text: $emailField)
+                            .multilineTextAlignment(.trailing)
                     }
                     Picker("Language", selection: $languageSelection) {
                         ForEach(viewModel.languages) { language in
@@ -128,8 +131,4 @@ struct ProfileView: View {
             }
         })
     }
-}
-
-#Preview {
-    ProfileView()
 }
