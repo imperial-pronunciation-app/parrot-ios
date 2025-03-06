@@ -21,9 +21,12 @@ struct CurriculumView: View {
                     } else {
                         ForEach(Array(viewModel.curriculum!.units.enumerated()), id: \.element.id) { index, unit in
                             let isLast = index == viewModel.curriculum!.units.count - 1
+                            let isFirst = index == 0
                             let isNextCompleted = !isLast &&
                                 viewModel.curriculum!.units[index + 1].isCompleted
-                            UnitView(unit: unit, isLast: isLast, isNextCompleted: isNextCompleted)
+                            let isPrevCompleted = !isFirst &&
+                                viewModel.curriculum!.units[index - 1].isCompleted
+                            UnitView(unit: unit, isFirst: isFirst, isLast: isLast, isPrevCompleted: isPrevCompleted, isNextCompleted: isNextCompleted)
                         }
                     }
                 }

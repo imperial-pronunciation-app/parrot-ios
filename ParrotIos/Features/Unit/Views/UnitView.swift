@@ -12,10 +12,10 @@ struct UnitView: View {
     let isNextCompleted: Bool
     var viewModel: ViewModel
 
-    init(unit: Unit, isLast: Bool, isNextCompleted: Bool) {
+    init(unit: Unit, isFirst: Bool, isLast: Bool, isPrevCompleted: Bool, isNextCompleted: Bool) {
         self.isLast = isLast
         self.isNextCompleted = isNextCompleted
-        self.viewModel = .init(unit: unit)
+        self.viewModel = .init(unit: unit, isFirst: isFirst, isPrevCompleted: isPrevCompleted)
     }
 
     var body: some View {
