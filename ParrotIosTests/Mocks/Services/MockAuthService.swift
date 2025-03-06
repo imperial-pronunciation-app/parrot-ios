@@ -54,6 +54,6 @@ class MockAuthService: AuthServiceProtocol, CallTracking {
         }
     }
 
-    var userDetails: UserDetails?
+    var userDetails: UserDetails? = UserDetails(id: 1, loginStreak: 1, xpTotal: 1, email: "test@example.com", displayName: "Test", language: Language(id: 1, code: "eng", name: "English"), league: "Bronze", avatar: "BLUE")
 
 }
