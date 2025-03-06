@@ -62,7 +62,7 @@ final class AuthService: AuthServiceProtocol, ObservableObject {
     }
 
     private func getUserDetails() async throws {
-        let parrotApiService = ParrotApiService()
+        let parrotApiService = ParrotApiService(webService: self.webService, authService: self)
         userDetails = try await parrotApiService.getUserDetails()
     }
 
