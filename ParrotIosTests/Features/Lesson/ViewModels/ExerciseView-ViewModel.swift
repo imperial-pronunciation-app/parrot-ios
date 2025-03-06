@@ -37,6 +37,7 @@ struct ExerciseView_ViewModelTests {
             (nil, Phoneme(id: 7, ipa: "s", respelling: "s", cdnPath: ""))
         ],
         xpGain: 2,
+        xpStreakBoost: 0,
         exerciseIsCompleted: false
     )
 

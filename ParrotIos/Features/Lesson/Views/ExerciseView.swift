@@ -50,6 +50,7 @@ struct ExerciseView: View {
                             score: viewModel.lastAttempt?.score,
                             feedbackPhonemes: viewModel.lastAttempt?.phonemes,
                             xpGain: viewModel.lastAttempt?.xpGain,
+                            xpStreakBoost: viewModel.lastAttempt?.xpStreakBoost,
                             success: viewModel.lastAttempt?.success
                         )
                     }

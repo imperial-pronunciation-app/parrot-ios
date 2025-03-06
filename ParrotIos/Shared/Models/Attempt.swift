@@ -11,6 +11,7 @@ struct Attempt: Codable, Equatable {
     let score: Int?
     let phonemes: [(Phoneme?, Phoneme?)]?
     let xpGain: Int?
+    let xpStreakBoost: Int?
     let exerciseIsCompleted: Bool?
 
     enum CodingKeys: String, CodingKey {
@@ -19,6 +20,7 @@ struct Attempt: Codable, Equatable {
         case score
         case phonemes
         case xpGain = "xp_gain"
+        case xpStreakBoost = "xp_streak_boost"
         case exerciseIsCompleted = "exercise_is_completed"
     }
 
@@ -28,6 +30,7 @@ struct Attempt: Codable, Equatable {
         score: Int?,
         phonemes: [(Phoneme?, Phoneme?)]?,
         xpGain: Int?,
+        xpStreakBoost: Int?,
         exerciseIsCompleted: Bool?
     ) {
         self.success = success
@@ -35,6 +38,7 @@ struct Attempt: Codable, Equatable {
         self.score = score
         self.phonemes = phonemes
         self.xpGain = xpGain
+        self.xpStreakBoost = xpStreakBoost
         self.exerciseIsCompleted = exerciseIsCompleted
     }
 
@@ -45,6 +49,7 @@ struct Attempt: Codable, Equatable {
         self.recordingId = try container.decodeIfPresent(Int.self, forKey: .recordingId)
         self.score = try container.decodeIfPresent(Int.self, forKey: .score)
         self.xpGain = try container.decodeIfPresent(Int.self, forKey: .xpGain)
+        self.xpStreakBoost = try container.decodeIfPresent(Int.self, forKey: .xpStreakBoost)
         self.phonemes = try AttemptDecoding.decodePhonemePairsIfPresent(from: container, forKey: .phonemes)
         self.exerciseIsCompleted = try container.decodeIfPresent(Bool.self, forKey: .exerciseIsCompleted)
     }
@@ -56,6 +61,7 @@ struct Attempt: Codable, Equatable {
         try container.encodeIfPresent(recordingId, forKey: .recordingId)
         try container.encodeIfPresent(score, forKey: .score)
         try container.encodeIfPresent(xpGain, forKey: .xpGain)
+        try container.encodeIfPresent(xpStreakBoost, forKey: .xpStreakBoost)
 
         let phonemeArrays = phonemes.map { $0.map { pair in [pair.0, pair.1] } }
         try container.encodeIfPresent(phonemeArrays, forKey: .phonemes)
@@ -67,6 +73,7 @@ struct Attempt: Codable, Equatable {
         return phonemesEqual &&
                lhs.recordingId == rhs.recordingId &&
                lhs.score == rhs.score &&
-               lhs.xpGain == rhs.xpGain
+               lhs.xpGain == rhs.xpGain &&
+               lhs.xpStreakBoost == rhs.xpStreakBoost
     }
 }

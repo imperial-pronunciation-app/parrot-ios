@@ -12,6 +12,7 @@ struct WordView: View {
     let score: Int?
     let feedbackPhonemes: [(Phoneme?, Phoneme?)]?
     let xpGain: Int?
+    let xpStreakBoost: Int?
     let success: Bool?
 
     func getHaptics() -> UINotificationFeedbackGenerator.FeedbackType? {
@@ -38,8 +39,8 @@ struct WordView: View {
                     .padding(.bottom, 32)
             }
 
-            if let xpGain = xpGain {
-                XpGainView(xpGain: xpGain)
+            if let xpGain = xpGain, let xpStreakBoost = xpStreakBoost {
+                XpGainView(xpGain: xpGain, xpStreakBoost: xpStreakBoost)
                     .padding(.bottom, 32)
             }
 
@@ -71,5 +72,5 @@ struct WordView: View {
 }
 
 #Preview {
-    WordView(word: .init(id: 1, text: "foo", phonemes: []), score: 0, feedbackPhonemes: [], xpGain: 10, success: false)
+    WordView(word: .init(id: 1, text: "foo", phonemes: []), score: 0, feedbackPhonemes: [], xpGain: 10, xpStreakBoost: 0, success: false)
 }
