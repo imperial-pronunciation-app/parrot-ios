@@ -53,7 +53,7 @@ class AudioRecorder: NSObject, ObservableObject, AVAudioRecorderDelegate, AudioR
         }
     }
 
-    func getRecordingURL() -> URL {
-        return audioRecorder!.url
+    func getRecordingURL() -> URL? {
+        return audioRecorder?.url
     }
 }

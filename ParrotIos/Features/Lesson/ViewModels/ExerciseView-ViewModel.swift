@@ -65,7 +65,9 @@ extension ExerciseView {
         func stopRecording() async {
             isRecording = false
             audioRecorder.stopRecording()
-            await uploadRecording(recordingURL: audioRecorder.getRecordingURL())
+            if let url = audioRecorder.getRecordingURL() {
+                await uploadRecording(recordingURL: url)
+            }
         }
 
         func uploadRecording(recordingURL: URL) async {

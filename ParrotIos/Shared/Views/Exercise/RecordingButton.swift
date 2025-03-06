@@ -11,6 +11,7 @@ struct RecordingButton: View {
     var isRecording: Bool
     var action: () async -> Void
     @State private var buttonSize: CGFloat = 1
+    @State private var gestureStarted = false
 
     var body: some View {
         Button(action: {}) {
@@ -28,17 +29,27 @@ struct RecordingButton: View {
         .simultaneousGesture(
             DragGesture(minimumDistance: 0)
                 .onChanged { _ in
-                    Task {
-                        await action()
-                        buttonSize = 1.2
+                    if !gestureStarted {
+                        gestureStarted = true
+                        Task {
+                            await action()
+                        }
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            buttonSize = 1.2
+                        }
                     }
                 }
                 .onEnded { _ in
-                    Task {
-                        await action()
-                        buttonSize = 1
+                    if gestureStarted {
+                        Task {
+                            await action()
+                        }
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            buttonSize = 1
+                        }
+                        gestureStarted = false
                     }
                 }
-        )
+                )
     }
 }
