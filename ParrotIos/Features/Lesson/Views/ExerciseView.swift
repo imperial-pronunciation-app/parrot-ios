@@ -5,6 +5,7 @@
 //  Created by Pedro Sá Fontes on 22/01/2025.
 //
 
+import ConfettiSwiftUI
 import SwiftUI
 
 extension Notification.Name {
@@ -13,10 +14,11 @@ extension Notification.Name {
 
 struct ExerciseView: View {
     @State private var viewModel: ViewModel
+    @State private var showConfetti: Bool = false
+    
     private let prevExercise: () -> Void
     private let nextExercise: () -> Void
     private let isFirst: Bool
-    private let isLast: Bool
 
     @Environment(\.dismiss) private var dismiss
 
@@ -27,11 +29,10 @@ struct ExerciseView: View {
         isFirst: Bool,
         isLast: Bool
     ) {
-        self.viewModel = ViewModel(exerciseId: exerciseId)
+        self.viewModel = ViewModel(exerciseId: exerciseId, isLast: isLast)
         self.prevExercise = prevExercise
         self.nextExercise = nextExercise
         self.isFirst = isFirst
-        self.isLast = isLast
     }
 
     var body: some View {
@@ -44,7 +45,7 @@ struct ExerciseView: View {
                 VStack {
                     Spacer()
 
-                    if let exercise = viewModel.exercise {
+                    if let exercise = viewModel.exercise, let isLast = viewModel.isLast {
                         WordView(
                             word: exercise.word,
                             score: viewModel.lastAttempt?.score,
@@ -53,67 +54,72 @@ struct ExerciseView: View {
                             xpStreakBoost: viewModel.lastAttempt?.xpStreakBoost,
                             success: viewModel.lastAttempt?.success
                         )
-                    }
-
-                    Spacer()
-
-                    AudioButton(action: { viewModel.playWord() })
-
-                    Spacer()
-
-                    HStack {
-                        ZStack(alignment: .leading) {
-                            if !isFirst {
+                        
+                        Spacer()
+                        
+                        AudioButton(action: { viewModel.playWord() })
+                        
+                        Spacer()
+                        
+                        HStack {
+                            ZStack(alignment: .leading) {
+                                if !isFirst {
+                                    Button(action: {
+                                        prevExercise()
+                                    }) {
+                                        Image(systemName: "arrow.left")
+                                            .font(.title)
+                                    }
+                                    .buttonStyle(.bordered)
+                                    .buttonBorderShape(.capsule)
+                                }
+                            }
+                            .frame(width: 80, alignment: .leading)
+                            
+                            Spacer()
+                            
+                            RecordingButton(
+                                isRecording: viewModel.isRecording,
+                                action: viewModel.toggleRecording
+                            )
+                            
+                            Spacer()
+                            
+                            ZStack(alignment: .trailing) {
                                 Button(action: {
-                                    prevExercise()
+                                    if isLast {
+                                        NotificationCenter.default.post(name: .didDismissExerciseView, object: nil)
+                                        dismiss()
+                                    } else {
+                                        nextExercise()
+                                    }
                                 }) {
-                                    Image(systemName: "arrow.left")
-                                        .font(.title)
+                                    if isLast {
+                                        Text("Finish")
+                                    } else {
+                                        Image(systemName: "arrow.right")
+                                            .font(.title)
+                                    }
                                 }
                                 .buttonStyle(.bordered)
+                                .tint(viewModel.isCompleted ? Color.accentColor : .gray)
                                 .buttonBorderShape(.capsule)
+                                .disabled(!viewModel.isCompleted)
                             }
+                            .frame(width: 80, alignment: .trailing)
                         }
-                        .frame(width: 80, alignment: .leading)
-
-                        Spacer()
-
-                        RecordingButton(
-                            isRecording: viewModel.isRecording,
-                            action: viewModel.toggleRecording
-                        )
-
-                        Spacer()
-
-                        ZStack(alignment: .trailing) {
-                            Button(action: {
-                                if isLast {
-                                    NotificationCenter.default.post(name: .didDismissExerciseView, object: nil)
-                                    dismiss()
-                                } else {
-                                    nextExercise()
-                                }
-                            }) {
-                                if isLast {
-                                    Text("Finish")
-                                } else {
-                                    Image(systemName: "arrow.right")
-                                        .font(.title)
-                                }
-                            }
-                            .buttonStyle(.bordered)
-                            .tint(viewModel.isCompleted ? Color.accentColor : .gray)
-                            .buttonBorderShape(.capsule)
-                            .disabled(!viewModel.isCompleted)
-                        }
-                        .frame(width: 80, alignment: .trailing)
+                        .padding(.horizontal, 32)
                     }
-                    .padding(.horizontal, 32)
                 }
+                .confettiCannon(trigger: $showConfetti, num: 50, openingAngle: Angle.degrees(70))
             }
         }.onAppear {
             Task {
                 await viewModel.loadExercise()
+            }
+        }.onChange(of: viewModel.justCompletedLesson) {
+            if viewModel.justCompletedLesson {
+                showConfetti = true
             }
         }
     }

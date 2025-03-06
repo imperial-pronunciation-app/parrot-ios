@@ -44,7 +44,7 @@ struct ExerciseView_ViewModelTests {
     let url = URL(fileURLWithPath: "test.url")
 
     init() {
-        viewModel = ExerciseView.ViewModel(exerciseId: exercise.id, audioRecoder: mockAudioRecorder, audioSynthesizer: mockAudioSynthesizer, parrotApi: mockParrotApiService, authService: mockAuthService)
+        viewModel = ExerciseView.ViewModel(exerciseId: exercise.id, audioRecoder: mockAudioRecorder, audioSynthesizer: mockAudioSynthesizer, parrotApi: mockParrotApiService, authService: mockAuthService, isLast: false)
         mockParrotApiService.stub(method: ParrotApiServiceMethods.getExercise, toReturn: exercise)
     }
 
