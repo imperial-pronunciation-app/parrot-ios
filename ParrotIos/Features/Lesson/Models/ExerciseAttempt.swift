@@ -10,6 +10,7 @@ struct ExerciseAttempt: Codable, Equatable {
     let score: Int?
     let phonemes: [(Phoneme?, Phoneme?)]?
     let xpGain: Int?
+    let xpStreakBoost: Int?
     let exerciseIsCompleted: Bool?
     let success: Bool
 
@@ -18,6 +19,7 @@ struct ExerciseAttempt: Codable, Equatable {
         case score
         case phonemes
         case xpGain = "xp_gain"
+        case xpStreakBoost = "xp_streak_boost"
         case exerciseIsCompleted = "exercise_is_completed"
         case success
     }
@@ -28,6 +30,7 @@ struct ExerciseAttempt: Codable, Equatable {
         score: Int?,
         phonemes: [(Phoneme?, Phoneme?)]?,
         xpGain: Int?,
+        xpStreakBoost: Int?,
         exerciseIsCompleted: Bool?
     ) {
         self.success = success
@@ -36,6 +39,7 @@ struct ExerciseAttempt: Codable, Equatable {
         self.phonemes = phonemes
         self.xpGain = xpGain
         self.exerciseIsCompleted = exerciseIsCompleted
+        self.xpStreakBoost = xpStreakBoost
     }
 
     init(from decoder: Decoder) throws {
@@ -44,6 +48,7 @@ struct ExerciseAttempt: Codable, Equatable {
         self.recordingId = try container.decodeIfPresent(Int.self, forKey: .recordingId)
         self.score = try container.decodeIfPresent(Int.self, forKey: .score)
         self.xpGain = try container.decodeIfPresent(Int.self, forKey: .xpGain)
+        self.xpStreakBoost = try container.decodeIfPresent(Int.self, forKey: .xpStreakBoost)
         self.phonemes = try AttemptDecoding.decodePhonemePairsIfPresent(from: container, forKey: .phonemes)
         self.exerciseIsCompleted = try container.decodeIfPresent(Bool.self, forKey: .exerciseIsCompleted)
     }
@@ -54,7 +59,7 @@ struct ExerciseAttempt: Codable, Equatable {
         try container.encodeIfPresent(recordingId, forKey: .recordingId)
         try container.encodeIfPresent(score, forKey: .score)
         try container.encodeIfPresent(xpGain, forKey: .xpGain)
-
+        try container.encodeIfPresent(xpStreakBoost, forKey: .xpStreakBoost)
         let phonemeArrays = phonemes.map { $0.map { pair in [pair.0, pair.1] } }
         try container.encodeIfPresent(phonemeArrays, forKey: .phonemes)
         try container.encodeIfPresent(exerciseIsCompleted, forKey: .exerciseIsCompleted)
@@ -66,6 +71,7 @@ struct ExerciseAttempt: Codable, Equatable {
                lhs.recordingId == rhs.recordingId &&
                lhs.score == rhs.score &&
                lhs.xpGain == rhs.xpGain &&
+               lhs.xpStreakBoost == rhs.xpStreakBoost &&
                lhs.exerciseIsCompleted == rhs.exerciseIsCompleted &&
                lhs.success == rhs.success
     }

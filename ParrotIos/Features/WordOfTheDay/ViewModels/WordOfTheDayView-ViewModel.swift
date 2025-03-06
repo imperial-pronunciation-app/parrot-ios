@@ -23,6 +23,7 @@ extension WordOfTheDayView {
         private(set) var word: Word?
         private(set) var score: Int?
         private(set) var feedbackPhonemes: [(Phoneme?, Phoneme?)]?
+        private(set) var xpStreakBoost: Int?
         private(set) var xpGain: Int?
         private(set) var success: Bool?
 
@@ -69,6 +70,7 @@ extension WordOfTheDayView {
                 self.score = attemptResponse.score
                 self.feedbackPhonemes = attemptResponse.phonemes
                 self.xpGain = attemptResponse.xpGain
+                self.xpStreakBoost = attemptResponse.xpStreakBoost
                 self.success = attemptResponse.success
             } catch {
                 errorMessage = error.localizedDescription
