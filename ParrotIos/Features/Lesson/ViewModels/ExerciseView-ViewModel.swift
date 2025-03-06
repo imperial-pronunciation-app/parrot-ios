@@ -14,6 +14,7 @@ extension ExerciseView {
         private let audioRecorder: AudioRecorderProtocol
         private let audioSynthesizer: AudioSynthesizerProtocol
         private let parrotApi: ParrotApiServiceProtocol
+        private let authService = AuthService.instance
 
         private(set) var isRecording: Bool = false
         private(set) var isPlaying: Bool = false
@@ -95,8 +96,8 @@ extension ExerciseView {
         func playWord() {
             let word: String = self.exercise!.word.text
             isPlaying = true
-            // Rate currently set so that the automated voice speaks slowly
-            audioSynthesizer.play(word: word, rate: 0.5)
+            let userLanguage = authService.userDetails!.language.code
+            audioSynthesizer.play(word: word, rate: 0.25, language: userLanguage)
             isPlaying = false
         }
     }

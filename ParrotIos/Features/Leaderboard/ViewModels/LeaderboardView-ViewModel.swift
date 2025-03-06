@@ -19,12 +19,6 @@ extension LeaderboardView {
         private let parrotApi = ParrotApiService()
         private let auth = AuthService.instance
 
-        init() {
-            Task {
-                await loadLeaderboard()
-            }
-        }
-
         func loadLeaderboard() async {
             do {
                 let leaderboardResponse = try await parrotApi.getLeaderboard()
