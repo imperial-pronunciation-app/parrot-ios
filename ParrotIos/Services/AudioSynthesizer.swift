@@ -17,13 +17,14 @@ class AudioSynthesizer: AudioSynthesizerProtocol {
     func play(word: String, rate: Float, language: String = "en-US") {
         try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .voicePrompt, options: [])
         let utterance = AVSpeechUtterance(string: word)
-        if let maleVoice = AVSpeechSynthesisVoice(identifier: AVSpeechSynthesisVoice.speechVoices().first(
-            where: { $0.gender == .male && $0.language == "en-US" })?.identifier ?? "") {
-            utterance.voice = maleVoice
-            utterance.pitchMultiplier = 1.5
-        } else {
-            utterance.voice = AVSpeechSynthesisVoice(language: "en-US") // Default fallback
+
+        let voices = AVSpeechSynthesisVoice.speechVoices()
+        let preferredVoice = voices.first { voice in
+            voice.language.starts(with: language) && voice.quality == .enhanced
         }
+
+        utterance.voice = preferredVoice ?? AVSpeechSynthesisVoice(language: language)
+
         utterance.rate = rate
 
         synthesizer.speak(utterance)
