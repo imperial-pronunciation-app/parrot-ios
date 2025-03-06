@@ -126,21 +126,19 @@ final class AuthService: AuthServiceProtocol, ObservableObject {
         }
 
         do {
-            try await webService.patchDataNoResponse(data: data, toURL: "\(baseURL)/users/me", headers: [generateAuthHeader(accessToken: getAccessToken()!)])
+            try await webService.patchDataNoResponse(
+                data: data,
+                toURL: "\(baseURL)/users/me",
+                headers: [generateAuthHeader(accessToken: getAccessToken()!)]
+            )
             try await getUserDetails()
             return
-        } catch NetworkError.badStatus(let code, let data) {
+        } catch NetworkError.badStatus(let code, _) {
             if code != 400 {
                 throw UpdateDetailsError.customError("Error during update details: bad status.")
             }
 
-            if let data = data {
-                guard let decodedResponse = try? JSONDecoder().decode(RegisterAPIErrorResponse.self, from: data) else {
-                    throw UpdateDetailsError.customError("Failed to decode error response.")
-                }
-            } else {
-                throw UpdateDetailsError.customError("Error during login: unknown.")
-            }
+            throw UpdateDetailsError.customError("Error during update details.")
         }
     }
 

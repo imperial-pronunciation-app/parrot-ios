@@ -16,10 +16,13 @@ extension ProfileView {
         var userDetails: UserDetails {
             authService.userDetails!
         }
-        
+
         private(set) var languages: [Language] = []
 
-        init(authService: AuthServiceProtocol = AuthService.instance, parrotApiService: ParrotApiServiceProtocol = ParrotApiService()) {
+        init(
+            authService: AuthServiceProtocol = AuthService.instance,
+            parrotApiService: ParrotApiServiceProtocol = ParrotApiService()
+        ) {
             self.authService = authService
             self.parrotApiService = parrotApiService
         }

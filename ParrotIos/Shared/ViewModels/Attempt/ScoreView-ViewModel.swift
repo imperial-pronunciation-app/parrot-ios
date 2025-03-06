@@ -12,7 +12,7 @@ extension ScoreView {
     @Observable
     class ViewModel {
         let score: Int
-        
+
         let low = 25
         let high = 75
 
@@ -25,7 +25,7 @@ extension ScoreView {
                 return .green
             }
         }
-        
+
         var haptics: UINotificationFeedbackGenerator.FeedbackType {
             if score < low {
                 return .error
@@ -35,7 +35,7 @@ extension ScoreView {
                 return .success
             }
         }
-        
+
         init(score: Int) {
             self.score = score
         }

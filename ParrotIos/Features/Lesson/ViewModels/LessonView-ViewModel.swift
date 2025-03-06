@@ -65,7 +65,10 @@ extension LessonView {
         }
 
         func nextExercise() {
-            guard let lesson = lesson, let index = exerciseIndex, let isLast = isLast, !isLast else { return }
+            guard let lesson = lesson,
+                  let index = exerciseIndex,
+                  let isLast = isLast,
+                  !isLast else { return }
             exerciseIndex = index + 1
         }
 

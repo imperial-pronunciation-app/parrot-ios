@@ -20,6 +20,14 @@ struct ParrotApiServiceMethods {
 }
 
 class MockParrotApiService: ParrotApiServiceProtocol, CallTracking {
+    func getUserDetails() async throws -> ParrotIos.UserDetails {
+        return UserDetails(id: 1, loginStreak: 1, xpTotal: 1, email: "", displayName: "", language: Language(id: 1, code: "", name: ""), league: "", avatar: "")
+    }
+
+    func getLanguages() async throws -> [ParrotIos.Language] {
+        return []
+    }
+
     var callCounts: [String: Int] = [:]
     var callArguments: [String: [[Any?]]] = [:]
     var returnValues: [String: [Result<Any?, any Error>]] = [:]

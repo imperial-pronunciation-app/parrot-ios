@@ -94,7 +94,11 @@ struct ProfileView: View {
 
             Button(action: {
                 Task {
-                    try await viewModel.updateDetails(name: nameField, email: emailField, languageCode: languageSelection)
+                    try await viewModel.updateDetails(
+                        name: nameField,
+                        email: emailField,
+                        languageCode: languageSelection
+                    )
                 }
             }) {
                 Text("Update Details")

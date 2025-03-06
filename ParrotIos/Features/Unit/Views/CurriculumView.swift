@@ -36,13 +36,13 @@ struct CurriculumView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 32, height: 32)
-                    
+
                     Text("Curriculum")
                         .font(.title3)
                         .fontWeight(.semibold)
-                    
+
                     Spacer()
-                    
+
                     HStack {
                         Image(systemName: "flame.fill")
                             .foregroundColor(.orange)

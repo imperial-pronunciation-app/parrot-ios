@@ -20,6 +20,9 @@ struct WebServiceMethods {
 }
 
 class MockWebService: WebServiceProtocol, CallTracking {
+    func patchDataNoResponse(data: Data, toURL: String, headers: [ParrotIos.HeaderElement]) async throws {
+    }
+
     var callCounts: [String: Int] = [:]
     var callArguments: [String: [[Any?]]] = [:]
     var returnValues: [String: [Result<Any?, Error>]] = [:]
@@ -30,7 +33,7 @@ class MockWebService: WebServiceProtocol, CallTracking {
 
         return try getReturnValue(for: method, callIndex: callCounts[method]! - 1)
     }
-    
+
     func get<T>(
         fromURL: String,
         headers: [HeaderElement]

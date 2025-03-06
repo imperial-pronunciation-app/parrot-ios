@@ -19,7 +19,9 @@ struct LessonView: View {
                 UtilComponents.loadingView
             } else if let errorMessage = viewModel.errorMessage {
                 UtilComponents.errorView(errorMessage: errorMessage)
-            } else if let exerciseId = viewModel.exerciseId, let isFirst = viewModel.isFirst, let isLast = viewModel.isLast {
+            } else if let exerciseId = viewModel.exerciseId,
+                      let isFirst = viewModel.isFirst,
+                      let isLast = viewModel.isLast {
                 VStack {
                     ExerciseView(
                         exerciseId: exerciseId,

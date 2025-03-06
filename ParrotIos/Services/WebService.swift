@@ -46,7 +46,7 @@ class WebService: WebServiceProtocol {
         }
         return localUrl
     }
-    
+
     func get<T: Codable>(fromURL: String, headers: [HeaderElement] = []) async throws -> T {
         let request = try formRequest(url: fromURL, method: "GET", headers: headers)
         let data = try await sendAndCheckStatus(request: request)

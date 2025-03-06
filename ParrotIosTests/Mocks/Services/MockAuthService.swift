@@ -18,6 +18,9 @@ struct AuthServiceMethods {
 }
 
 class MockAuthService: AuthServiceProtocol, CallTracking {
+    func updateDetails(name: String, email: String, language: Int) async throws {
+    }
+
     var callCounts: [String: Int] = [:]
     var callArguments: [String: [[Any?]]] = [:]
     var returnValues: [String: [Result<Any?, Error>]] = [:]
@@ -48,7 +51,7 @@ class MockAuthService: AuthServiceProtocol, CallTracking {
             fatalError("MockWebService failed with error: \(error)")
         }
     }
-    
-    var userDetails: UserDetails? = nil
+
+    var userDetails: UserDetails?
 
 }

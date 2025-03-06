@@ -15,7 +15,7 @@ extension CurriculumView {
         private let authService = AuthService.instance
 
         private let parrotApi = ParrotApiService()
-        
+
         var userDetails: UserDetails {
             authService.userDetails!
         }
