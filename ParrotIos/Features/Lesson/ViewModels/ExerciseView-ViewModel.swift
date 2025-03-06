@@ -14,7 +14,7 @@ extension ExerciseView {
         private let audioRecorder: AudioRecorderProtocol
         private let audioSynthesizer: AudioSynthesizerProtocol
         private let parrotApi: ParrotApiServiceProtocol
-        private let authService = AuthService.instance
+        private let authService: AuthServiceProtocol
 
         private(set) var isRecording: Bool = false
         private(set) var isPlaying: Bool = false
@@ -36,12 +36,14 @@ extension ExerciseView {
             audioRecoder: AudioRecorderProtocol = AudioRecorder(),
             audioSynthesizer: AudioSynthesizerProtocol = AudioSynthesizer(),
             parrotApi: ParrotApiServiceProtocol = ParrotApiService(
-                webService: WebService(), authService: AuthService.instance)
+                webService: WebService(), authService: AuthService.instance),
+            authService: AuthServiceProtocol = AuthService.instance
         ) {
             self.exerciseId = exerciseId
             self.audioRecorder = audioRecoder
             self.audioSynthesizer = audioSynthesizer
             self.parrotApi = parrotApi
+            self.authService = authService
         }
 
         func loadExercise() async {

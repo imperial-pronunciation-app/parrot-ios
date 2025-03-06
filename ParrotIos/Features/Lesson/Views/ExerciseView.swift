@@ -7,6 +7,10 @@
 
 import SwiftUI
 
+extension Notification.Name {
+    static let didDismissExerciseView = Notification.Name("didDismissExerciseView")
+}
+
 struct ExerciseView: View {
     @State private var viewModel: ViewModel
     private let prevExercise: () -> Void
@@ -83,7 +87,12 @@ struct ExerciseView: View {
 
                         ZStack(alignment: .trailing) {
                             Button(action: {
-                                isLast ? dismiss() : nextExercise()
+                                if isLast {
+                                    NotificationCenter.default.post(name: .didDismissExerciseView, object: nil)
+                                    dismiss()
+                                } else {
+                                    nextExercise()
+                                }
                             }) {
                                 if isLast {
                                     Text("Finish")

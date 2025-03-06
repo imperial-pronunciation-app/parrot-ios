@@ -15,6 +15,7 @@ struct ExerciseView_ViewModelTests {
     var mockParrotApiService: (ParrotApiServiceProtocol & CallTracking) = MockParrotApiService() as (ParrotApiServiceProtocol & CallTracking)
     var mockAudioRecorder: (AudioRecorderProtocol & CallTracking) = MockAudioRecorder() as (AudioRecorderProtocol & CallTracking)
     var mockAudioSynthesizer: (AudioSynthesizerProtocol & CallTracking) = MockAudioSynthesizer() as (AudioSynthesizerProtocol & CallTracking)
+    var mockAuthService: (AuthServiceProtocol & CallTracking) = MockAuthService() as (AuthServiceProtocol & CallTracking)
 
     var viewModel: ExerciseView.ViewModel!
     let exercise = Exercise(
@@ -42,7 +43,7 @@ struct ExerciseView_ViewModelTests {
     let url = URL(fileURLWithPath: "test.url")
 
     init() {
-        viewModel = ExerciseView.ViewModel(exerciseId: exercise.id, audioRecoder: mockAudioRecorder, audioSynthesizer: mockAudioSynthesizer, parrotApi: mockParrotApiService)
+        viewModel = ExerciseView.ViewModel(exerciseId: exercise.id, audioRecoder: mockAudioRecorder, audioSynthesizer: mockAudioSynthesizer, parrotApi: mockParrotApiService, authService: mockAuthService)
         mockParrotApiService.stub(method: ParrotApiServiceMethods.getExercise, toReturn: exercise)
     }
 
@@ -101,8 +102,8 @@ struct ExerciseView_ViewModelTests {
     func testPlayWord() async throws {
         // Setup
         await viewModel.loadExercise()
-        let rate = 0.5
-        let lang = "en-US"
+        let rate = 0.25
+        let lang = "eng"
 
         // Act
         viewModel.playWord()
