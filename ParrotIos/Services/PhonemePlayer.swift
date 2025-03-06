@@ -12,7 +12,7 @@ class PhonemePlayer {
     private let cdnService: CDNServiceProtocol
     private let audioPlayer: AudioPlayerProtocol
 
-    init(cdnService: CDNServiceProtocol = CacheCDNService(), audioPlayer: AudioPlayerProtocol = AudioPlayer()) {
+    init(cdnService: CDNServiceProtocol = CacheCDNService.instance, audioPlayer: AudioPlayerProtocol = AudioPlayer()) {
         self.cdnService = cdnService
         self.audioPlayer = audioPlayer
     }

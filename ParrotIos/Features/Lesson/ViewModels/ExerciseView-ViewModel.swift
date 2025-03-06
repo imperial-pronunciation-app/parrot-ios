@@ -20,7 +20,6 @@ extension ExerciseView {
         private(set) var isPlaying: Bool = false
         private(set) var isLoading: Bool = false
         private(set) var isSuccess: Bool = true
-        private(set) var disableRecording: Bool = false
         private(set) var errorMessage: String?
 
         private(set) var exerciseId: Int
@@ -69,16 +68,14 @@ extension ExerciseView {
         func startRecording() {
             isRecording = true
             audioRecorder.startRecording()
-            disableRecording = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                self.disableRecording = false  // Re-enable after 1 second
-            }
         }
 
         func stopRecording() async {
             isRecording = false
             audioRecorder.stopRecording()
-            await uploadRecording(recordingURL: audioRecorder.getRecordingURL())
+            if let url = audioRecorder.getRecordingURL() {
+                await uploadRecording(recordingURL: url)
+            }
         }
 
         func uploadRecording(recordingURL: URL) async {

@@ -20,7 +20,6 @@ class AudioSynthesizer: AudioSynthesizerProtocol {
             "por": "pt-BR"
         ]
         let synthesizerLanguage = languages[language] ?? "en-US"
-        try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .voicePrompt, options: [])
         let utterance = AVSpeechUtterance(string: word)
 
         let voices = AVSpeechSynthesisVoice.speechVoices()
