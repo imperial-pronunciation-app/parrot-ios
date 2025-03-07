@@ -7,13 +7,32 @@
 
 import SwiftUI
 
-struct WordView: View {
+struct WordView<Content: View>: View {
     let word: Word
     let score: Int?
     let feedbackPhonemes: [(Phoneme?, Phoneme?)]?
     let xpGain: Int?
     let xpStreakBoost: Int?
     let success: Bool?
+    let customMessage: Content
+    
+    init(
+        word: Word,
+        score: Int?,
+        feedbackPhonemes: [(Phoneme?, Phoneme?)]?,
+        xpGain: Int?,
+        xpStreakBoost: Int?,
+        success: Bool?,
+        @ViewBuilder customMessage: () -> Content = { EmptyView() }
+    ) {
+        self.word = word
+        self.score = score
+        self.feedbackPhonemes = feedbackPhonemes
+        self.xpGain = xpGain
+        self.xpStreakBoost = xpStreakBoost
+        self.success = success
+        self.customMessage = customMessage()
+    }
 
     func getHaptics() -> UINotificationFeedbackGenerator.FeedbackType? {
         if let success = success, !success {
@@ -36,8 +55,11 @@ struct WordView: View {
                     
                     Text("Please try again")
                         .font(.subheadline)
-                        .foregroundStyle(.gray)
+                        .foregroundStyle(.secondary)
                         .padding(.bottom, 32)
+                } else {
+                    customMessage
+                        .padding(.horizontal, 32)
                 }
                 
                 if let xpGain = xpGain, let xpStreakBoost = xpStreakBoost {
