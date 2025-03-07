@@ -20,6 +20,7 @@ extension CurriculumView {
             authService.userDetails!
         }
 
+        @MainActor
         func loadCurriculum() async {
             self.isLoading = true
 
