@@ -11,6 +11,7 @@ import Foundation
 
 struct AuthServiceMethods {
     static let login = "login"
+    static let getUserDetails = "getUserDetails"
     static let logout = "logout"
     static let register = "register"
     static let saveTokens = "saveTokens"
@@ -19,6 +20,10 @@ struct AuthServiceMethods {
 }
 
 class MockAuthService: AuthServiceProtocol, CallTracking {
+    func getUserDetails() async throws {
+        recordCall(for: AuthServiceMethods.getUserDetails)
+    }
+    
     func updateDetails(name: String, email: String, language: Int) async throws {
         recordCall(for: AuthServiceMethods.updateDetails, with: [name, email, language])
     }

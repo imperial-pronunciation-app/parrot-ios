@@ -48,10 +48,7 @@ struct ExerciseView: View {
                     if let exercise = viewModel.exercise, let isLast = viewModel.isLast {
                         WordView(
                             word: exercise.word,
-                            score: viewModel.lastAttempt?.score,
-                            feedbackPhonemes: viewModel.lastAttempt?.phonemes,
-                            xpGain: viewModel.lastAttempt?.xpGain,
-                            xpStreakBoost: viewModel.lastAttempt?.xpStreakBoost,
+                            feedback: viewModel.lastAttempt?.feedback,
                             success: viewModel.lastAttempt?.success
                         ) {
                             if viewModel.lastAttemptFailedExercise {

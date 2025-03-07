@@ -7,73 +7,38 @@
 
 struct Attempt: Codable, Equatable {
     let success: Bool
-    let recordingId: Int?
-    let score: Int?
-    let phonemes: [(Phoneme?, Phoneme?)]?
-    let xpGain: Int?
-    let xpStreakBoost: Int?
-    let exerciseIsCompleted: Bool?
+    let feedback: Feedback?
+
 
     enum CodingKeys: String, CodingKey {
         case success
-        case recordingId = "recording_id"
-        case score
-        case phonemes
-        case xpGain = "xp_gain"
-        case xpStreakBoost = "xp_streak_boost"
-        case exerciseIsCompleted = "exercise_is_completed"
+        case feedback
     }
 
     init(
         success: Bool,
-        recordingId: Int?,
-        score: Int?,
-        phonemes: [(Phoneme?, Phoneme?)]?,
-        xpGain: Int?,
-        xpStreakBoost: Int?,
-        exerciseIsCompleted: Bool?
+        feedback: Feedback?
     ) {
         self.success = success
-        self.recordingId = recordingId
-        self.score = score
-        self.phonemes = phonemes
-        self.xpGain = xpGain
-        self.xpStreakBoost = xpStreakBoost
-        self.exerciseIsCompleted = exerciseIsCompleted
+        self.feedback = feedback
     }
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         self.success = try container.decode(Bool.self, forKey: .success)
-        self.recordingId = try container.decodeIfPresent(Int.self, forKey: .recordingId)
-        self.score = try container.decodeIfPresent(Int.self, forKey: .score)
-        self.xpGain = try container.decodeIfPresent(Int.self, forKey: .xpGain)
-        self.xpStreakBoost = try container.decodeIfPresent(Int.self, forKey: .xpStreakBoost)
-        self.phonemes = try AttemptDecoding.decodePhonemePairsIfPresent(from: container, forKey: .phonemes)
-        self.exerciseIsCompleted = try container.decodeIfPresent(Bool.self, forKey: .exerciseIsCompleted)
+        self.feedback = try container.decodeIfPresent(Feedback.self, forKey: .feedback)
     }
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
         try container.encode(success, forKey: .success)
-        try container.encodeIfPresent(recordingId, forKey: .recordingId)
-        try container.encodeIfPresent(score, forKey: .score)
-        try container.encodeIfPresent(xpGain, forKey: .xpGain)
-        try container.encodeIfPresent(xpStreakBoost, forKey: .xpStreakBoost)
-
-        let phonemeArrays = phonemes.map { $0.map { pair in [pair.0, pair.1] } }
-        try container.encodeIfPresent(phonemeArrays, forKey: .phonemes)
-        try container.encodeIfPresent(exerciseIsCompleted, forKey: .exerciseIsCompleted)
+        try container.encodeIfPresent(feedback, forKey: .feedback)
     }
 
     static func == (lhs: Attempt, rhs: Attempt) -> Bool {
-        let phonemesEqual = zip(lhs.phonemes ?? [], rhs.phonemes ?? []).allSatisfy({ $0 == $1 })
-        return phonemesEqual &&
-               lhs.recordingId == rhs.recordingId &&
-               lhs.score == rhs.score &&
-               lhs.xpGain == rhs.xpGain &&
-               lhs.xpStreakBoost == rhs.xpStreakBoost
+        return lhs.success == rhs.success &&
+               lhs.feedback == rhs.feedback
     }
 }

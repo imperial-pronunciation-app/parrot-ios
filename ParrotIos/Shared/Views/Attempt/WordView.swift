@@ -9,27 +9,18 @@ import SwiftUI
 
 struct WordView<Content: View>: View {
     let word: Word
-    let score: Int?
-    let feedbackPhonemes: [(Phoneme?, Phoneme?)]?
-    let xpGain: Int?
-    let xpStreakBoost: Int?
+    let feedback: Feedback?
     let success: Bool?
     let customMessage: Content
     
     init(
         word: Word,
-        score: Int?,
-        feedbackPhonemes: [(Phoneme?, Phoneme?)]?,
-        xpGain: Int?,
-        xpStreakBoost: Int?,
+        feedback: Feedback?,
         success: Bool?,
         @ViewBuilder customMessage: () -> Content = { EmptyView() }
     ) {
         self.word = word
-        self.score = score
-        self.feedbackPhonemes = feedbackPhonemes
-        self.xpGain = xpGain
-        self.xpStreakBoost = xpStreakBoost
+        self.feedback = feedback
         self.success = success
         self.customMessage = customMessage()
     }
@@ -62,27 +53,19 @@ struct WordView<Content: View>: View {
                         .padding(.horizontal, 32)
                 }
                 
-                if let xpGain = xpGain, let xpStreakBoost = xpStreakBoost {
-                    XpGainView(xpGain: xpGain, xpStreakBoost: xpStreakBoost)
+                if let feedback = feedback {
+                    XpGainView(xpGain: feedback.xpGain, xpStreakBoost: feedback.xpStreakBoost)
                         .padding(.bottom, 32)
-                }
-                
-                if let score = score {
-                    ScoreView(score: score)
+                    
+                    ScoreView(score: feedback.score)
                         .padding(.horizontal, 128)
                 }
+                
             }
             .frame(height: 200)
             Text(word.text).font(.largeTitle)
-            if let score = score,
-               let feedbackPhonemes = feedbackPhonemes,
-               let xpGain = xpGain {
-                FeedbackView(
-                    score: score,
-                    word: word,
-                    feedbackPhonemes: feedbackPhonemes,
-                    xpGain: xpGain
-                )
+            if let feedback = feedback {
+                FeedbackView(feedback: feedback)
             } else {
                 Text(word.phonemes
                     .compactMap { $0.respelling }
@@ -97,5 +80,5 @@ struct WordView<Content: View>: View {
 }
 
 #Preview {
-    WordView(word: .init(id: 1, text: "foo", phonemes: []), score: 0, feedbackPhonemes: [], xpGain: 10, xpStreakBoost: 0, success: false)
+    WordView(word: .init(id: 1, text: "foo", phonemes: []), feedback: .init(recordingId: 0, score: 0, phonemes: [], xpGain: 10, xpStreakBoost: 0), success: false)
 }
