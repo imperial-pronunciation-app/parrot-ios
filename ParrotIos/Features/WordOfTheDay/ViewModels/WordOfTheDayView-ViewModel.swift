@@ -53,6 +53,7 @@ extension WordOfTheDayView {
             audioRecorder.startRecording()
         }
 
+        @MainActor
         func stopRecording() async {
             isRecording = false
             audioRecorder.stopRecording()
@@ -61,6 +62,7 @@ extension WordOfTheDayView {
             }
         }
 
+        @MainActor
         func uploadRecording(recordingURL: URL) async {
             awaitingFeedback = true
             errorMessage = nil
@@ -75,6 +77,7 @@ extension WordOfTheDayView {
             awaitingFeedback = false
         }
 
+        @MainActor
         func toggleRecording() async {
             if isRecording {
                 await stopRecording()

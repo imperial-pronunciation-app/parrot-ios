@@ -76,6 +76,7 @@ extension ExerciseView {
             audioRecorder.startRecording()
         }
 
+        @MainActor
         func stopRecording() async {
             isRecording = false
             audioRecorder.stopRecording()
@@ -84,6 +85,7 @@ extension ExerciseView {
             }
         }
 
+        @MainActor
         func uploadRecording(recordingURL: URL) async {
             awaitingFeedback = true
             errorMessage = nil
@@ -98,6 +100,7 @@ extension ExerciseView {
             awaitingFeedback = false
         }
 
+        @MainActor
         func toggleRecording() async {
             if isRecording {
                 await stopRecording()
