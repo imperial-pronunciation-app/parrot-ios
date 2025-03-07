@@ -17,7 +17,7 @@ struct RecordingButton: View {
     @State private var timer: Timer? = nil
     
     private let BUTTON_SIZE: CGFloat = 80
-    private let BUTTON_FRAME: CGFloat = 100
+    private let BUTTON_SCALE_MULTIPLIER: CGFloat = 1.2
     private let LOADING_LINE_WIDTH: CGFloat = 6
 
     var body: some View {
@@ -64,7 +64,7 @@ struct RecordingButton: View {
                         timer = nil
                     }
             }
-            .frame(width: BUTTON_FRAME, height: BUTTON_FRAME)
+            .frame(width: BUTTON_SIZE * BUTTON_SCALE_MULTIPLIER, height: BUTTON_SIZE * BUTTON_SCALE_MULTIPLIER)
         } else {
             Button(action: {}) {
                 Image(systemName: "mic")
@@ -75,7 +75,7 @@ struct RecordingButton: View {
                     .clipShape(Circle())
                     .scaleEffect(buttonSize)
                     .animation(.easeInOut(duration: 0.2), value: buttonSize)
-                    .frame(width: BUTTON_FRAME, height: BUTTON_FRAME)
+                    .frame(width: BUTTON_SIZE * BUTTON_SCALE_MULTIPLIER, height: BUTTON_SIZE * BUTTON_SCALE_MULTIPLIER)
             }
             .buttonStyle(PlainButtonStyle())
             .simultaneousGesture(
@@ -87,7 +87,7 @@ struct RecordingButton: View {
                                 await action()
                             }
                             withAnimation(.easeInOut(duration: 0.2)) {
-                                buttonSize = 1.2
+                                buttonSize = BUTTON_SCALE_MULTIPLIER
                             }
                         }
                     }
