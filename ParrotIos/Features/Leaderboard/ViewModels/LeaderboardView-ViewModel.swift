@@ -24,6 +24,7 @@ extension LeaderboardView {
 
         func loadLeaderboard() async {
             isLoading = true
+            errorMessage = nil
             do {
                 let leaderboardResponse = try await parrotApi.getLeaderboard()
                 topUsers = leaderboardResponse.leaders
