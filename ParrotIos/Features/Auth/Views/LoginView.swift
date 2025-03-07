@@ -10,7 +10,7 @@ import SwiftUI
 struct LoginView: View {
 
     @State private var viewModel: ViewModelProtocol
-    @State private var usernameField = ""
+    @State private var emailField = ""
     @State private var passwordField = ""
     @State private var succeed = false
 
@@ -33,7 +33,7 @@ struct LoginView: View {
                     .fontWeight(.semibold)
                     .padding(.bottom)
 
-                TextField("Username", text: $usernameField)
+                TextField("Email", text: $emailField)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .autocapitalization(.none)
 
@@ -42,7 +42,7 @@ struct LoginView: View {
 
                 Button(action: {
                     Task {
-                        await viewModel.login(username: usernameField, password: passwordField, succeed: $succeed)
+                        await viewModel.login(email: emailField, password: passwordField, succeed: $succeed)
                     }
                 }) {
                     Text("Login")

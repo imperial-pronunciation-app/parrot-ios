@@ -27,8 +27,8 @@ class MockAuthService: AuthServiceProtocol, CallTracking {
     var callArguments: [String: [[Any?]]] = [:]
     var returnValues: [String: [Result<Any?, Error>]] = [:]
 
-    func login(username: String, password: String) async throws {
-        recordCall(for: AuthServiceMethods.login, with: [username, password])
+    func login(email: String, password: String) async throws {
+        recordCall(for: AuthServiceMethods.login, with: [email, password])
     }
 
     func logout() async throws {
