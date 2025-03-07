@@ -99,6 +99,14 @@ struct UnitView: View {
                     .stroke(.gray)
             )
             .padding(.bottom, 32)
+            .contentShape(Rectangle())
+            .onTapGesture {
+                if !viewModel.isExpanded {
+                    withAnimation(.spring()) {
+                        viewModel.expandOrCollapse()
+                    }
+                }
+            }
         }
     }
 }
