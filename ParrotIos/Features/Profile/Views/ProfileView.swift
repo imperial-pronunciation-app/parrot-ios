@@ -170,6 +170,5 @@ struct Toast: View {
         .background(Color.green.brightness(0.1))
         .cornerRadius(8)
         .frame(width: .infinity)
-//        .padding(.horizontal)
     }
 }
