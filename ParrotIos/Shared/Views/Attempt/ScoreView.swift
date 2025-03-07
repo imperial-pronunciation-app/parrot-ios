@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ScoreView: View {
-    @State private var viewModel: ViewModel
+    private var viewModel: ViewModel
 
     init(score: Int) {
         self.viewModel = ViewModel(score: score)
