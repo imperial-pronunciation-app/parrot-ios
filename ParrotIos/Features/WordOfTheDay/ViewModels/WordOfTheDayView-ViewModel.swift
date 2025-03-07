@@ -23,10 +23,7 @@ extension WordOfTheDayView {
         private(set) var awaitingFeedback: Bool = false
 
         private(set) var word: Word?
-        private(set) var score: Int?
-        private(set) var feedbackPhonemes: [(Phoneme?, Phoneme?)]?
-        private(set) var xpStreakBoost: Int?
-        private(set) var xpGain: Int?
+        private(set) var feedback: Feedback?
         private(set) var success: Bool?
 
         init(
@@ -41,9 +38,7 @@ extension WordOfTheDayView {
         func loadWordOfTheDay() async {
             isLoading = true
             errorMessage = nil
-            score = nil
-            feedbackPhonemes = nil
-            xpGain = nil
+            feedback = nil
             do {
                 self.word = try await parrotApi.getWordOfTheDay()
             } catch {
@@ -71,10 +66,7 @@ extension WordOfTheDayView {
 
             do {
                 let attemptResponse = try await parrotApi.postWordOfTheDayAttempt(recordingURL: recordingURL)
-                self.score = attemptResponse.score
-                self.feedbackPhonemes = attemptResponse.phonemes
-                self.xpGain = attemptResponse.xpGain
-                self.xpStreakBoost = attemptResponse.xpStreakBoost
+                self.feedback = attemptResponse.feedback
                 self.success = attemptResponse.success
             } catch {
                 errorMessage = error.localizedDescription
