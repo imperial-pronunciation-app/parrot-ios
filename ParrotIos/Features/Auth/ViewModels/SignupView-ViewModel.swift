@@ -28,17 +28,17 @@ extension SignupView {
                 self.errorMessage = "Password and confirmation do not match."
                 return
             }
-            if displayName == "" {
-                self.errorMessage = "Display name cannot be empty."
+            if email == "" || displayName == "" || password == "" || confirmPassword == "" {
+                self.errorMessage = "Email, display name and password cannot be empty."
                 return
             }
 
             do {
                 try await authService.register(email: email, displayName: displayName, password: password)
-                try await authService.login(username: email, password: password)
+                try await authService.login(email: email, password: password)
                 succeed.wrappedValue = true
             } catch RegisterError.userAlreadyExists {
-                self.errorMessage = "User Already Exists"
+                self.errorMessage = "User already exists. Please try logging in."
             } catch RegisterError.customError(let error) {
                 self.errorMessage = error
             } catch {

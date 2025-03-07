@@ -23,9 +23,9 @@ final class AuthService: AuthServiceProtocol, ObservableObject {
         self.instance = AuthService(webService: webService)
     }
 
-    func login(username: String, password: String) async throws {
+    func login(email: String, password: String) async throws {
         let parameters = [
-            FormDataURLEncodedElement(key: "username", value: username),
+            FormDataURLEncodedElement(key: "username", value: email),
             FormDataURLEncodedElement(key: "password", value: password)
         ]
 
@@ -162,8 +162,8 @@ struct LoginAPIResponse: Codable {
 }
 
 enum LoginAPIErrorResponseDetail: String, Codable {
-    case loginBadCredentials
-    case loginUserNotVerified
+    case loginBadCredentials = "LOGIN_BAD_CREDENTIALS"
+    case loginUserNotVerified = "LOGIN_USER_NOT_VERIFIED"
 }
 
 struct LoginAPIErrorResponse: Codable {
@@ -187,7 +187,7 @@ struct RegisterAPIResponse: Codable {
 }
 
 enum RegisterAPIErrorResponseDetail: String, Codable {
-    case registerUserAlreadyExists
+    case registerUserAlreadyExists = "REGISTER_USER_ALREADY_EXISTS"
 }
 
 struct RegisterAPIErrorResponse: Codable {
