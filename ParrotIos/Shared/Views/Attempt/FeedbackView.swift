@@ -8,21 +8,19 @@
 import SwiftUI
 
 struct FeedbackView: View {
-    let score: Int
-    let word: Word
-    let feedbackPhonemes: [(Phoneme?, Phoneme?)]
-    let xpGain: Int
+    let feedback: Feedback
+    
     @State private var isShowingSheet: Bool = false
 
     public var body: some View {
         VStack {
-            PhonemeFeedbackView(feedbackPhonemes: feedbackPhonemes, underline: true)
+            PhonemeFeedbackView(feedbackPhonemes: feedback.phonemes, underline: true)
                 .onTapGesture {
                     isShowingSheet.toggle()
                 }
         }
         .sheet(isPresented: $isShowingSheet) {
-            DetailedFeedbackSheet(score: score, feedbackPhonemes: feedbackPhonemes)
+            DetailedFeedbackSheet(score: feedback.score, feedbackPhonemes: feedback.phonemes)
         }
     }
 }

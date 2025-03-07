@@ -29,15 +29,17 @@ struct ExerciseView_ViewModelTests {
     )
     let attemptResponse: ExerciseAttempt = ExerciseAttempt(
         success: true,
-        recordingId: 1,
-        score: 1,
-        phonemes: [
-            (Phoneme(id: 5, ipa: "m'", respelling: "m", cdnPath: ""), Phoneme(id: 5, ipa: "m'", respelling: "m", cdnPath: "")),
-            (Phoneme(id: 6, ipa: "aʊ", respelling: "ow", cdnPath: ""), nil),
-            (nil, Phoneme(id: 7, ipa: "s", respelling: "s", cdnPath: ""))
-        ],
-        xpGain: 2,
-        xpStreakBoost: 0,
+        feedback: .init(
+            recordingId: 1,
+            score: 1,
+            phonemes: [
+                (Phoneme(id: 5, ipa: "m'", respelling: "m", cdnPath: ""), Phoneme(id: 5, ipa: "m'", respelling: "m", cdnPath: "")),
+                (Phoneme(id: 6, ipa: "aʊ", respelling: "ow", cdnPath: ""), nil),
+                (nil, Phoneme(id: 7, ipa: "s", respelling: "s", cdnPath: ""))
+            ],
+            xpGain: 2,
+            xpStreakBoost: 0
+        ),
         exerciseIsCompleted: false
     )
 
