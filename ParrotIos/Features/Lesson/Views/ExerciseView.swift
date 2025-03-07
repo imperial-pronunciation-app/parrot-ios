@@ -44,7 +44,7 @@ struct ExerciseView: View {
             } else {
                 VStack {
                     Spacer()
-
+                    
                     if let exercise = viewModel.exercise, let isLast = viewModel.isLast {
                         WordView(
                             word: exercise.word,
@@ -53,7 +53,21 @@ struct ExerciseView: View {
                             xpGain: viewModel.lastAttempt?.xpGain,
                             xpStreakBoost: viewModel.lastAttempt?.xpStreakBoost,
                             success: viewModel.lastAttempt?.success
-                        )
+                        ) {
+                            if viewModel.lastAttemptFailedExercise {
+                                HStack {
+                                    Image(systemName: "arrow.trianglehead.clockwise.rotate.90")
+                                    Text("You're on the right track!")
+                                }
+                                .padding(.bottom, 4)
+
+                                Text("Click the feedback to spot what needs improvement.")
+                                    .font(.subheadline)
+                                    .foregroundStyle(.secondary)
+                                    .padding(.bottom, 32)
+                                    .multilineTextAlignment(.center)
+                            }
+                        }
                         
                         Spacer()
                         
