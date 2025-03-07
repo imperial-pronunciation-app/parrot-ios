@@ -100,8 +100,12 @@ struct PodiumColView: View {
                 .font(.subheadline)
                 .bold()
                 .multilineTextAlignment(.center)
-            Text("\(user.xp)")
-                .foregroundStyle(.gray)
+            HStack(spacing: 4) {
+                Image(systemName: "bolt.fill")
+                    .foregroundStyle(.yellow)
+                Text("\(user.xp)")
+                    .foregroundStyle(.gray)
+            }
             ZStack(alignment: .top) {
                 RoundedRectangle(cornerRadius: 10)
                     .fill(isCurrentUser ? Color.accentColor.opacity(0.15) : Color(UIColor.systemGray6))
@@ -137,8 +141,12 @@ struct UserCard: View {
             Text("\(user.displayName)")
                 .fontWeight(isCurrentUser ? .bold : nil)
             Spacer()
-            Text("\(user.xp)")
-                .fontWeight(isCurrentUser ? .bold : nil)
+            HStack(spacing: 4) {
+                Image(systemName: "bolt.fill")
+                    .foregroundStyle(.yellow)
+                Text("\(user.xp)")
+                    .fontWeight(isCurrentUser ? .bold : nil)
+            }
         }
         .padding(12)
         .frame(maxWidth: .infinity)
