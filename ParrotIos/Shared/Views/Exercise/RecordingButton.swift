@@ -5,19 +5,6 @@
 //  Created by Pedro Sá Fontes on 28/02/2025.
 //
 
-//ZStack {
-//    // The circle outline
-//    Circle()
-//        .stroke(Color.gray, lineWidth: 4)
-//        .frame(width: 80, height: 80)
-//    
-//    // The spinning loading indicator
-//    ProgressView()
-//        .progressViewStyle(CircularProgressViewStyle())
-//        .scaleEffect(2)
-//}
-//.frame(width: 100, height: 100)
-
 import SwiftUI
 
 struct RecordingButton: View {
