@@ -25,29 +25,32 @@ struct WordView: View {
 
     var body: some View {
         VStack {
-            if let success = success, !success {
-                HStack {
-                    Image(systemName: "exclamationmark.arrow.trianglehead.counterclockwise.rotate.90")
-                    Text("Sorry, I didn't get that...")
+            VStack {
+                if let success = success, !success {
+                    HStack {
+                        Image(systemName: "exclamationmark.arrow.trianglehead.counterclockwise.rotate.90")
+                        Text("Sorry, I didn't get that...")
+                    }
+                    .foregroundStyle(.red)
+                    .padding(.bottom, 4)
+                    
+                    Text("Please try again")
+                        .font(.subheadline)
+                        .foregroundStyle(.gray)
+                        .padding(.bottom, 32)
                 }
-                .foregroundStyle(.red)
-                .padding(.bottom, 4)
-
-                Text("Please try again")
-                    .font(.subheadline)
-                    .foregroundStyle(.gray)
-                    .padding(.bottom, 32)
+                
+                if let xpGain = xpGain, let xpStreakBoost = xpStreakBoost {
+                    XpGainView(xpGain: xpGain, xpStreakBoost: xpStreakBoost)
+                        .padding(.bottom, 32)
+                }
+                
+                if let score = score {
+                    ScoreView(score: score)
+                        .padding(.horizontal, 128)
+                }
             }
-
-            if let xpGain = xpGain, let xpStreakBoost = xpStreakBoost {
-                XpGainView(xpGain: xpGain, xpStreakBoost: xpStreakBoost)
-                    .padding(.bottom, 32)
-            }
-
-            if let score = score {
-                ScoreView(score: score)
-                    .padding(.horizontal, 128)
-            }
+            .frame(height: 200)
             Text(word.text).font(.largeTitle)
             if let score = score,
                let feedbackPhonemes = feedbackPhonemes,

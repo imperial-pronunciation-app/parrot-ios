@@ -50,6 +50,7 @@ struct WordOfTheDayView: View {
 
                 RecordingButton(
                     isRecording: viewModel.isRecording,
+                    isLoading: viewModel.awaitingFeedback,
                     action: viewModel.toggleRecording
                 ).padding()
             }
