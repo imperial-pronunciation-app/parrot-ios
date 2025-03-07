@@ -21,6 +21,8 @@ extension ExerciseView {
         private(set) var isLoading: Bool = false
         private(set) var isSuccess: Bool = true
         private(set) var errorMessage: String?
+        
+        private(set) var awaitingFeedback: Bool = false
 
         private(set) var exerciseId: Int
         private(set) var exercise: Exercise?
@@ -79,7 +81,7 @@ extension ExerciseView {
         }
 
         func uploadRecording(recordingURL: URL) async {
-            isLoading = true
+            awaitingFeedback = true
             errorMessage = nil
 
             do {
@@ -89,7 +91,7 @@ extension ExerciseView {
             } catch {
                 errorMessage = error.localizedDescription
             }
-            isLoading = false
+            awaitingFeedback = false
         }
 
         func toggleRecording() async {

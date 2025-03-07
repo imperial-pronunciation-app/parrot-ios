@@ -19,6 +19,8 @@ extension WordOfTheDayView {
         private(set) var isPlaying: Bool = false
         private(set) var isLoading: Bool = false
         private(set) var errorMessage: String?
+        
+        private(set) var awaitingFeedback: Bool = false
 
         private(set) var word: Word?
         private(set) var score: Int?
@@ -64,7 +66,7 @@ extension WordOfTheDayView {
         }
 
         func uploadRecording(recordingURL: URL) async {
-            isLoading = true
+            awaitingFeedback = true
             errorMessage = nil
 
             do {
@@ -77,7 +79,7 @@ extension WordOfTheDayView {
             } catch {
                 errorMessage = error.localizedDescription
             }
-            isLoading = false
+            awaitingFeedback = false
         }
 
         func toggleRecording() async {
