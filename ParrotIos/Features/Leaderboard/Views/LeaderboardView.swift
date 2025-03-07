@@ -11,37 +11,45 @@ struct LeaderboardView: View {
     private let viewModel = ViewModel()
     var body: some View {
         ZStack(alignment: .bottom) {
-            VStack {
+            if viewModel.isLoading {
+                UtilComponents.loadingView
+            } else if let errorMessage = viewModel.errorMessage {
+                UtilComponents.errorView(errorMessage: errorMessage)
+            } else {
                 VStack {
-                    Text("Leaderboard")
-                        .font(.title3)
-                        .fontWeight(.semibold)
-                        .padding(.vertical, 4)
-                    Text("\(viewModel.league.capitalized) League")
-                        .font(.subheadline)
-                        .foregroundStyle(.gray)
-                    PodiumView(users: viewModel.topUsers, currentUserId: viewModel.currentUserId())
-                        .padding(.vertical, 16)
-                }
-                .padding(.horizontal)
-                ScrollView {
                     VStack {
-                        ForEach(viewModel.currentUsers) { user in
-                            UserCard(user: user, isCurrentUser: user.id == viewModel.currentUserId())
-                        }
+                        Text("Leaderboard")
+                            .font(.title3)
+                            .fontWeight(.semibold)
+                            .padding(.vertical, 4)
+                        Text("\(viewModel.league.capitalized) League")
+                            .font(.subheadline)
+                            .foregroundStyle(.gray)
+                        PodiumView(users: viewModel.topUsers, currentUserId: viewModel.currentUserId())
+                            .padding(.vertical, 16)
                     }
                     .padding(.horizontal)
+                    ScrollView {
+                        VStack {
+                            ForEach(viewModel.currentUsers) { user in
+                                UserCard(user: user, isCurrentUser: user.id == viewModel.currentUserId())
+                            }
+                        }
+                        .padding(.horizontal)
+                        Spacer()
+                            .frame(height: 80)
+                    }
+                }
+
+                VStack {
                     Spacer()
-                        .frame(height: 80)
+                    ResetTimerView(currentDays: viewModel.daysProgress.current, totalDays: viewModel.daysProgress.total)
                 }
             }
-
-            VStack {
-                Spacer()
-                ResetTimerView(currentDays: viewModel.daysProgress.current, totalDays: viewModel.daysProgress.total)
+        }.onAppear {
+            Task {
+                await viewModel.loadLeaderboard()
             }
-        }.task {
-            await viewModel.loadLeaderboard()
         }
     }
 }

@@ -54,8 +54,10 @@ struct WordOfTheDayView: View {
                 ).padding()
             }
         }
-        .task {
-            await viewModel.loadWordOfTheDay()
+        .onAppear {
+            Task {
+                await viewModel.loadWordOfTheDay()
+            }
         }
     }
 }

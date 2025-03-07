@@ -11,6 +11,9 @@ import Combine
 extension LeaderboardView {
     @Observable
     class ViewModel {
+        private(set) var isLoading: Bool = false
+        private(set) var errorMessage: String?
+
         private(set) var currentUsers: [User] = []
         private(set) var topUsers: [User] = []
         private(set) var league: String = "Unk"
@@ -20,6 +23,7 @@ extension LeaderboardView {
         private let auth = AuthService.instance
 
         func loadLeaderboard() async {
+            isLoading = true
             do {
                 let leaderboardResponse = try await parrotApi.getLeaderboard()
                 topUsers = leaderboardResponse.leaders
@@ -27,8 +31,9 @@ extension LeaderboardView {
                 league = leaderboardResponse.league
                 daysProgress = (7 - leaderboardResponse.daysUntilEnd, 7)
             } catch {
-                print("Error fetching leaderboard: \(error)")
+                errorMessage = error.localizedDescription
             }
+            isLoading = false
         }
 
         func envigoratingMessage() -> String {

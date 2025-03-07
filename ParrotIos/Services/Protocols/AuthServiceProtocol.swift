@@ -10,6 +10,8 @@ import Foundation
 protocol AuthServiceProtocol {
 
     func login(email: String, password: String) async throws
+    
+    func getUserDetails() async throws
 
     func logout() async throws
 
