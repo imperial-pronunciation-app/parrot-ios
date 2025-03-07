@@ -15,7 +15,14 @@ struct ListedLessonView: View {
     let isRecap: Bool
     let stars: Int?
 
-    init(id: Int? = nil, title: String, isCompleted: Bool, isLocked: Bool, stars: Int? = nil, isRecap: Bool = false) {
+    init(
+        id: Int? = nil,
+        title: String,
+        isCompleted: Bool,
+        isLocked: Bool,
+        stars: Int? = nil,
+        isRecap: Bool = false
+    ) {
         self.id = id
         self.title = title
         self.isCompleted = isCompleted
@@ -25,38 +32,50 @@ struct ListedLessonView: View {
     }
 
     var body: some View {
-        HStack {
-            if isLocked {
+        if isLocked {
+            HStack {
                 Image(systemName: "lock")
                     .foregroundStyle(.secondary)
-            } else if isCompleted {
-                StarsView(filledStars: stars!)
+
+                Text(title)
+                    .font(.body)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
+
+                Spacer()
+
+                Color.clear.frame(width: 32, height: 32)
             }
 
-            Text(title)
-                .font(.body)
-                .foregroundStyle(isLocked ? .secondary : .primary)
-                .lineLimit(1)
-                .truncationMode(.tail)
+        } else {
+            NavigationLink(destination: LessonView(lessonId: id!)) {
+                HStack {
+                    // Show stars if completed, otherwise maybe nothing
+                    if isCompleted {
+                        StarsView(filledStars: stars ?? 0)
+                    }
 
-            Spacer()
+                    Text(title)
+                        .font(.body)
+                        .foregroundStyle(.primary)
+                        .lineLimit(1)
+                        .truncationMode(.tail)
 
-            if isLocked {
-                Color.clear.frame(width: 32, height: 32)
-            } else {
-                NavigationLink(destination: LessonView(lessonId: id!)) {
+                    Spacer()
+
                     Image(systemName: isCompleted ? "arrow.clockwise.circle.fill" : "play.circle.fill")
                         .foregroundStyle(isCompleted ? .gray : .accentColor)
                         .font(.system(size: 32))
                 }
-                .simultaneousGesture(
-                    TapGesture().onEnded {
-                        let generator = UIImpactFeedbackGenerator(style: .medium)
-                        generator.impactOccurred()
-                    }
-                )
-
             }
+            .buttonStyle(.plain)
+            .simultaneousGesture(
+                TapGesture().onEnded {
+                    let generator = UIImpactFeedbackGenerator(style: .medium)
+                    generator.impactOccurred()
+                }
+            )
         }
     }
 }
