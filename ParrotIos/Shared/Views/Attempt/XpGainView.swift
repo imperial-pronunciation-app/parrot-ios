@@ -64,7 +64,7 @@ struct XpGainView: View {
                 )
             }
         }
-        .frame(height: 120)
+        .frame(height: xpGain > 0 ? 120 : 0)
         .onAppear {
             animateSequence()
         }
