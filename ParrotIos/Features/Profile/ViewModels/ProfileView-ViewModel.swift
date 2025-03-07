@@ -32,6 +32,7 @@ extension ProfileView {
         }
 
         func onLoad() async throws {
+            try await authService.getUserDetails()
             try await getLanguages()
         }
 
