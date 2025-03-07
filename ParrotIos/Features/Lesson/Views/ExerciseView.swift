@@ -72,6 +72,12 @@ struct ExerciseView: View {
                         
                         Spacer()
                         
+                        if isFirst && !exercise.isCompleted {
+                            Text("Press and hold to record")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        
                         HStack {
                             ZStack(alignment: .leading) {
                                 if !isFirst {
