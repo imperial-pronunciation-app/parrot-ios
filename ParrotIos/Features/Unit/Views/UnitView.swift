@@ -59,36 +59,38 @@ struct UnitView: View {
                     }
                 }
                 VStack(spacing: 4) {
-                    if let lessons = viewModel.unit.lessons {
-                        ForEach(lessons) { lesson in
+                    if viewModel.showLessons {
+                        if let lessons = viewModel.unit.lessons {
+                            ForEach(lessons) { lesson in
+                                ListedLessonView(
+                                    id: lesson.id,
+                                    title: lesson.title,
+                                    isCompleted: lesson.isCompleted,
+                                    isLocked: lesson.isLocked,
+                                    stars: lesson.stars
+                                )
+                            }
+                        }
+                        if let lesson = viewModel.unit.recapLesson {
                             ListedLessonView(
                                 id: lesson.id,
                                 title: lesson.title,
                                 isCompleted: lesson.isCompleted,
                                 isLocked: lesson.isLocked,
-                                stars: lesson.stars
+                                stars: lesson.stars,
+                                isRecap: true
+                            )
+                        } else {
+                            ListedLessonView(
+                                title: "Recap",
+                                isCompleted: false,
+                                isLocked: true,
+                                isRecap: true
                             )
                         }
                     }
-                    if let lesson = viewModel.unit.recapLesson {
-                        ListedLessonView(
-                            id: lesson.id,
-                            title: lesson.title,
-                            isCompleted: lesson.isCompleted,
-                            isLocked: lesson.isLocked,
-                            stars: lesson.stars,
-                            isRecap: true
-                        )
-                    } else {
-                        ListedLessonView(
-                            title: "Recap",
-                            isCompleted: false,
-                            isLocked: true,
-                            isRecap: true
-                        )
-                    }
                 }
-                .frame(height: viewModel.showLessons ? nil : 0, alignment: .top)
+                .frame(maxWidth: .infinity)
                 .clipped()
             }
             .padding()
