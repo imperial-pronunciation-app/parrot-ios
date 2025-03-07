@@ -51,6 +51,7 @@ extension LessonView {
             await fetchLesson(withID: lessonId)
         }
 
+        @MainActor
         func fetchLesson(withID id: Int) async {
             isLoading = true
             errorMessage = nil
@@ -64,6 +65,7 @@ extension LessonView {
             isLoading = false
         }
 
+        @MainActor
         func nextExercise() {
             guard let index = exerciseIndex,
                   let isLast = isLast,
@@ -71,6 +73,7 @@ extension LessonView {
             exerciseIndex = index + 1
         }
 
+        @MainActor
         func prevExercise() {
             guard let index = exerciseIndex, let isFirst = isFirst, !isFirst else { return }
             exerciseIndex = index - 1

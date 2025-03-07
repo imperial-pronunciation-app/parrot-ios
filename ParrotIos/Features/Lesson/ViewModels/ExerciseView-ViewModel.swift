@@ -58,6 +58,7 @@ extension ExerciseView {
             self.isLast = isLast
         }
 
+        @MainActor
         func loadExercise() async {
             isLoading = true
             errorMessage = nil

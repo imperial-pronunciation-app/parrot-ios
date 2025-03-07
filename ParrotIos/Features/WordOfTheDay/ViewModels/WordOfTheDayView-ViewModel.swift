@@ -35,6 +35,7 @@ extension WordOfTheDayView {
             self.parrotApi = parrotApi
         }
 
+        @MainActor
         func loadWordOfTheDay() async {
             isLoading = true
             errorMessage = nil
