@@ -13,7 +13,7 @@ extension LoginView {
 
     protocol ViewModelProtocol {
         var errorMessage: String? { get }
-        func login(username: String, password: String, succeed: Binding<Bool>) async
+        func login(email: String, password: String, succeed: Binding<Bool>) async
         func logout() async
     }
 
@@ -21,12 +21,16 @@ extension LoginView {
     class ViewModel: ViewModelProtocol {
         private(set) var errorMessage: String?
 
-        func login(username: String, password: String, succeed: Binding<Bool>) async {
+        func login(email: String, password: String, succeed: Binding<Bool>) async {
+            if email == "" || password == "" {
+                self.errorMessage = "Email and password cannot be empty."
+                return
+            }
             do {
-                try await AuthService.instance.login(username: username, password: password)
+                try await AuthService.instance.login(email: email, password: password)
                 succeed.wrappedValue = true
             } catch LoginError.badCredentials {
-                self.errorMessage = "Incorrect username or password."
+                self.errorMessage = "Incorrect email or password."
             } catch LoginError.userNotVerified {
                 self.errorMessage = "User not verified."
             } catch LoginError.customError(let error) {

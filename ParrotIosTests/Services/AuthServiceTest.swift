@@ -39,7 +39,7 @@ struct AuthServiceTests {
         try #require(!authService.isAuthenticated)
 
         // Act
-        try await authService.login(username: username, password: password)
+        try await authService.login(email: username, password: password)
 
         // Assert auth service state updated correctly
         #expect(authService.isAuthenticated)
@@ -72,7 +72,7 @@ struct AuthServiceTests {
 
         // Act & Assert
         await #expect(throws: LoginError.badCredentials) {
-            try await authService.login(username: username, password: password)
+            try await authService.login(email: username, password: password)
         }
 
         #expect(!authService.isAuthenticated)
@@ -90,7 +90,7 @@ struct AuthServiceTests {
             tokenType: "bearer"
         ))
         mockWebService.stub(method: WebServiceMethods.get, toReturn: UserDetails(id: 1, loginStreak: 1, xpTotal: 1, email: "", displayName: "", language: Language(id: 1, code: "", name: ""), league: "", avatar: ""))
-        try await authService.login(username: username, password: password)
+        try await authService.login(email: username, password: password)
 
         mockWebService.stub(method: WebServiceMethods.postNoResponse, toReturn: ())
 
