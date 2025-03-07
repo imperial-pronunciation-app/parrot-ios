@@ -1,25 +1,49 @@
-# Parrot Ios App
+# Parrot iOS
 
-Please, just use XCode and nothing but XCode to edit files in this repository :)
+## 📖 Overview
+Parrot iOS is the mobile application for the Parrot language learning platform. It provides an interactive and engaging experience for users to practice pronunciation, complete lessons, and track progress through a structured curriculum.
 
-## Commands
+## 📂 Project Structure
+```
+.
+├── ParrotIos/              # Main application source code
+│   ├── Assets.xcassets/    # App assets (icons, images, colors)
+│   ├── Features/           # Core app features
+│   │   ├── Auth/           # Authentication (Login, Signup)
+│   │   ├── Leaderboard/    # User rankings and competition
+│   │   ├── Lesson/         # Lesson and exercise handling
+│   │   ├── Profile/        # User profile and settings
+│   │   ├── Unit/           # Curriculum and lesson structuring
+│   │   ├── WordOfTheDay/   # Daily word practice
+│   │   ├── Nav/            # Navigation components
+│   ├── Services/           # API and data services
+│   ├── Shared/             # Shared components (Models, Utilities, Views)
+│   ├── ParrotIosApp.swift  # App entry point
+│   ├── Info.plist          # Configuration and app metadata
+├── ParrotIosTests/         # Unit and UI tests
+├── ParrotIos.xcodeproj/    # Xcode project configuration
+├── ParrotIos.xcworkspace/  # Xcode workspace
+├── LaunchScreen.storyboard # App launch screen
+├── dev.xcconfig            # Development environment configuration
+├── prod.xcconfig           # Production environment configuration
+├── README.md               # Project documentation
+```
 
-### Building the app on a simulator
+## 🚀 Getting Started
 
-Just press the "play" button on top left corner, choose a simulator device if necessary.
+### Running the App
+1. Select the **ParrotIos** scheme in Xcode.
+2. Choose a simulator or connect a physical device.
+3. Click **Run (⌘R)** to build and launch the app.
 
-Any iPhone will do.
+### Running Tests
+To execute unit and UI tests:
+```sh
+⌘U (Run Tests in Xcode)
+```
 
-### Building the app on a physical iPhone
+## 🛠 Development
 
-Change the bundle identifier to something unique and arbitrary, e.g. com.yourname.parrotios.
-
-Add certificates by signing in to your personal iCloud account, then click build button.
-
-Don't commit these changes; revert to previous state before you push.
-
-### Running tests
-
-Run all tests by pressing Command + U.
-
-To run specific tests, click on test class or use the test tab (the tick icon).
+### Coding Style
+- Follow Swift best practices and SwiftLint guidelines.
+- Use MVVM (Model-View-ViewModel) architecture for UI components.
