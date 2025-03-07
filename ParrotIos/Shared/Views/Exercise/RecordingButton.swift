@@ -15,6 +15,10 @@ struct RecordingButton: View {
     @State private var gestureStarted = false
     @State private var rotation = 0.0
     @State private var timer: Timer? = nil
+    
+    private let BUTTON_SIZE: CGFloat = 80
+    private let BUTTON_FRAME: CGFloat = 100
+    private let LOADING_LINE_WIDTH: CGFloat = 6
 
     var body: some View {
         if isLoading {
@@ -22,7 +26,7 @@ struct RecordingButton: View {
                 // Background circle for context
                 Circle()
                     .fill(Color(white: 0.95))
-                    .frame(width: 80, height: 80)
+                    .frame(width: BUTTON_SIZE, height: BUTTON_SIZE)
                 
                 // Animated spinner using a trimmed circle
                 Circle()
@@ -32,9 +36,9 @@ struct RecordingButton: View {
                             gradient: Gradient(colors: [Color.accent, Color.accent.opacity(0.5)]),
                             center: .center
                         ),
-                        style: StrokeStyle(lineWidth: 6, lineCap: .round)
+                        style: StrokeStyle(lineWidth: LOADING_LINE_WIDTH, lineCap: .round)
                     )
-                    .frame(width: 77, height: 77)
+                    .frame(width: BUTTON_SIZE - (LOADING_LINE_WIDTH / 2), height: BUTTON_SIZE - (LOADING_LINE_WIDTH / 2))
                     .rotationEffect(Angle(degrees: rotation))
                     .onAppear {
                         // Invalidate any existing timer first
@@ -60,18 +64,18 @@ struct RecordingButton: View {
                         timer = nil
                     }
             }
-            .frame(width: 100, height: 100)
+            .frame(width: BUTTON_FRAME, height: BUTTON_FRAME)
         } else {
             Button(action: {}) {
                 Image(systemName: "mic")
                     .font(.largeTitle)
                     .foregroundColor(.white)
-                    .frame(width: 80, height: 80)
+                    .frame(width: BUTTON_SIZE, height: BUTTON_SIZE)
                     .background(Color.accentColor)
                     .clipShape(Circle())
                     .scaleEffect(buttonSize)
                     .animation(.easeInOut(duration: 0.2), value: buttonSize)
-                    .frame(width: 100, height: 100)
+                    .frame(width: BUTTON_FRAME, height: BUTTON_FRAME)
             }
             .buttonStyle(PlainButtonStyle())
             .simultaneousGesture(
