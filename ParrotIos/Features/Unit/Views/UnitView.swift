@@ -51,7 +51,6 @@ struct UnitView: View {
                             withAnimation(.spring()) {
                                 viewModel.expandOrCollapse()
                             }
-//                            viewModel.expandOrCollapse()
                         }) {
                             Image(systemName: "chevron.right")
                                 .foregroundStyle(.gray)
@@ -91,8 +90,7 @@ struct UnitView: View {
                         }
                     }
                 }
-                .frame(height: viewModel.showLessons ? .infinity : 0, alignment: .top)
-                .animation(.spring(), value: viewModel.showLessons)
+                .frame(maxWidth: .infinity)
                 .clipped()
             }
             .padding()
