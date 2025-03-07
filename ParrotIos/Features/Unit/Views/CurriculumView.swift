@@ -45,12 +45,21 @@ struct CurriculumView: View {
                         .fontWeight(.semibold)
 
                     Spacer()
-
-                    HStack {
-                        Image(systemName: "flame.fill")
-                            .foregroundColor(.orange)
-                        Text("\(viewModel.streaks())")
-                            .font(.headline)
+                    
+                    HStack(spacing: 16) {
+                        HStack(spacing: 4) {
+                            Image(systemName: "bolt.fill")
+                                .foregroundStyle(.yellow)
+                            Text("\(viewModel.userDetails.xpTotal)")
+                                .bold()
+                        }
+                        
+                        HStack(spacing: 4) {
+                            Image(systemName: "flame.fill")
+                                .foregroundColor(.accent)
+                            Text("\(viewModel.streaks())")
+                                .font(.headline)
+                        }
                     }
                 }
                 .padding()
