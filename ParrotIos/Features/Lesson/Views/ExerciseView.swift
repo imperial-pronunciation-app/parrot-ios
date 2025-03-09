@@ -8,10 +8,6 @@
 import ConfettiSwiftUI
 import SwiftUI
 
-extension Notification.Name {
-    static let didDismissExerciseView = Notification.Name("didDismissExerciseView")
-}
-
 struct ExerciseView: View {
     @State private var viewModel: ViewModel
     @State private var showConfetti: Bool = false
@@ -106,7 +102,6 @@ struct ExerciseView: View {
                             ZStack(alignment: .trailing) {
                                 Button(action: {
                                     if isLast {
-                                        NotificationCenter.default.post(name: .didDismissExerciseView, object: nil)
                                         dismiss()
                                     } else {
                                         nextExercise()
