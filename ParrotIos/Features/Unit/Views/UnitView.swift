@@ -10,12 +10,15 @@ import SwiftUI
 struct UnitView: View {
     let isLast: Bool
     let isNextCompleted: Bool
+    let callback: () async -> Void
     var viewModel: ViewModel
+    
 
-    init(unit: Unit, isFirst: Bool, isLast: Bool, isPrevCompleted: Bool, isNextCompleted: Bool) {
+    init(unit: Unit, isFirst: Bool, isLast: Bool, isPrevCompleted: Bool, isNextCompleted: Bool, callback: @escaping () async -> Void) {
         self.isLast = isLast
         self.isNextCompleted = isNextCompleted
         self.viewModel = .init(unit: unit, isFirst: isFirst, isPrevCompleted: isPrevCompleted)
+        self.callback = callback
     }
 
     var body: some View {
@@ -67,7 +70,8 @@ struct UnitView: View {
                                     title: lesson.title,
                                     isCompleted: lesson.isCompleted,
                                     isLocked: lesson.isLocked,
-                                    stars: lesson.stars
+                                    stars: lesson.stars,
+                                    callback: callback
                                 )
                             }
                         }
@@ -78,7 +82,8 @@ struct UnitView: View {
                                 isCompleted: lesson.isCompleted,
                                 isLocked: lesson.isLocked,
                                 stars: lesson.stars,
-                                isRecap: true
+                                isRecap: true,
+                                callback: callback
                             )
                         } else {
                             ListedLessonView(

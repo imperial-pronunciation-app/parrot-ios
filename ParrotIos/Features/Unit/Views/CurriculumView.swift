@@ -26,7 +26,13 @@ struct CurriculumView: View {
                                 viewModel.curriculum!.units[index + 1].isCompleted
                             let isPrevCompleted = !isFirst &&
                                 viewModel.curriculum!.units[index - 1].isCompleted
-                            UnitView(unit: unit, isFirst: isFirst, isLast: isLast, isPrevCompleted: isPrevCompleted, isNextCompleted: isNextCompleted)
+                            UnitView(
+                                unit: unit,
+                                isFirst: isFirst,
+                                isLast: isLast,
+                                isPrevCompleted: isPrevCompleted,
+                                isNextCompleted: isNextCompleted,
+                                callback: { await viewModel.loadCurriculum() })
                         }
                     }
                 }
@@ -67,10 +73,6 @@ struct CurriculumView: View {
                 .overlay(Divider(), alignment: .bottom)
             }
         }.onAppear {
-            Task {
-                await viewModel.loadCurriculum()
-            }
-        }.onReceive(NotificationCenter.default.publisher(for: .didDismissExerciseView)) { _ in
             Task {
                 await viewModel.loadCurriculum()
             }
