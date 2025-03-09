@@ -25,6 +25,7 @@ extension CurriculumView {
             self.isLoading = true
 
             do {
+                try await authService.getUserDetails()
                 try self.curriculum = await parrotApi.getCurriculum()
             } catch {
                 self.errorMessage = error.localizedDescription

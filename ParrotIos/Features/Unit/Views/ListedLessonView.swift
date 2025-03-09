@@ -14,6 +14,7 @@ struct ListedLessonView: View {
     let isLocked: Bool
     let isRecap: Bool
     let stars: Int?
+    let callback: (() async -> Void)?
 
     init(
         id: Int? = nil,
@@ -21,7 +22,8 @@ struct ListedLessonView: View {
         isCompleted: Bool,
         isLocked: Bool,
         stars: Int? = nil,
-        isRecap: Bool = false
+        isRecap: Bool = false,
+        callback: (() async -> Void)? = nil
     ) {
         self.id = id
         self.title = title
@@ -29,6 +31,7 @@ struct ListedLessonView: View {
         self.isLocked = isLocked
         self.isRecap = isRecap
         self.stars = stars
+        self.callback = callback
     }
 
     var body: some View {
@@ -49,7 +52,13 @@ struct ListedLessonView: View {
             }
 
         } else {
-            NavigationLink(destination: LessonView(lessonId: id!)) {
+            NavigationLink(destination: LessonView(lessonId: id!).onDisappear {
+                Task {
+                    if let callback = callback {
+                        await callback()
+                    }
+                }
+            }) {
                 HStack {
                     // Show stars if completed, otherwise maybe nothing
                     if isCompleted {
